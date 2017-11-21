@@ -17,5 +17,10 @@ use as follows:
   * `README.md` -- This file that you should modify to represent
     your project.
 
-You may also add other new directories as needed, for example
-for testing tools.
+## CMake instructions
+
+To run cmake, type the following to the console:
+>> cmake [path to root CMakeFile.txt]
+(if the CMakeFile is in your current directory, use "cmake .")
+After cmake has made the Makefile, compile the program by simply typing:
+>> make
