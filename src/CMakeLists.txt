@@ -17,5 +17,8 @@ add_definitions(-W)
 add_definitions(-Wextra)
 add_definitions(-pedantic)
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdpartylibs/Box2D)
+
 # Add subdirectories (in order of dependencies)
+add_subdirectory(3rdpartylibs/Box2D)
 add_subdirectory(hello)
