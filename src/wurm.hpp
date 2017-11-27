@@ -1,12 +1,13 @@
-#ifndef Q-LEARNING_WURM_HPP
-#define Q-LEARNING_WURM_HPP
+#ifndef QLEARNING_WURM_HPP
+#define QLEARNING_WURM_HPP
 
-#include "3rdpartylibs/Box2D/Box2D.h"
+#include <Box2D/Box2D.h>
+#include <vector>
 
 class Wurm {
 
 public:
-  Wurm(int joints);
+  Wurm(int joints, b2World *world);
   ~Wurm();
   
   // Lenght of the wurm, AKA number of joints
@@ -22,12 +23,12 @@ public:
   void MoveJoint(int joint_index, int direction);
 
 private:
-  std::array<b2Joint*> joints_;
+  std::vector<b2Joint*> joints_;
   
-  std::array<b2Body*> bodies_;
+  std::vector<b2Body*> bodies_;
   
   // Brains are propably the q-learning matrix 
   //??? brains_; // TODO: proper type, 
-}
+};
 
 #endif
