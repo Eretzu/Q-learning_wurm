@@ -9,16 +9,10 @@ project(q-learning)
 
 # Set compiler and linker flags
 # Common flags
-add_definitions(-std=c++11)
 add_definitions(-Wall)
-add_definitions(-Og)
-add_definitions(-g3)
-add_definitions(-W)
-add_definitions(-Wextra)
-add_definitions(-pedantic)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdpartylibs/Box2D)
 
-# Add subdirectories (in order of dependencies)
-add_subdirectory(3rdpartylibs/Box2D)
-add_subdirectory(qbot)
+add_subdirectory ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D")
+add_subdirectory ("${PROJECT_SOURCE_DIR}/qbot")
+include_directories ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D/Box2D")
+link_directories ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D")
