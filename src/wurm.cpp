@@ -8,7 +8,7 @@
   // CONSTRUCTOR
   Wurm::Wurm(int jointCount, b2World *world) {
     std::vector<b2Joint*> joints_(jointCount);
-    std::vector<b2Body*> bodies_(jointCount+1);
+    //std::vector<b2Body*> bodies_(jointCount+1);
     
     // BODY DEFINITIONS
     b2BodyDef bodyPartDef;
@@ -29,16 +29,17 @@
     bodyPartFixture.shape = &bodyPartShape;
     
     // CREATE WURM
-    bodies_[0] = world->CreateBody(&bodyPartDef);
-    bodies_[0]->CreateFixture(&bodyPartFixture);
+    bodies_.push_back(world->CreateBody(&bodyPartDef));
+    bodies_.back()->CreateFixture(&bodyPartFixture);
     for(int i = 0; i < jointCount; i++) {    
       bodyPartDef.position.Set(0.0f*i, 0.0f);
-      bodies_[i+1] = world->CreateBody(&bodyPartDef);
-      bodies_[i+1]->CreateFixture(&bodyPartFixture);
+      bodies_.push_back(world->CreateBody(&bodyPartDef));
+      bodies_.back()->CreateFixture(&bodyPartFixture);
       
-      b2RevoluteJointDef jointDef;
-      jointDef.Initialize(bodies_[i], bodies_[i+1], bodies_[i]->GetWorldCenter());
-      joints_[i] = world->CreateJoint(&jointDef);
+      /*b2RevoluteJointDef jointDef;
+      jointDef.Initialize(bodies_[i], bodies_[i+1], 
+                          bodies_[i]->GetWorldCenter());
+      joints_[i] = world->CreateJoint(&jointDef);*/
     }
   }
   

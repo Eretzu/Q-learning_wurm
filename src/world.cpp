@@ -3,13 +3,14 @@
 
 #include <Box2D/Box2D.h>
 #include <stdio.h>
+#include <iostream>
 
 #include "world.hpp"
 #include "wurm.hpp"
 
   World::World() {
     // WORLD
-    world = new b2World(b2Vec2(0.0f, -10.0f));
+    world = new b2World(b2Vec2(0.0f, -10.0f), true);
     
     // GROUND BODY
     b2BodyDef groundBodyDef;
@@ -31,16 +32,19 @@
     int32 velocityIterations = 8;
     int32 positionIterations = 3;
     
+    std::cout << "Starting" << std::endl;
     for (int32 i = 0; i < 60; ++i) {
       world->Step(timeStep, velocityIterations, positionIterations);
+      //std::cout << wurmy->GetBodies().size() << std::endl;
       for (auto body : wurmy->GetBodies()) {
         b2Vec2 position = body->GetPosition();
         float32 angle = body->GetAngle();
-        printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle);
+        std::cout << position.x << position.y << angle << std::endl;
       }
-      std::cout << std::endl;
+      //std::cout << std::endl;
       world->ClearForces();
     }
+    std::cout << "The End" << std::endl;
   }
     
 #endif
