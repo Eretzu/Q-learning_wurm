@@ -79,8 +79,8 @@
 
 TestEntry g_testEntries[] =
 {
-	{"Foo test", FooTest::Create},
 	{"WurmTest", WurmTest::Create},
+	{"Foo test", FooTest::Create},
 	{"Ray-Cast", RayCast::Create},
 	{"Dump Shell", DumpShell::Create},
 	{"Convex Hull", ConvexHull::Create},

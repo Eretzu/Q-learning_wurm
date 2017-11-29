@@ -1,22 +1,23 @@
 #ifndef FOOTEST_H
 #define FOOTEST_H
 
-#import <vector>
+#include <vector>
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
 
 class FooTest : public Test {
 public:
   FooTest() {
-    int joints = 2;
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
-    std::vector<b2Body*> bodyParts;
-    for (int i = 0; i < joints + 1) {
-      bodyDef.position.Set(5*i - 10, 20); //middle
-      bodyParts.push_back(m_world->CreateBody(&bodyDef));
-    }
 
+    bodyDef.position.Set(0, 20); //middle
+    b2Body* dynamicBody = m_world->CreateBody(&bodyDef);
+
+    // for (int i = 0; i < joints + 1) {
+    //   bodyDef.position.Set(5*i - 10, 20); //middle
+    //   bodyParts.push_back(m_world->CreateBody(&bodyDef));
+    // }
     // Prepare shape definition
     b2PolygonShape polygonShape;
     b2EdgeShape edgeShape;
