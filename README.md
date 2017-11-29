@@ -19,10 +19,9 @@ use as follows:
 
 ## CMake instructions
 
-To run cmake, type the following to the console:
-`cmake _path to CMakeFile.txt_`
+To run cmake, navigate to the directory /src/build.
 
-(if the CMakeFile is in your current directory, use `cmake .`)
+Run cmake with the command `cmake ..`
 
-After cmake has made the Makefile, compile the program by simply typing:
+After cmake has made the Makefiles, compile the program by simply typing:
 `make`

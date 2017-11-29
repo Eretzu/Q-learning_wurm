@@ -33,6 +33,8 @@ Temporary Items
 # CMake
 ########
 
+*/build/*
+
 CMakeCache.txt
 CMakeFiles
 CMakeScripts

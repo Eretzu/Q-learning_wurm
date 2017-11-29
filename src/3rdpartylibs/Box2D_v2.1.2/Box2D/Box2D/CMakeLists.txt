@@ -1,3 +1,4 @@
+<<<<<<< HEAD:src/3rdpartylibs/Box2D_v2.1.2/Box2D/Box2D/CMakeLists.txt
 set(BOX2D_Collision_SRCS
 	Collision/b2BroadPhase.cpp
 	Collision/b2CollideCircle.cpp
@@ -162,16 +163,48 @@ if(BOX2D_INSTALL)
 	install(FILES ${BOX2D_Dynamics_HDRS} DESTINATION include/Box2D/Dynamics)
 	install(FILES ${BOX2D_Contacts_HDRS} DESTINATION include/Box2D/Dynamics/Contacts)
 	install(FILES ${BOX2D_Joints_HDRS} DESTINATION include/Box2D/Dynamics/Joints)
+=======
+cmake_minimum_required(VERSION 2.6)
 
-	# install libraries
-	if(BOX2D_BUILD_SHARED)
-		install(TARGETS Box2D_shared EXPORT Box2D-targets DESTINATION lib)
-	endif()
-	if(BOX2D_BUILD_STATIC)
-		install(TARGETS Box2D EXPORT Box2D-targets DESTINATION lib)
-	endif()
+project(Box2D)
 
+if(UNIX)
+	set(BOX2D_INSTALL_BY_DEFAULT ON)
+else(UNIX)
+	set(BOX2D_INSTALL_BY_DEFAULT OFF)
+endif(UNIX)
+
+option(BOX2D_INSTALL "Install Box2D libs, includes, and CMake scripts" ${BOX2D_INSTALL_BY_DEFAULT})
+option(BOX2D_INSTALL_DOC "Install Box2D documentation" OFF)
+option(BOX2D_BUILD_SHARED "Build Box2D shared libraries" OFF)
+option(BOX2D_BUILD_STATIC "Build Box2D static libraries" ON)
+option(BOX2D_BUILD_EXAMPLES "Build Box2D examples" ON)
+
+set(BOX2D_VERSION 2.3.0)
+set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
+>>>>>>> origin/master:src/3rdpartylibs/Box2D/CMakeLists.txt
+
+# The Box2D library.
+add_subdirectory(Box2D)
+
+<<<<<<< HEAD:src/3rdpartylibs/Box2D_v2.1.2/Box2D/Box2D/CMakeLists.txt
 	# install build system hooks for third-party apps
 	install(EXPORT Box2D-targets DESTINATION lib/Box2D)
 	install(FILES Box2DConfig.cmake DESTINATION lib/Box2D)
 endif(BOX2D_INSTALL)
+=======
+if(BOX2D_BUILD_EXAMPLES)
+  # HelloWorld console example.
+  add_subdirectory(HelloWorld)
+
+  # Testbed and dependencies.
+  find_package(OpenGL REQUIRED)
+  add_subdirectory(freeglut)
+  add_subdirectory(glui)
+  add_subdirectory(Testbed)
+endif(BOX2D_BUILD_EXAMPLES)
+
+if(BOX2D_INSTALL_DOC)
+  install(DIRECTORY Documentation DESTINATION share/doc/Box2D PATTERN ".svn" EXCLUDE)
+endif(BOX2D_INSTALL_DOC)
+>>>>>>> origin/master:src/3rdpartylibs/Box2D/CMakeLists.txt
