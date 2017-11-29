@@ -4,9 +4,9 @@
 #include <Box2D/Box2D.h>
 //#include <vector>
 
-#include "Wurm.hpp"
+#include "wurm.hpp"
 
-public class World extends TestbedTest {
+class World {
 
   public:  
     World();
@@ -17,7 +17,7 @@ public class World extends TestbedTest {
     
   private:
     b2World* world;
-    Wurm wurmy;
+    Wurm* wurmy;
     b2Body* groundBody;
 };
 

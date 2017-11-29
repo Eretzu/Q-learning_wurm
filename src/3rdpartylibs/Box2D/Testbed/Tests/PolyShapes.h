@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -21,8 +21,6 @@
 
 /// This tests stacking. It also shows how to use b2World::Query
 /// and b2TestOverlap.
-
-const int32 k_maxBodies = 256;
 
 /// This callback is called by b2World::QueryAABB. We find all the fixtures
 /// that overlap an AABB. Of those, we use b2TestOverlap to determine which fixtures
@@ -62,7 +60,7 @@ public:
 		case b2Shape::e_polygon:
 			{
 				b2PolygonShape* poly = (b2PolygonShape*)fixture->GetShape();
-				int32 vertexCount = poly->m_vertexCount;
+				int32 vertexCount = poly->m_count;
 				b2Assert(vertexCount <= b2_maxPolygonVertices);
 				b2Vec2 vertices[b2_maxPolygonVertices];
 
@@ -73,6 +71,9 @@ public:
 
 				m_debugDraw->DrawPolygon(vertices, vertexCount, color);
 			}
+			break;
+				
+		default:
 			break;
 		}
 	}
@@ -89,7 +90,7 @@ public:
 		b2Body* body = fixture->GetBody();
 		b2Shape* shape = fixture->GetShape();
 
-		bool overlap = b2TestOverlap(shape, &m_circle, body->GetTransform(), m_transform);
+		bool overlap = b2TestOverlap(shape, 0, &m_circle, 0, body->GetTransform(), m_transform);
 
 		if (overlap)
 		{
@@ -102,13 +103,19 @@ public:
 
 	b2CircleShape m_circle;
 	b2Transform m_transform;
-	b2DebugDraw* m_debugDraw;
+	b2Draw* m_debugDraw;
 	int32 m_count;
 };
 
 class PolyShapes : public Test
 {
 public:
+
+	enum
+	{
+		e_maxBodies = 256
+	};
+
 	PolyShapes()
 	{
 		// Ground body
@@ -116,8 +123,8 @@ public:
 			b2BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
-			b2PolygonShape shape;
-			shape.SetAsEdge(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			b2EdgeShape shape;
+			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -139,8 +146,8 @@ public:
 
 		{
 			float32 w = 1.0f;
-			float32 b = w / (2.0f + sqrtf(2.0f));
-			float32 s = sqrtf(2.0f) * b;
+			float32 b = w / (2.0f + b2Sqrt(2.0f));
+			float32 s = b2Sqrt(2.0f) * b;
 
 			b2Vec2 vertices[8];
 			vertices[0].Set(0.5f * s, 0.0f);
@@ -207,12 +214,12 @@ public:
 			m_bodies[m_bodyIndex]->CreateFixture(&fd);
 		}
 
-		m_bodyIndex = (m_bodyIndex + 1) % k_maxBodies;
+		m_bodyIndex = (m_bodyIndex + 1) % e_maxBodies;
 	}
 
 	void DestroyBody()
 	{
-		for (int32 i = 0; i < k_maxBodies; ++i)
+		for (int32 i = 0; i < e_maxBodies; ++i)
 		{
 			if (m_bodies[i] != NULL)
 			{
@@ -236,7 +243,7 @@ public:
 			break;
 
 		case 'a':
-			for (int32 i = 0; i < k_maxBodies; i += 2)
+			for (int32 i = 0; i < e_maxBodies; i += 2)
 			{
 				if (m_bodies[i])
 				{
@@ -258,12 +265,12 @@ public:
 
 		PolyShapesCallback callback;
 		callback.m_circle.m_radius = 2.0f;
-		callback.m_circle.m_p.Set(0.0f, 2.1f);
+		callback.m_circle.m_p.Set(0.0f, 1.1f);
 		callback.m_transform.SetIdentity();
 		callback.m_debugDraw = &m_debugDraw;
 
 		b2AABB aabb;
-		callback.m_circle.ComputeAABB(&aabb, callback.m_transform);
+		callback.m_circle.ComputeAABB(&aabb, callback.m_transform, 0);
 
 		m_world->QueryAABB(&callback, aabb);
 
@@ -271,11 +278,11 @@ public:
 		m_debugDraw.DrawCircle(callback.m_circle.m_p, callback.m_circle.m_radius, color);
 
 		m_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
-		m_textLine += 15;
+		m_textLine += DRAW_STRING_NEW_LINE;
 		m_debugDraw.DrawString(5, m_textLine, "Press 'a' to (de)activate some bodies");
-		m_textLine += 15;
+		m_textLine += DRAW_STRING_NEW_LINE;
 		m_debugDraw.DrawString(5, m_textLine, "Press 'd' to destroy a body");
-		m_textLine += 15;
+		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
 	static Test* Create()
@@ -284,7 +291,7 @@ public:
 	}
 
 	int32 m_bodyIndex;
-	b2Body* m_bodies[k_maxBodies];
+	b2Body* m_bodies[e_maxBodies];
 	b2PolygonShape m_polygons[4];
 	b2CircleShape m_circle;
 };

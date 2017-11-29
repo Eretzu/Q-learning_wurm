@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2007 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -18,12 +18,14 @@
 
 #include "Render.h"
 
-#include "freeglut/GL/glut.h"
+#ifdef __APPLE__
+	#include <GLUT/glut.h>
+#else
+	#include "freeglut/freeglut.h"
+#endif
 
-#include <cstdio>
-#include <cstdarg>
-
-#include <cstring>
+#include <stdio.h>
+#include <stdarg.h>
 
 void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
@@ -121,18 +123,18 @@ void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& c
 
 void DebugDraw::DrawTransform(const b2Transform& xf)
 {
-	b2Vec2 p1 = xf.position, p2;
+	b2Vec2 p1 = xf.p, p2;
 	const float32 k_axisScale = 0.4f;
 	glBegin(GL_LINES);
 	
 	glColor3f(1.0f, 0.0f, 0.0f);
 	glVertex2f(p1.x, p1.y);
-	p2 = p1 + k_axisScale * xf.R.col1;
+	p2 = p1 + k_axisScale * xf.q.GetXAxis();
 	glVertex2f(p2.x, p2.y);
 
 	glColor3f(0.0f, 1.0f, 0.0f);
 	glVertex2f(p1.x, p1.y);
-	p2 = p1 + k_axisScale * xf.R.col2;
+	p2 = p1 + k_axisScale * xf.q.GetYAxis();
 	glVertex2f(p2.x, p2.y);
 
 	glEnd();
@@ -172,13 +174,35 @@ void DebugDraw::DrawString(int x, int y, const char *string, ...)
 	int32 length = (int32)strlen(buffer);
 	for (int32 i = 0; i < length; ++i)
 	{
-		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, buffer[i]);
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, buffer[i]);
+		//glutBitmapCharacter(GLUT_BITMAP_9_BY_15, buffer[i]);
 	}
 
 	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
+}
+
+void DebugDraw::DrawString(const b2Vec2& p, const char *string, ...)
+{
+	char buffer[128];
+
+	va_list arg;
+	va_start(arg, string);
+	vsprintf(buffer, string, arg);
+	va_end(arg);
+
+	glColor3f(0.5f, 0.9f, 0.5f);
+	glRasterPos2f(p.x, p.y);
+
+	int32 length = (int32)strlen(buffer);
+	for (int32 i = 0; i < length; ++i)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, buffer[i]);
+	}
+
+	glPopMatrix();
 }
 
 void DebugDraw::DrawAABB(b2AABB* aabb, const b2Color& c)

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -30,11 +30,12 @@ public:
 			bd.position.Set(0.0f, 0.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
+			b2EdgeShape edge;
+
+			edge.Set(b2Vec2(-10.0f, 0.0f), b2Vec2(10.0f, 0.0f));
+			body->CreateFixture(&edge, 0.0f);
+
 			b2PolygonShape shape;
-
-			shape.SetAsEdge(b2Vec2(-10.0f, 0.0f), b2Vec2(10.0f, 0.0f));
-			body->CreateFixture(&shape, 0.0f);
-
 			shape.SetAsBox(0.2f, 1.0f, b2Vec2(0.5f, 1.0f), 0.0f);
 			body->CreateFixture(&shape, 0.0f);
 		}
@@ -53,7 +54,7 @@ public:
 			m_body->CreateFixture(&shape, 1.0f);
 
 			m_angularVelocity = RandomFloat(-50.0f, 50.0f);
-			m_angularVelocity = 33.468121f;
+			//m_angularVelocity = 46.661274f;
 			m_body->SetLinearVelocity(b2Vec2(0.0f, -100.0f));
 			m_body->SetAngularVelocity(m_angularVelocity);
 		}
@@ -61,7 +62,7 @@ public:
 		{
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(0.0f, 0.5f);
+			bd.position.Set(0.0f, 2.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2CircleShape shape;
@@ -69,17 +70,37 @@ public:
 			shape.m_radius = 0.5f;
 			body->CreateFixture(&shape, 1.0f);
 
-			//bd.bullet = true;
+			bd.bullet = true;
 			bd.position.Set(0.0f, 10.0f);
 			body = m_world->CreateBody(&bd);
 			body->CreateFixture(&shape, 1.0f);
 			body->SetLinearVelocity(b2Vec2(0.0f, -100.0f));
 		}
 #endif
+
+		extern int32 b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
+		extern int32 b2_toiCalls, b2_toiIters;
+		extern int32 b2_toiRootIters, b2_toiMaxRootIters;
+		extern float32 b2_toiTime, b2_toiMaxTime;
+
+		b2_gjkCalls = 0; b2_gjkIters = 0; b2_gjkMaxIters = 0;
+		b2_toiCalls = 0; b2_toiIters = 0;
+		b2_toiRootIters = 0; b2_toiMaxRootIters = 0;
+		b2_toiTime = 0.0f; b2_toiMaxTime = 0.0f;
 	}
 
 	void Launch()
 	{
+		extern int32 b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
+		extern int32 b2_toiCalls, b2_toiIters;
+		extern int32 b2_toiRootIters, b2_toiMaxRootIters;
+		extern float32 b2_toiTime, b2_toiMaxTime;
+
+		b2_gjkCalls = 0; b2_gjkIters = 0; b2_gjkMaxIters = 0;
+		b2_toiCalls = 0; b2_toiIters = 0;
+		b2_toiRootIters = 0; b2_toiMaxRootIters = 0;
+		b2_toiTime = 0.0f; b2_toiMaxTime = 0.0f;
+
 		m_body->SetTransform(b2Vec2(0.0f, 20.0f), 0.0f);
 		m_angularVelocity = RandomFloat(-50.0f, 50.0f);
 		m_body->SetLinearVelocity(b2Vec2(0.0f, -100.0f));
@@ -88,11 +109,6 @@ public:
 
 	void Step(Settings* settings)
 	{
-		if (m_stepCount	== 12)
-		{
-			m_stepCount += 0;
-		}
-
 		Test::Step(settings);
 
 		extern int32 b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
@@ -101,30 +117,31 @@ public:
 		{
 			m_debugDraw.DrawString(5, m_textLine, "gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
 				b2_gjkCalls, b2_gjkIters / float32(b2_gjkCalls), b2_gjkMaxIters);
-			m_textLine += 15;
+			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		extern int32 b2_toiCalls, b2_toiIters, b2_toiMaxIters;
+		extern int32 b2_toiCalls, b2_toiIters;
 		extern int32 b2_toiRootIters, b2_toiMaxRootIters;
-		extern int32 b2_toiMaxOptIters;
+		extern float32 b2_toiTime, b2_toiMaxTime;
 
 		if (b2_toiCalls > 0)
 		{
-			m_debugDraw.DrawString(5, m_textLine, "toi calls = %d, ave toi iters = %3.1f, max toi iters = %d",
+			m_debugDraw.DrawString(5, m_textLine, "toi calls = %d, ave [max] toi iters = %3.1f [%d]",
 								b2_toiCalls, b2_toiIters / float32(b2_toiCalls), b2_toiMaxRootIters);
-			m_textLine += 15;
+			m_textLine += DRAW_STRING_NEW_LINE;
 			
-			m_debugDraw.DrawString(5, m_textLine, "ave toi root iters = %3.1f, max toi root iters = %d",
+			m_debugDraw.DrawString(5, m_textLine, "ave [max] toi root iters = %3.1f [%d]",
 				b2_toiRootIters / float32(b2_toiCalls), b2_toiMaxRootIters);
-			m_textLine += 15;
+			m_textLine += DRAW_STRING_NEW_LINE;
 
-			m_debugDraw.DrawString(5, m_textLine, "max toi opt iters = %d", b2_toiMaxOptIters);
-			m_textLine += 15;
+			m_debugDraw.DrawString(5, m_textLine, "ave [max] toi time = %.1f [%.1f] (microseconds)",
+				1000.0f * b2_toiTime / float32(b2_toiCalls), 1000.0f * b2_toiMaxTime);
+			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
 		if (m_stepCount % 60 == 0)
 		{
-			Launch();
+			//Launch();
 		}
 	}
 

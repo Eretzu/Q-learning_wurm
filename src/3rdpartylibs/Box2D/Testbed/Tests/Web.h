@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -30,8 +30,8 @@ public:
 			b2BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
-			b2PolygonShape shape;
-			shape.SetAsEdge(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			b2EdgeShape shape;
+			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -61,8 +61,8 @@ public:
 			b2DistanceJointDef jd;
 			b2Vec2 p1, p2, d;
 
-			jd.frequencyHz = 4.0f;
-			jd.dampingRatio = 0.5f;
+			jd.frequencyHz = 2.0f;
+			jd.dampingRatio = 0.0f;
 
 			jd.bodyA = ground;
 			jd.bodyB = m_bodies[0];
@@ -180,9 +180,9 @@ public:
 	{
 		Test::Step(settings);
 		m_debugDraw.DrawString(5, m_textLine, "This demonstrates a soft distance joint.");
-		m_textLine += 15;
+		m_textLine += DRAW_STRING_NEW_LINE;
 		m_debugDraw.DrawString(5, m_textLine, "Press: (b) to delete a body, (j) to delete a joint");
-		m_textLine += 15;
+		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
 	void JointDestroyed(b2Joint* joint)

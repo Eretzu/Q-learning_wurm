@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -35,22 +35,22 @@ public:
 			b2BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
-			b2PolygonShape shape;
+			b2EdgeShape shape;
 
 			// Floor
-			shape.SetAsEdge(b2Vec2(-10.0f, 0.0f), b2Vec2(10.0f, 0.0f));
+			shape.Set(b2Vec2(-10.0f, 0.0f), b2Vec2(10.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 
 			// Left wall
-			shape.SetAsEdge(b2Vec2(-10.0f, 0.0f), b2Vec2(-10.0f, 20.0f));
+			shape.Set(b2Vec2(-10.0f, 0.0f), b2Vec2(-10.0f, 20.0f));
 			ground->CreateFixture(&shape, 0.0f);
 
 			// Right wall
-			shape.SetAsEdge(b2Vec2(10.0f, 0.0f), b2Vec2(10.0f, 20.0f));
+			shape.Set(b2Vec2(10.0f, 0.0f), b2Vec2(10.0f, 20.0f));
 			ground->CreateFixture(&shape, 0.0f);
 
 			// Roof
-			shape.SetAsEdge(b2Vec2(-10.0f, 20.0f), b2Vec2(10.0f, 20.0f));
+			shape.Set(b2Vec2(-10.0f, 20.0f), b2Vec2(10.0f, 20.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -150,12 +150,12 @@ public:
 			b2Vec2 p = b->GetPosition();
 			if (p.x <= -10.0f || 10.0f <= p.x || p.y <= 0.0f || 20.0f <= p.y)
 			{
-				p.x += 0.0;
+				p.x += 0.0f;
 			}
 		}
 
 		m_debugDraw.DrawString(5, m_textLine, "Press 'c' to create a circle.");
-		m_textLine += 15;
+		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
 	static Test* Create()

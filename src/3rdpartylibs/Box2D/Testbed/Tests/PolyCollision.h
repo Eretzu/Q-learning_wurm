@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -25,7 +25,7 @@ public:
 	PolyCollision()
 	{
 		{
-			m_polygonA.SetAsEdge(b2Vec2(20.0f, 0.0f), b2Vec2(20.0f, 20.0f));
+			m_polygonA.SetAsBox(0.2f, 0.4f);
 			m_transformA.Set(b2Vec2(0.0f, 0.0f), 0.0f);
 		}
 
@@ -53,22 +53,22 @@ public:
 		worldManifold.Initialize(&manifold, m_transformA, m_polygonA.m_radius, m_transformB, m_polygonB.m_radius);
 
 		m_debugDraw.DrawString(5, m_textLine, "point count = %d", manifold.pointCount);
-		m_textLine += 15;
+		m_textLine += DRAW_STRING_NEW_LINE;
 
 		{
 			b2Color color(0.9f, 0.9f, 0.9f);
 			b2Vec2 v[b2_maxPolygonVertices];
-			for (int32 i = 0; i < m_polygonA.m_vertexCount; ++i)
+			for (int32 i = 0; i < m_polygonA.m_count; ++i)
 			{
 				v[i] = b2Mul(m_transformA, m_polygonA.m_vertices[i]);
 			}
-			m_debugDraw.DrawPolygon(v, m_polygonA.m_vertexCount, color);
+			m_debugDraw.DrawPolygon(v, m_polygonA.m_count, color);
 
-			for (int32 i = 0; i < m_polygonB.m_vertexCount; ++i)
+			for (int32 i = 0; i < m_polygonB.m_count; ++i)
 			{
 				v[i] = b2Mul(m_transformB, m_polygonB.m_vertices[i]);
 			}
-			m_debugDraw.DrawPolygon(v, m_polygonB.m_vertexCount, color);
+			m_debugDraw.DrawPolygon(v, m_polygonB.m_count, color);
 		}
 
 		for (int32 i = 0; i < manifold.pointCount; ++i)

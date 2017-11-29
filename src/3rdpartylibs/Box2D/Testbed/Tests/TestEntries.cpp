@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -18,14 +18,21 @@
 
 #include "../Framework/Test.h"
 #include "../Framework/Render.h"
-#include "../../freeglut/GL/glut.h"
-#include <cstring>
 
+#ifdef __APPLE__
+	#include <GLUT/glut.h>
+#else
+	#include "freeglut/freeglut.h"
+#endif
+
+#include "AddPair.h"
 #include "ApplyForce.h"
 #include "BodyTypes.h"
 #include "Breakable.h"
 #include "Bridge.h"
+#include "BulletTest.h"
 #include "Cantilever.h"
+#include "Car.h"
 #include "ContinuousTest.h"
 #include "Chain.h"
 #include "CharacterCollision.h"
@@ -33,13 +40,20 @@
 #include "CollisionProcessing.h"
 #include "CompoundShapes.h"
 #include "Confined.h"
+#include "ConvexHull.h"
+#include "ConveyorBelt.h"
 #include "DistanceTest.h"
 #include "Dominos.h"
+#include "DumpShell.h"
 #include "DynamicTreeTest.h"
 #include "EdgeShapes.h"
+#include "EdgeTest.h"
 #include "Gears.h"
-#include "LineJoint.h"
+#include "Mobile.h"
+#include "MobileBalanced.h"
+#include "MotorJoint.h"
 #include "OneSidedPlatform.h"
+#include "Pinball.h"
 #include "PolyCollision.h"
 #include "PolyShapes.h"
 #include "Prismatic.h"
@@ -47,54 +61,59 @@
 #include "Pyramid.h"
 #include "RayCast.h"
 #include "Revolute.h"
+#include "RopeJoint.h"
 #include "SensorTest.h"
 #include "ShapeEditing.h"
 #include "SliderCrank.h"
 #include "SphereStack.h"
 #include "TheoJansen.h"
+#include "Tiles.h"
 #include "TimeOfImpact.h"
+#include "Tumbler.h"
 #include "VaryingFriction.h"
 #include "VaryingRestitution.h"
 #include "VerticalStack.h"
 #include "Web.h"
+#include "FooTest.h"
 
 TestEntry g_testEntries[] =
 {
-	{"Time of Impact", TimeOfImpact::Create},
 	{"Ray-Cast", RayCast::Create},
-	{"One-Sided Platform", OneSidedPlatform::Create},
-	{"Confined", Confined::Create},
-	{"Vertical Stack", VerticalStack::Create},
-	{"Pyramid", Pyramid::Create},
-	{"Varying Restitution", VaryingRestitution::Create},
-	{"Theo Jansen's Walker", TheoJansen::Create},
-	{"Body Types", BodyTypes::Create},
-	{"Character Collision", CharacterCollision::Create},
-	{"Prismatic", Prismatic::Create},
-	{"Edge Shapes", EdgeShapes::Create},
-	{"Continuous Test", ContinuousTest::Create},
-	{"PolyCollision", PolyCollision::Create},
-	{"Polygon Shapes", PolyShapes::Create},
+	{"Dump Shell", DumpShell::Create},
+	{"Convex Hull", ConvexHull::Create},
 	{"Apply Force", ApplyForce::Create},
-	{"Cantilever", Cantilever::Create},
-	{"SphereStack", SphereStack::Create},
-	{"Bridge", Bridge::Create},
-	{"Breakable", Breakable::Create},
-	{"Chain", Chain::Create},
-	{"Collision Filtering", CollisionFiltering::Create},
-	{"Collision Processing", CollisionProcessing::Create},
-	{"Compound Shapes", CompoundShapes::Create},
-	{"Distance Test", DistanceTest::Create},
-	{"Dominos", Dominos::Create},
-	{"Dynamic Tree", DynamicTreeTest::Create},
+	{"Continuous Test", ContinuousTest::Create},
+	{"Time of Impact", TimeOfImpact::Create},
+	{"Motor Joint", MotorJoint::Create},
+	{"One-Sided Platform", OneSidedPlatform::Create},
+	{"Mobile", Mobile::Create},
+	{"MobileBalanced", MobileBalanced::Create},
+	{"Conveyor Belt", ConveyorBelt::Create},
 	{"Gears", Gears::Create},
-	{"Line Joint", LineJoint::Create},
-	{"Pulleys", Pulleys::Create},
-	{"Revolute", Revolute::Create},
-	{"Sensor Test", SensorTest::Create},
+	{"Varying Restitution", VaryingRestitution::Create},
+	{"Tumbler", Tumbler::Create},
+	{"Tiles", Tiles::Create},
+	{"Cantilever", Cantilever::Create},
+	{"Character Collision", CharacterCollision::Create},
+	{"Edge Test", EdgeTest::Create},
+	{"Body Types", BodyTypes::Create},
 	{"Shape Editing", ShapeEditing::Create},
-	{"Slider Crank", SliderCrank::Create},
-	{"Varying Friction", VaryingFriction::Create},
+	{"Car", Car::Create},
+	{"Prismatic", Prismatic::Create},
+	{"Vertical Stack", VerticalStack::Create},
+	{"SphereStack", SphereStack::Create},
+	{"Revolute", Revolute::Create},
+	{"Pulleys", Pulleys::Create},
+	{"Polygon Shapes", PolyShapes::Create},
 	{"Web", Web::Create},
+	{"RopeJoint", RopeJoint::Create},
+	{"Pinball", Pinball::Create},
+	{"Bullet Test", BulletTest::Create},
+	{"Confined", Confined::Create},
+	{"Pyramid", Pyramid::Create},
+	{"Theo Jansen's Walker", TheoJansen::Create},
+	{"Edge Shapes", EdgeShapes::Create},
+
+	{"Foo test", FooTest::Create},
 	{NULL, NULL}
 };
