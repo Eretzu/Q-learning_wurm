@@ -21,13 +21,7 @@
 
     // SHAPE
     b2PolygonShape bodyPartShape;
-<<<<<<< HEAD
     bodyPartShape.SetAsBox(5, 1);
-    
-=======
-    bodyPartShape.SetAsBox(1, 5);
-
->>>>>>> d8f08ec5c0eeaf578edaf66753a5b80c8eb4d4ba
     // BODY FIXTURE //TODO: Shape
     b2FixtureDef bodyPartFixture;
     bodyPartFixture.density = 1.0f;
@@ -36,7 +30,6 @@
     // CREATE WURM
     bodies_.push_back(world->CreateBody(&bodyPartDef));
     bodies_.back()->CreateFixture(&bodyPartFixture);
-<<<<<<< HEAD
     for(int i = 0; i < jointCount; i++) {    
       bodyPartDef.position.Set(10*(i+1), 0.0f);
       bodies_.push_back(world->CreateBody(&bodyPartDef));
@@ -48,17 +41,6 @@
 		  jointDef.maxForce = 10.0f;
 		  jointDef.maxTorque = 10.0f;
       joints_.push_back(world->CreateJoint(&jointDef));
-=======
-    for(int i = 0; i < jointCount; i++) {
-      bodyPartDef.position.Set(1*i, 0.0f);
-      bodies_.push_back(world->CreateBody(&bodyPartDef));
-      bodies_.back()->CreateFixture(&bodyPartFixture);
-
-      /*b2RevoluteJointDef jointDef;
-      jointDef.Initialize(bodies_[i], bodies_[i+1],
-                          bodies_[i]->GetWorldCenter());
-      joints_[i] = world->CreateJoint(&jointDef);*/
->>>>>>> d8f08ec5c0eeaf578edaf66753a5b80c8eb4d4ba
     }
   }
 
