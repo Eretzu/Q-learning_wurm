@@ -10,7 +10,13 @@ project(q-learning)
 # Set compiler and linker flags
 # Common flags
 add_definitions(-Wall)
-
+add_definitions(-Og)
+add_definitions(-g3)
+add_definitions(-Wall)
+add_definitions(-W)
+add_definitions(-Wextra)
+add_definitions(-pedantic)
+add_definitions(-Wno-unused-function)
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D")
 add_subdirectory ("${PROJECT_SOURCE_DIR}/qbot")
