@@ -12,7 +12,7 @@
 
     // BODY DEFINITIONS
     b2BodyDef bodyPartDef;
-    bodyPartDef.position.Set(0.0f, 20.0f);
+    bodyPartDef.position.Set(0.0f, 0.0f);
     bodyPartDef.type = b2_dynamicBody;
     bodyPartDef.linearDamping = 0.0f;
     bodyPartDef.angularDamping = 0.01f;
@@ -25,7 +25,7 @@
 
     // BODY FIXTURE //TODO: Shape
     b2FixtureDef bodyPartFixture;
-    //bodyPartFixture.SetDensity(1.0f);
+    bodyPartFixture.density = 1.0f;
     bodyPartFixture.shape = &bodyPartShape;
 
     // CREATE WURM

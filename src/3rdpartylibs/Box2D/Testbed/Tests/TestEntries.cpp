@@ -79,6 +79,7 @@
 
 TestEntry g_testEntries[] =
 {
+	{"Foo test", FooTest::Create},
 	{"WurmTest", WurmTest::Create},
 	{"Ray-Cast", RayCast::Create},
 	{"Dump Shell", DumpShell::Create},
@@ -115,7 +116,5 @@ TestEntry g_testEntries[] =
 	{"Pyramid", Pyramid::Create},
 	{"Theo Jansen's Walker", TheoJansen::Create},
 	{"Edge Shapes", EdgeShapes::Create},
-
-	{"Foo test", FooTest::Create},
 	{NULL, NULL}
 };

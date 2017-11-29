@@ -1,7 +1,7 @@
 #ifndef WURMTEST_H
 #define WURMTEST_H
 
-#include "qbot/wurm.hpp"
+#include "wurm.hpp"
 
 class WurmTest : public Test {
 public:
