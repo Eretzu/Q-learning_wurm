@@ -75,9 +75,11 @@
 #include "VerticalStack.h"
 #include "Web.h"
 #include "FooTest.h"
+#include "WurmTest.h"
 
 TestEntry g_testEntries[] =
 {
+	{"WurmTest", WurmTest::Create},
 	{"Ray-Cast", RayCast::Create},
 	{"Dump Shell", DumpShell::Create},
 	{"Convex Hull", ConvexHull::Create},

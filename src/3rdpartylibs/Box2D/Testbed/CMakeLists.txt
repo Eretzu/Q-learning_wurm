@@ -81,7 +81,7 @@ add_executable(Testbed
 	${Testbed_Framework_SRCS}
 	${Testbed_Tests_SRCS}
 )
-
+include_directories("${PROJECT_SOURCE_DIR}/qbot")
 target_link_libraries (
 	Testbed
 	Box2D
@@ -89,4 +89,5 @@ target_link_libraries (
 	glui
 	${ADDITIONAL_LIBRARIES}
 	${OPENGL_LIBRARIES}
-) 
+	Wurm
+)
