@@ -9,28 +9,34 @@
   Wurm::Wurm(int jointCount, b2World *world) {
     //std::vector<b2Joint*> joints_(jointCount);
     //std::vector<b2Body*> bodies_(jointCount+1);
-    
+
     // BODY DEFINITIONS
     b2BodyDef bodyPartDef;
-    bodyPartDef.position.Set(0.0f, 0.0f);
+    bodyPartDef.position.Set(0.0f, 20.0f);
     bodyPartDef.type = b2_dynamicBody;
     bodyPartDef.linearDamping = 0.0f;
     bodyPartDef.angularDamping = 0.01f;
     bodyPartDef.allowSleep = false;
     bodyPartDef.awake = true;
-    
+
     // SHAPE
     b2PolygonShape bodyPartShape;
+<<<<<<< HEAD
     bodyPartShape.SetAsBox(5, 1);
     
+=======
+    bodyPartShape.SetAsBox(1, 5);
+
+>>>>>>> d8f08ec5c0eeaf578edaf66753a5b80c8eb4d4ba
     // BODY FIXTURE //TODO: Shape
     b2FixtureDef bodyPartFixture;
     bodyPartFixture.density = 1.0f;
     bodyPartFixture.shape = &bodyPartShape;
-    
+
     // CREATE WURM
     bodies_.push_back(world->CreateBody(&bodyPartDef));
     bodies_.back()->CreateFixture(&bodyPartFixture);
+<<<<<<< HEAD
     for(int i = 0; i < jointCount; i++) {    
       bodyPartDef.position.Set(10*(i+1), 0.0f);
       bodies_.push_back(world->CreateBody(&bodyPartDef));
@@ -42,22 +48,33 @@
 		  jointDef.maxForce = 10.0f;
 		  jointDef.maxTorque = 10.0f;
       joints_.push_back(world->CreateJoint(&jointDef));
+=======
+    for(int i = 0; i < jointCount; i++) {
+      bodyPartDef.position.Set(1*i, 0.0f);
+      bodies_.push_back(world->CreateBody(&bodyPartDef));
+      bodies_.back()->CreateFixture(&bodyPartFixture);
+
+      /*b2RevoluteJointDef jointDef;
+      jointDef.Initialize(bodies_[i], bodies_[i+1],
+                          bodies_[i]->GetWorldCenter());
+      joints_[i] = world->CreateJoint(&jointDef);*/
+>>>>>>> d8f08ec5c0eeaf578edaf66753a5b80c8eb4d4ba
     }
   }
-  
+
   // DESTRUCTOR
   Wurm::~Wurm() {  }
-  
+
   // Lenght of the wurm, AKA number of joints
   const int Wurm::NumberOfJoints() const {
     return joints_.size();
   }
-  
+
   // Angle of a joint in radians
   const int Wurm::GetJointAngle(int joint_index) const {
     return 0; // TODO
   }
-  
+
   // Starts rotating joint
   // 1  for clockwise
   // -1 for counter-clockwise

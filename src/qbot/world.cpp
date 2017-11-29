@@ -11,7 +11,7 @@
 
   World::World() {
     // WORLD
-    world = new b2World(b2Vec2(0.0f, -10.0f), true);
+    world = new b2World(b2Vec2(0.0f, -10.0f));
     
     // GROUND BODY
     b2BodyDef groundBodyDef;
