@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.4)
+cmake_minimum_required(VERSION 2.6)
 
 project(Box2D)
 
@@ -14,11 +14,11 @@ option(BOX2D_BUILD_SHARED "Build Box2D shared libraries" OFF)
 option(BOX2D_BUILD_STATIC "Build Box2D static libraries" ON)
 option(BOX2D_BUILD_EXAMPLES "Build Box2D examples" ON)
 
-set(BOX2D_VERSION 2.1.0)
+set(BOX2D_VERSION 2.3.0)
+set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
 
 # The Box2D library.
 add_subdirectory(Box2D)
-
 
 if(BOX2D_BUILD_EXAMPLES)
   # HelloWorld console example.
