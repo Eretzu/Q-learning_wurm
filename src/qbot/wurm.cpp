@@ -12,7 +12,7 @@
 
     // BODY DEFINITIONS
     b2BodyDef bodyPartDef;
-    bodyPartDef.position.Set(0.0f, 20.0f);
+    bodyPartDef.position.Set(0.0f, 0.0f);
     bodyPartDef.type = b2_dynamicBody;
     bodyPartDef.linearDamping = 0.0f;
     bodyPartDef.angularDamping = 0.01f;
@@ -37,7 +37,7 @@
       
       // MOTOR JOINT DEF
       b2MotorJointDef jointDef;
-      jointDef.Initialize(bodies_[i], bodies_[i+1])      
+      jointDef.Initialize(bodies_[i], bodies_[i+1]);    
 		  jointDef.maxForce = 10.0f;
 		  jointDef.maxTorque = 10.0f;
       joints_.push_back(world->CreateJoint(&jointDef));
@@ -61,9 +61,9 @@
   // 1  for clockwise
   // -1 for counter-clockwise
   // 0  to stop rotation
-  void Wurm::MoveJoint(int joint_index, int direction, float offset) {
-    b2MotorJoint joint = joints_[joint_index];
-    joint->SetAngularOffset(offset);
+  void Wurm::MoveJoint(int joint_index, int direction) {
+    //b2MotorJoint joint = joints_[joint_index];
+    //joint->SetAngularOffset(10);
     return; // TODO
   }
 

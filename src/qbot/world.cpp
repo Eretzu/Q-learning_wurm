@@ -34,7 +34,7 @@
     int32 positionIterations = 3;
     
     // LET'S APPLY A FORCE
-    wurmy->GetBodies()[0]->ApplyLinearImpulse(b2Vec2(-10,300), b2Vec2(0,0));
+    //wurmy->GetBodies()[0]->ApplyLinearImpulse(b2Vec2(-10,300), b2Vec2(0,0));
     
     // TEST ITERATIONS
     std::cout << "Starting" << std::endl;
