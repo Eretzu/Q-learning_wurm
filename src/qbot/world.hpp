@@ -13,7 +13,9 @@ class World {
     
     ~World();
     
-    void start();
+    void Start();
+    
+    b2Vec2* GetWurmPosition();
     
   private:
     b2World* world;

@@ -3,7 +3,7 @@
 int main(int argc, char** argv) {
   World moi = World();
   
-  moi.start();    
+  moi.Start();    
   
   return 0;
 }

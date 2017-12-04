@@ -5,6 +5,8 @@
 
 #include "wurm.hpp"
 
+const float kJointMotorSpeed = 10.0f;
+
   // CONSTRUCTOR
   Wurm::Wurm(int jointCount, b2World *world) {
     //std::vector<b2Joint*> joints_(jointCount);
@@ -12,7 +14,7 @@
 
     // BODY DEFINITIONS
     b2BodyDef bodyPartDef;
-    bodyPartDef.position.Set(0.0f, 0.0f);
+    bodyPartDef.position.Set(-15.0f, 0.0f);
     bodyPartDef.type = b2_dynamicBody;
     bodyPartDef.linearDamping = 0.0f;
     bodyPartDef.angularDamping = 0.01f;
@@ -31,14 +33,14 @@
     bodies_.push_back(world->CreateBody(&bodyPartDef));
     bodies_.back()->CreateFixture(&bodyPartFixture);
     for(int i = 0; i < jointCount; i++) {    
-      bodyPartDef.position.Set(10*(i+1), 0.0f);
+      bodyPartDef.position.Set(10*i-5, 0.0f);
       bodies_.push_back(world->CreateBody(&bodyPartDef));
       bodies_.back()->CreateFixture(&bodyPartFixture);
       
       // REVOLUTE JOINT DEF
       b2RevoluteJointDef jointDef;
       jointDef.enableMotor = true;
-      jointDef.motorSpeed = -10.0f;
+      jointDef.motorSpeed = kJointMotorSpeed;
       jointDef.maxMotorTorque = 10000.0f;
       jointDef.Initialize(bodies_[i], bodies_[i+1], b2Vec2(10.0*(i-1),0));    
       joints_.push_back((b2RevoluteJoint*)world->CreateJoint(&jointDef));
@@ -62,9 +64,9 @@
   // 1  for clockwise
   // -1 for counter-clockwise
   // 0  to stop rotation
-  void Wurm::ToggleMotorJoint(int joint_index, int direction) {
-    b2RevoluteJoint *joint = joints_[joint_index];
-    //joint->SetMotor
+  void Wurm::ToggleJointMotor(int joint_index, int direction) {
+    b2RevoluteJoint *joint = (b2RevoluteJoint*)joints_[joint_index];
+    joint->SetMotorSpeed(kJointMotorSpeed*direction);
     return;
   }
 

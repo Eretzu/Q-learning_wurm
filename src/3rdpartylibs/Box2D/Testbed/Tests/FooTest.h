@@ -50,7 +50,8 @@ public:
       b2RevoluteJointDef jointDef;
       jointDef.upperAngle = 0;
       jointDef.lowerAngle = 0;
-      //jointDef.enableMotor = true;
+      jointDef.enableMotor = true;
+      jointDef.enableLimit = true;
       jointDef.motorSpeed = -10.0f;
       jointDef.maxMotorTorque = 10000.0f;
       jointDef.Initialize(bodies_[i], bodies_[i+1], b2Vec2(10.0*(i-1),0));    

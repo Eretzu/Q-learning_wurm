@@ -25,9 +25,21 @@
     wurmy = new Wurm(3, world);
   }
   
-  World::~World() { };
+  World::~World() { }
   
-  void World::start() {
+  b2Vec2* World::GetWurmPosition() {
+    b2Vec2 *ret = new b2Vec2(0.0f, 0.0f);
+    for( auto b : wurmy->GetBodies()) {
+      auto temp = b->GetWorldCenter();
+      ret->x += temp.x;
+      ret->y += temp.y;
+    }
+    ret->x = ret->x / 4;
+    ret->y = ret->y / 4;
+    return ret;
+  }
+  
+  void World::Start() {
     float32 timeStep = 1.0f / 60.0f;
     
     int32 velocityIterations = 8;
@@ -37,35 +49,18 @@
     //wurmy->GetBodies()[0]->ApplyLinearImpulse(b2Vec2(-10,300), b2Vec2(0,0));
     
     // TEST ITERATIONS
+    auto pos = GetWurmPosition();
     std::cout << "Starting" << std::endl;
-    for (auto body : wurmy->GetBodies()) {
-      b2Vec2 position = body->GetPosition();
-      float32 angle = body->GetAngle();
-      std::cout << std::setw(15) << position.x << 
-                   std::setw(15) << position.y << 
-                   std::setw(15) << angle << std::endl;
-    }
+    std::cout << std::setw(10) << pos->x << 
+                 std::setw(10) << pos->y << std::endl;
     for (int32 i = 0; i < 600; ++i) {
       world->Step(timeStep, velocityIterations, positionIterations);
       world->ClearForces();
       if(i%60 == 0) {
-        std::cout << "\nSecond " << i/60 << " starting" << std::endl;
-        for (auto body : wurmy->GetBodies()) {
-          b2Vec2 position = body->GetPosition();
-          float32 angle = body->GetAngle();
-          std::cout << std::setw(15) << position.x << 
-                       std::setw(15) << position.y << 
-                       std::setw(15) << angle << std::endl;
-        }
+        auto pos = GetWurmPosition();
+        std::cout << std::setw(10) << pos->x << 
+                     std::setw(10) << pos->y << std::endl;
       }
-    }
-    std::cout << "\n" << std::endl;
-    for (auto body : wurmy->GetBodies()) {
-      b2Vec2 position = body->GetPosition();
-      float32 angle = body->GetAngle();
-      std::cout << std::setw(15) << position.x << 
-                   std::setw(15) << position.y << 
-                   std::setw(15) << angle << std::endl;
     }
     // THE END
     std::cout << "The End" << std::endl;
