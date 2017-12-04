@@ -20,7 +20,7 @@ public:
   // 1  for clockwise
   // -1 for counter-clockwise
   // 0  to stop rotation
-  void MoveJoint(int joint_index, int direction);
+  void ToggleJointMotor(int joint_index, int direction);
   
   std::vector<b2Body*> GetBodies() { return bodies_; }
 

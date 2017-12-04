@@ -21,7 +21,7 @@
 
     // SHAPE
     b2PolygonShape bodyPartShape;
-    bodyPartShape.SetAsBox(5, 1);
+    bodyPartShape.SetAsBox(5, 0.1f);
     // BODY FIXTURE //TODO: Shape
     b2FixtureDef bodyPartFixture;
     bodyPartFixture.density = 1.0f;
@@ -35,12 +35,13 @@
       bodies_.push_back(world->CreateBody(&bodyPartDef));
       bodies_.back()->CreateFixture(&bodyPartFixture);
       
-      // MOTOR JOINT DEF
-      b2MotorJointDef jointDef;
-      jointDef.Initialize(bodies_[i], bodies_[i+1]);    
-		  jointDef.maxForce = 10.0f;
-		  jointDef.maxTorque = 10.0f;
-      joints_.push_back(world->CreateJoint(&jointDef));
+      // REVOLUTE JOINT DEF
+      b2RevoluteJointDef jointDef;
+      jointDef.enableMotor = true;
+      jointDef.motorSpeed = -10.0f;
+      jointDef.maxMotorTorque = 10000.0f;
+      jointDef.Initialize(bodies_[i], bodies_[i+1], b2Vec2(10.0*(i-1),0));    
+      joints_.push_back((b2RevoluteJoint*)world->CreateJoint(&jointDef));
     }
   }
 
@@ -61,10 +62,10 @@
   // 1  for clockwise
   // -1 for counter-clockwise
   // 0  to stop rotation
-  void Wurm::MoveJoint(int joint_index, int direction) {
-    //b2MotorJoint joint = joints_[joint_index];
-    //joint->SetAngularOffset(10);
-    return; // TODO
+  void Wurm::ToggleMotorJoint(int joint_index, int direction) {
+    b2RevoluteJoint *joint = joints_[joint_index];
+    //joint->SetMotor
+    return;
   }
 
 #endif

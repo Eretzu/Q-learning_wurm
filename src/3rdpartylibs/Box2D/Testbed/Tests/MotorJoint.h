@@ -91,7 +91,7 @@ public:
 		
 		float32 angularOffset = 4.0f * m_time;
 
-		m_joint->SetLinearOffset(linearOffset);
+		//m_joint->SetLinearOffset(linearOffset);
 		m_joint->SetAngularOffset(angularOffset);
 
 		m_debugDraw.DrawPoint(linearOffset, 4.0f, b2Color(0.9f, 0.9f, 0.9f));
