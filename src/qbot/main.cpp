@@ -6,7 +6,7 @@ int main(int argc, char** argv) {
   World moi = World();
 
   moi.start();
-
+  sf::RenderWindow Window(sf::VideoMode(100, 100), "Q-learning");
 
 
   return 0;
