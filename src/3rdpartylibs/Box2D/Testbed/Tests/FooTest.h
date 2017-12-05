@@ -17,7 +17,7 @@ public:
     groundBodyDef.position.Set(0.0f, -3.0f);
     b2Body* groundBody = world->CreateBody(&groundBodyDef);
     b2PolygonShape groundBox;
-    groundBox.SetAsBox(500.0f, 1.0f);
+    groundBox.SetAsBox(500000.0f, 1.0f);
     groundBody->CreateFixture(&groundBox, 0.0f);
   
     // WURM FILE ACTUALLY STARTS HERE!!!
@@ -48,8 +48,8 @@ public:
       
       // REVOLUTE JOINT DEF
       b2RevoluteJointDef jointDef;
-      jointDef.upperAngle = 1;
-      jointDef.lowerAngle = -1;
+      jointDef.upperAngle = (M_PI*(24-2)/24);
+      jointDef.lowerAngle = -(M_PI*(24-2)/24);
       jointDef.enableMotor = false;
       jointDef.enableLimit = true;
       jointDef.motorSpeed = -10.0f;

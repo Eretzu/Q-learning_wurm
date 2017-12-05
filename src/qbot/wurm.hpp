@@ -29,8 +29,8 @@ private:
   
   std::vector<b2Body*> bodies_;
   
-  // Brains are propably the q-learning matrix 
-  //??? brains_; // TODO: proper type, 
+  // BRAINY THE BRAINS
+  Brains* brainy_;
 };
 
 #endif
