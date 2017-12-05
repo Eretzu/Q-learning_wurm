@@ -14,13 +14,13 @@ public:
   const int NumberOfJoints() const;
   
   // Angle of a joint in radians
-  const int GetJointAngle(int joint_index) const;
+  const float GetJointAngle(int joint_index) const;
   
   // Starts rotating joint
   // 1  for clockwise
   // -1 for counter-clockwise
   // 0  to stop rotation
-  void ToggleJointMotor(int joint_index, int direction);
+  bool SetJointTargetAngle(int joint_index, float targetAngle);
   
   std::vector<b2Body*> GetBodies() { return bodies_; }
 

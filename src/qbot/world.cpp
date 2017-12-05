@@ -18,7 +18,7 @@
     groundBodyDef.position.Set(0.0f, -10.0f);
     b2Body* groundBody = world->CreateBody(&groundBodyDef);
     b2PolygonShape groundBox;
-    groundBox.SetAsBox(50.0f, 1.0f);
+    groundBox.SetAsBox(50.0f, 2.0f);
     groundBody->CreateFixture(&groundBox, 0.0f);
     
     // WURMY THE WURM
@@ -49,10 +49,10 @@
     //wurmy->GetBodies()[0]->ApplyLinearImpulse(b2Vec2(-10,300), b2Vec2(0,0));
     
     // TEST ITERATIONS
-    auto pos = GetWurmPosition();
+    auto tempPos = GetWurmPosition();
     std::cout << "Starting" << std::endl;
-    std::cout << std::setw(10) << pos->x << 
-                 std::setw(10) << pos->y << std::endl;
+    std::cout << std::setw(10) << tempPos->x << 
+                 std::setw(10) << tempPos->y << std::endl;
     for (int32 i = 0; i < 600; ++i) {
       world->Step(timeStep, velocityIterations, positionIterations);
       world->ClearForces();

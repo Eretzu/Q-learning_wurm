@@ -48,9 +48,9 @@ public:
       
       // REVOLUTE JOINT DEF
       b2RevoluteJointDef jointDef;
-      jointDef.upperAngle = 0;
-      jointDef.lowerAngle = 0;
-      jointDef.enableMotor = true;
+      jointDef.upperAngle = 1;
+      jointDef.lowerAngle = -1;
+      jointDef.enableMotor = false;
       jointDef.enableLimit = true;
       jointDef.motorSpeed = -10.0f;
       jointDef.maxMotorTorque = 10000.0f;
