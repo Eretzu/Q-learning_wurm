@@ -8,6 +8,7 @@ int main()
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 
+<<<<<<< HEAD
     while (window.isOpen())
     {
         sf::Event event;
@@ -21,6 +22,10 @@ int main()
         window.draw(shape);
         window.display();
     }
+=======
+  moi.start();
+  sf::RenderWindow Window(sf::VideoMode(100, 100), "Q-learning");
+>>>>>>> 85a4a99526d6282d474778dbf4201871de1dbf24
 
     return 0;
 }
