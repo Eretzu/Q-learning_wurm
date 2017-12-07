@@ -26,7 +26,7 @@ void CreateGround(b2World& world, float X, float Y) {
     b2PolygonShape Shape;
     Shape.SetAsBox((800.f/2)/SCALE, (16.f/2)/SCALE); // Creates a box shape. Divide your desired width and height by 2.
     b2FixtureDef FixtureDef;
-    FixtureDef.density = 0.f;  // Sets the density of the body
+    FixtureDef.density = 0.0f;  // Sets the density of the body
     FixtureDef.shape = &Shape; // Sets the shape
     Body->CreateFixture(&FixtureDef); // Apply the fixture definition
 }
@@ -47,8 +47,10 @@ void CreateBox(b2World& world, int MouseX, int MouseY) {
 }
 
 int main() {
+    sf::View view1(sf::FloatRect(0, 0, 1800, 600));
     sf::RenderWindow window(sf::VideoMode(1800, 600), "Test");
     window.setFramerateLimit(60);
+    window.setView(view1);
 
     /** Prepare the world */
     b2Vec2 Gravity(0.f, 9.8f);
@@ -56,9 +58,13 @@ int main() {
     Wurm* w = new Wurm(3, &world);
 
     CreateGround(world, 400.f, 500.f);
-
+    
+    int i=1;
     while (window.isOpen()) {
-
+        i++;
+        view1.move(sf::Vector2f(1, 0));
+        window.setView(view1);
+        
         sf::Event event;
         while (window.pollEvent(event))
         {
