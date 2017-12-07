@@ -24,7 +24,7 @@ void CreateGround(b2World& world, float X, float Y) {
     BodyDef.type = b2_staticBody;
     b2Body* Body = world.CreateBody(&BodyDef);
     b2PolygonShape Shape;
-    Shape.SetAsBox((800.f/2)/SCALE, (16.f/2)/SCALE); // Creates a box shape. Divide your desired width and height by 2.
+    Shape.SetAsBox((80000.f)/SCALE, (8.f)/SCALE); // Creates a box shape. Divide your desired width and height by 2.
     b2FixtureDef FixtureDef;
     FixtureDef.density = 0.0f;  // Sets the density of the body
     FixtureDef.shape = &Shape; // Sets the shape
@@ -97,11 +97,11 @@ int main() {
 
                     //auto p = CreateSfPolygon(polygon);
                     sf::RectangleShape p(sf::Vector2f(10.f*SCALE, 2.f*SCALE));
-                    p.setFillColor(sf::Color(200,200,200));
-                    p.setOrigin(10.f/2, 2.f/2);
+                    p.setFillColor(sf::Color(50, 50, 50));
+                    p.setOrigin(10.f*SCALE/2, 2.f*SCALE/2);
                     p.setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
                     p.setRotation(body->GetAngle() * 180/b2_pi);
-                    p.setOutlineThickness(10.f);
+                    p.setOutlineThickness(1.f);
                     p.setOutlineColor(sf::Color::Black);
                     window.draw(p);
                 } // pituus 10, leveys 2
@@ -112,6 +112,27 @@ int main() {
             // r.setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
             // r.setRotation(body->GetAngle() * 180/b2_pi);
             // window.draw(r);
+          }
+          else {
+            for (b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+              b2Shape::Type shapeType = fixture->GetType();
+                if ( shapeType == b2Shape::e_circle ) {
+                    b2CircleShape* circle = (b2CircleShape*)fixture->GetShape();
+                }
+                else if ( shapeType == b2Shape::e_polygon ) {
+                    b2PolygonShape* polygon = (b2PolygonShape*)fixture->GetShape();
+
+                    //auto p = CreateSfPolygon(polygon);
+                    sf::RectangleShape p(sf::Vector2f(80000.f, 16));
+                    p.setFillColor(sf::Color(50, 50, 50));
+                    p.setOrigin(80000.f/2, 16.f/2);
+                    p.setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
+                    p.setRotation(body->GetAngle() * 180/b2_pi);
+                    p.setOutlineThickness(1.f);
+                    p.setOutlineColor(sf::Color::Black);
+                    window.draw(p);
+                } // pituus 10, leveys 2
+            }
           }
         }
         window.display();
