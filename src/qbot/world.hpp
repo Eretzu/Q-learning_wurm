@@ -8,11 +8,11 @@
 
 class World {
 
-  public:  
+  public:
     World();
-    
+
     ~World();
-    
+
     void start();
     
   private:
