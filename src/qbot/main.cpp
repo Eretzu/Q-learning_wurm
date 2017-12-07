@@ -87,19 +87,24 @@ int main() {
                 }
                 else if ( shapeType == b2Shape::e_polygon ) {
                     b2PolygonShape* polygon = (b2PolygonShape*)fixture->GetShape();
-                    //auto p = CreateSfPolygon(polygon);
-                    //p.setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
-                    //p.setRotation(body->GetAngle() * 180/b2_pi);
 
-                    //window.draw(p);
+                    //auto p = CreateSfPolygon(polygon);
+                    sf::RectangleShape p(sf::Vector2f(10.f*SCALE, 2.f*SCALE));
+                    p.setFillColor(sf::Color(200,200,200));
+                    p.setOrigin(10.f/2, 2.f/2);
+                    p.setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
+                    p.setRotation(body->GetAngle() * 180/b2_pi);
+                    p.setOutlineThickness(10.f);
+                    p.setOutlineColor(sf::Color::Black);
+                    window.draw(p);
                 } // pituus 10, leveys 2
             }
-            sf::RectangleShape r(sf::Vector2f(32.f, 32.f));
-            r.setOrigin(32.f/2, 32.f/2);
-            r.setFillColor(sf::Color::Black);
-            r.setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
-            r.setRotation(body->GetAngle() * 180/b2_pi);
-            window.draw(r);
+            // sf::RectangleShape r(sf::Vector2f(32.f, 32.f));
+            // r.setOrigin(32.f/2, 32.f/2);
+            // r.setFillColor(sf::Color::Black);
+            // r.setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
+            // r.setRotation(body->GetAngle() * 180/b2_pi);
+            // window.draw(r);
           }
         }
         window.display();
