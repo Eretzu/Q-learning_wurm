@@ -59,12 +59,8 @@ int main() {
 
     CreateGround(world, 400.f, 500.f);
     
-    int i=1;
+    b2Body* bodyOfMikko = world.GetBodyList();
     while (window.isOpen()) {
-        i++;
-        b2Body* body = world.GetBodyList()->GetNext()->GetNext();
-        view1.setCenter(sf::Vector2f(body->GetPosition().x, 0));
-        window.setView(view1);
         
         sf::Event event;
         while (window.pollEvent(event))
@@ -136,6 +132,10 @@ int main() {
           }
         }
         window.display();
+        
+
+        view1.setCenter(sf::Vector2f(bodyOfMikko->GetPosition().x, 0));
+        window.setView(view1);
     }
 
     return 0;
