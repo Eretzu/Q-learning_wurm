@@ -14,7 +14,7 @@ class World {
     ~World();
 
     void start();
-    
+    b2World* getWorld();
   private:
     b2World* world;
     Wurm* wurmy;

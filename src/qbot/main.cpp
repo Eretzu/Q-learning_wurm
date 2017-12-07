@@ -1,21 +1,22 @@
 #include "world.hpp"
+#include "wurm.hpp"
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
 
 const float SCALE = 30.f;
 sf::Color boxColor = sf::Color::Black;
 
-sf::ConvexShape CreateSfPolygon(b2PolygonShape* b2Polygon) {
-    int vertexCount = b2Polygon->GetVertexCount();
-
-    sf::ConvexShape polygon;
-
-    for (int i = 0; i < vertexCount; ++i) {
-      polygon.setPoint(i, sf::Vector2f(b2Polygon->GetVertex(i).x * SCALE, b2Polygon->GetVertex(i).y * SCALE));
-      polygon.setFillColor(boxColor);
-    }
-    return polygon;
-}
+// sf::ConvexShape CreateSfPolygon(b2PolygonShape* b2Polygon) {
+//     int vertexCount = b2Polygon->GetVertexCount();
+//
+//     sf::ConvexShape polygon;
+//
+//     for (int i = 0; i < vertexCount; ++i) {
+//       polygon.setPoint(i, sf::Vector2f(b2Polygon->GetVertex(i).x * SCALE, b2Polygon->GetVertex(i).y * SCALE));
+//       polygon.setFillColor(boxColor);
+//     }
+//     return polygon;
+// }
 
 void CreateGround(b2World& world, float X, float Y) {
     b2BodyDef BodyDef;
@@ -46,12 +47,13 @@ void CreateBox(b2World& world, int MouseX, int MouseY) {
 }
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Test");
+    sf::RenderWindow window(sf::VideoMode(1800, 600), "Test");
     window.setFramerateLimit(60);
 
     /** Prepare the world */
     b2Vec2 Gravity(0.f, 9.8f);
     b2World world(Gravity);
+    Wurm* w = new Wurm(3, &world);
 
     CreateGround(world, 400.f, 500.f);
 
@@ -67,7 +69,7 @@ int main() {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             int MouseX = sf::Mouse::getPosition(window).x;
             int MouseY = sf::Mouse::getPosition(window).y;
-            //CreateBox(world, MouseX, MouseY);
+            CreateBox(world, MouseX, MouseY);
         }
 
         // Simulate the world
@@ -86,11 +88,10 @@ int main() {
                 else if ( shapeType == b2Shape::e_polygon ) {
                     b2PolygonShape* polygon = (b2PolygonShape*)fixture->GetShape();
                     auto p = CreateSfPolygon(polygon);
-                    p.setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
-                    p.setRotation(body->GetAngle() * 180/b2_pi);
-                    window.draw(p);
-
-                }
+                    //p.setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
+                    //p.setRotation(body->GetAngle() * 180/b2_pi);
+                    //window.draw(p);
+                } // pituus 10, leveys 2
             }
             sf::RectangleShape r(sf::Vector2f(32.f, 32.f));
             r.setOrigin(32.f/2, 32.f/2);
