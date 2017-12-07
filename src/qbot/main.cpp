@@ -62,7 +62,8 @@ int main() {
     int i=1;
     while (window.isOpen()) {
         i++;
-        view1.move(sf::Vector2f(1, 0));
+        b2Body* body = world.GetBodyList()->GetNext()->GetNext();
+        view1.setCenter(sf::Vector2f(body->GetPosition().x, 0));
         window.setView(view1);
         
         sf::Event event;
