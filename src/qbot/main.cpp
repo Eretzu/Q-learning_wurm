@@ -87,9 +87,10 @@ int main() {
                 }
                 else if ( shapeType == b2Shape::e_polygon ) {
                     b2PolygonShape* polygon = (b2PolygonShape*)fixture->GetShape();
-                    auto p = CreateSfPolygon(polygon);
+                    //auto p = CreateSfPolygon(polygon);
                     //p.setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
                     //p.setRotation(body->GetAngle() * 180/b2_pi);
+
                     //window.draw(p);
                 } // pituus 10, leveys 2
             }
