@@ -90,11 +90,11 @@ int main() {
 
                     //auto p = CreateSfPolygon(polygon);
                     sf::RectangleShape p(sf::Vector2f(10.f*SCALE, 2.f*SCALE));
-                    p.setFillColor(sf::Color(200,200,200));
+                    p.setFillColor(sf::Color(50, 50, 50));
                     p.setOrigin(10.f/2, 2.f/2);
                     p.setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
                     p.setRotation(body->GetAngle() * 180/b2_pi);
-                    p.setOutlineThickness(10.f);
+                    p.setOutlineThickness(1.f);
                     p.setOutlineColor(sf::Color::Black);
                     window.draw(p);
                 } // pituus 10, leveys 2
