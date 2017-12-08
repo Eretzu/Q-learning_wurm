@@ -8,10 +8,10 @@
 const float kJointMotorSpeed = 10.0f;
 
 // CONSTRUCTOR
-Wurm::Wurm(int jointCount, b2World *world, int precision) {
+Wurm::Wurm(int jointCount, b2World *world) {
   //std::vector<b2Joint*> joints_(jointCount);
   //std::vector<b2Body*> bodies_(jointCount+1);
-  brainy_ = Brains(this, precision);
+  //brainy_ = Brains(this, precision);
 
   // BODY DEFINITIONS
   b2BodyDef bodyPartDef;
@@ -67,12 +67,12 @@ b2Vec2* Wurm::GetWurmPosition() {
 }
 
 // Lenght of the wurm, AKA number of joints
-const int Wurm::NumberOfJoints() const {
+int Wurm::NumberOfJoints() {
   return joints_.size();
 }
 
 // Angle of a joint in radians
-const float Wurm::GetJointAngle(int joint_index) const {
+float Wurm::GetJointAngle(int joint_index) {
   b2RevoluteJoint *joint = (b2RevoluteJoint*)joints_[joint_index];
   return joint->GetJointAngle();
 }
@@ -81,8 +81,8 @@ const float Wurm::GetJointAngle(int joint_index) const {
 bool Wurm::SetJointTargetAngle(int joint_index, float angle) {
   b2RevoluteJoint *joint = (b2RevoluteJoint*)joints_[joint_index];
   float targetAngle = angle;
-  precision = brainy->GetPrecision();
-  int kLimit = 2;
+  //int precision = 24;//brainy->GetPrecision();
+  //int kLimit = 2;
   
   /*if(targetAngle > (M_PI*(precision-kLimit)/precision)) 
     targetAngle = (M_PI*(precision-kLimit)/precision);

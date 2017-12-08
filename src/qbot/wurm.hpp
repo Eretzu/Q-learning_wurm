@@ -3,6 +3,7 @@
 
 #include <Box2D/Box2D.h>
 #include <vector>
+//#include "brains.hpp"
 
 class Wurm {
 
@@ -11,15 +12,11 @@ public:
   ~Wurm();
   
   // Lenght of the wurm, AKA number of joints
-  const int NumberOfJoints() const;
+  int NumberOfJoints();
   
   // Angle of a joint in radians
-  const float GetJointAngle(int joint_index) const;
+  float GetJointAngle(int joint_index);
   
-  // Starts rotating joint
-  // 1  for clockwise
-  // -1 for counter-clockwise
-  // 0  to stop rotation
   bool SetJointTargetAngle(int joint_index, float targetAngle);
   
   std::vector<b2Body*> GetBodies() { return bodies_; }
@@ -32,7 +29,7 @@ private:
   std::vector<b2Body*> bodies_;
   
   // BRAINY THE BRAINS
-  Brains* brainy_;
+  //Brains* brainy_;
 };
 
 #endif

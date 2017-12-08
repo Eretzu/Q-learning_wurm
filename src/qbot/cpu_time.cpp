@@ -15,7 +15,7 @@ private:
   std::chrono::high_resolution_clock::time_point epoch;
 };
 
-CPU_Time::CPU_Time() { };
+CPU_Time::CPU_Time() { }
 
 void CPU_Time::Start(void) {
   epoch = std::chrono::high_resolution_clock::now();

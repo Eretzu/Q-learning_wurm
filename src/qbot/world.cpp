@@ -6,8 +6,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include "world_.hpp"
-#include "wurm.hpp"
+#include "world.hpp"
 
   World::World() {
     // WORLD
@@ -21,13 +20,13 @@
     groundBox.SetAsBox(500000.0f, 1.0f);
     groundBody_->CreateFixture(&groundBox, 0.0f);
 
-    // wurmy_ THE WURM
-    wurmy_ = new Wurm(3, world_);
+    // brainy_ THE WURM
+    brainy_ = new Brains(3, world_);
   }
   
   World::~World() { }
   
-  b2Vec2* World::GetWurmPosition() {
+  /*b2Vec2* World::GetWurmPosition() {
     b2Vec2 *ret = new b2Vec2(0.0f, 0.0f);
     for( auto b : wurmy_->GetBodies()) {
       auto temp = b->GetWorldCenter();
@@ -37,7 +36,7 @@
     ret->x = ret->x / 4;
     ret->y = ret->y / 4;
     return ret;
-  }
+  }*/
 
   b2World* World::GetWorld() {
     return world_;
@@ -52,7 +51,7 @@
     //wurmy_->GetBodies()[0]->ApplyLinearImpulse(b2Vec2(-10,300), b2Vec2(0,0));
     
     // TEST ITERATIONS
-    auto tempPos = GetWurmPosition();
+    auto tempPos = brainy_->GetWurm()->GetWurmPosition();
     std::cout << "Starting" << std::endl;
     std::cout << std::setw(10) << tempPos->x << 
                  std::setw(10) << tempPos->y << std::endl;
@@ -61,7 +60,7 @@
       world_->Step(timeStep, velocityIterations, positionIterations);
       world_->ClearForces();
       if(i%60 == 0) {
-        auto pos = GetWurmPosition();
+        auto pos = brainy_->GetWurm()->GetWurmPosition();
         std::cout << std::setw(10) << pos->x << 
                      std::setw(10) << pos->y << std::endl;
       }

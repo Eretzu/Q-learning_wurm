@@ -3,25 +3,34 @@
 
 #include <math.h>
 #include "brains.hpp"
+#include "qlearning.hpp"
 
 // Brains(Wurm, int)
-Brains::Brains(Wurm* parentWurm,
-  short int precision,
-  double alpha = 0.8,
-  double gamma = 0.8, 
-  bool info = 0,
-  bool cpuInfo = 0) : me(parentWurm) {
-  Q_brains = QLearning(me->NumberOfJoints(), precision, alpha, gamma, 10000,
-    info, cpuInfo)
-};
+Brains::Brains(short int precision, b2World* world//,
+  //double alpha = 0.8,
+  //double gamma = 0.8, 
+  //bool info = 0,
+  /*bool cpuInfo = 0*/) : world_(world){
+  me = new Wurm(3, world);
+  double alpha = 0.8;
+  double gamma = 0.8;
+  bool info = 0;
+  bool cpuInfo = 0;
+  Q_brains = new QLearning(me->NumberOfJoints(), precision, 
+                       alpha, gamma, 10000, info, cpuInfo);
+}
 
-Brains::~Brains();
+Brains::~Brains() { }
 
-int GetPrecision() const { return Q_brains->GetPrecision(); }
+Wurm* Brains::GetWurm() {
+  return me;
+}
+
+int Brains::GetPrecision() { return Q_brains->GetPrecision(); }
 
 // See if the current angles match the desired angles by leeway of maxError
-const bool Brains::AngleCheck(float maxError) const {
-  int joints = me->NumberOfJoints;
+bool Brains::AngleCheck(float maxError) {
+  int joints = me->NumberOfJoints();
   bool goodToGo = 1;
   for(int i = 0; i < joints; ++i) {
     if(me->GetJointAngle(i) - correctAngles[i] < maxError ||
@@ -34,18 +43,18 @@ return goodToGo;
 }
 
 void Brains::Think() {
-  if(AngleCheck(maxError)) {
+  if(Brains::AngleCheck(maxError)) {
     if(!isUpdated) {
-      newPosition = me->world->GetWurmPosition()->x;
+      newPosition = me->GetWurmPosition()->x;
       float reward = newPosition - oldPosition;
       Q_brains->UpdateQ(reward);
       isUpdated = 1;
     }
-    oldPosition = me->world->GetWurmPosition()->x;
+    oldPosition = me->GetWurmPosition()->x;
     Q_brains->Act();
 
-    int joint = Q_brains->getNextJoint();
-    float angleChange = rotationStepSize * Q_brains->getNextRotation();
+    int joint = Q_brains->GetNextJoint();
+    float angleChange = rotationStepSize * Q_brains->GetNextRotation();
 
     correctAngles[joint] += angleChange;
     isUpdated = 0;

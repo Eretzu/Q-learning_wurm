@@ -2,26 +2,31 @@
 #define BRAINS_HPP
 
 #include <Box2D/Box2D.h>
+#include "wurm.hpp"
+#include "qlearning.hpp"
 
 class Brains {
 
 public:
-  Brains(Wurm parentWurm);
+  Brains(short int precision, b2World* world);
   ~Brains();
+  
+  Wurm* GetWurm();
 
   // Returns precision from QLearning.
-  int GetPrecision() const;
+  int GetPrecision();
 
   // See if the current angles match the desired angles by leeway of maxError
   // If not for i, send angle
-  const bool angleCheck(float maxError) const;
+  bool AngleCheck(float maxError);
 
   // Is done for each being inside the world EACH STEP.
   void Think();
 
 private:
   Wurm* me;
-  QLearning Q_brains;
+  QLearning* Q_brains;
+  b2World* world_;
 
   float rotationStepSize = 2*M_PI/Q_brains->GetPrecision();
   float maxError = rotationStepSize/10;

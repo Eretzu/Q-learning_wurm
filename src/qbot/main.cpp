@@ -1,5 +1,5 @@
 #include "world.hpp"
-#include "wurm.hpp"
+#include "brains.hpp"
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
 
@@ -56,13 +56,13 @@ int main() {
     /** Prepare the world */
     b2Vec2 Gravity(0.f, 9.8f);
     b2World world(Gravity);
-    Wurm* w = new Wurm(3, &world);
+    Brains* b = new Brains(1, &world);
 
     CreateGround(world, 400.f, 500.f);
     
-    int i = 0;
+    //int i = 0;
     while (window.isOpen()) {
-        auto xyy = w->GetWurmPosition();
+        auto xyy = b->GetWurm()->GetWurmPosition();
         view1.setCenter(xyy->x*SCALE, xyy->y*SCALE);
         window.setView(view1);
         
@@ -74,8 +74,8 @@ int main() {
         }
         /** When the user left-mouse-click, add a box into the world */
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-            int MouseX = sf::Mouse::getPosition(window).x;
-            int MouseY = sf::Mouse::getPosition(window).y;
+            //int MouseX = sf::Mouse::getPosition(window).x;
+            //int MouseY = sf::Mouse::getPosition(window).y;
             //CreateBox(world, MouseX, MouseY);
         }
 
@@ -89,11 +89,11 @@ int main() {
           if (body->GetType() == b2_dynamicBody) {
             for (b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
               b2Shape::Type shapeType = fixture->GetType();
-                if ( shapeType == b2Shape::e_circle ) {
+                /*if ( shapeType == b2Shape::e_circle ) {
                     b2CircleShape* circle = (b2CircleShape*)fixture->GetShape();
-                }
-                else if ( shapeType == b2Shape::e_polygon ) {
-                    b2PolygonShape* polygon = (b2PolygonShape*)fixture->GetShape();
+                }*/
+                /*else*/ if ( shapeType == b2Shape::e_polygon ) {
+                    //b2PolygonShape* polygon = (b2PolygonShape*)fixture->GetShape();
 
                     //auto p = CreateSfPolygon(polygon);
                     sf::RectangleShape p(sf::Vector2f(10.f*SCALE, 2.f*SCALE));
@@ -116,11 +116,11 @@ int main() {
           else {
             for (b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
               b2Shape::Type shapeType = fixture->GetType();
-                if ( shapeType == b2Shape::e_circle ) {
+                /*if ( shapeType == b2Shape::e_circle ) {
                     b2CircleShape* circle = (b2CircleShape*)fixture->GetShape();
-                }
-                else if ( shapeType == b2Shape::e_polygon ) {
-                    b2PolygonShape* polygon = (b2PolygonShape*)fixture->GetShape();
+                }*/
+                /*else*/ if ( shapeType == b2Shape::e_polygon ) {
+                    //b2PolygonShape* polygon = (b2PolygonShape*)fixture->GetShape();
 
                     //auto p = CreateSfPolygon(polygon);
                     sf::RectangleShape p(sf::Vector2f(80000.f, 16));

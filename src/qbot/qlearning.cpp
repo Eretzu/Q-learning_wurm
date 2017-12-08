@@ -16,7 +16,7 @@ alpha(alpha), gamma(gamma), accuracy(accuracy), write_info(info), cpuInfo(cpuInf
 {
   Q = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
   srand((unsigned)time(NULL));
-};
+}
 
 // Destructor
 QLearning::~QLearning() {  }
