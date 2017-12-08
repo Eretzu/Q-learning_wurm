@@ -18,7 +18,13 @@
     b2Body* groundBody_ = world_->CreateBody(&groundBodyDef);
     b2PolygonShape groundBox;
     groundBox.SetAsBox(500000.0f, 1.0f);
-    groundBody_->CreateFixture(&groundBox, 0.0f);
+    
+    b2FixtureDef groundBodyFixture;
+    groundBodyFixture.density = 1.0f;
+    groundBodyFixture.shape = &groundBox;
+    groundBodyFixture.filter.categoryBits = 2;
+    groundBodyFixture.filter.maskBits = 1;
+    groundBody_->CreateFixture(&groundBodyFixture);
     
     // brainy_ THE WURM
     //brainy_ = new Brains(3, world_);

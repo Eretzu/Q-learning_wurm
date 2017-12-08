@@ -12,7 +12,7 @@
 QLearning::QLearning(short int joints, short int precision, double alpha,
   double gamma, int accuracy, bool info, bool cpuInfo) : joints(joints),
 precision(precision), actions(1+joints*2), states(pow(precision,joints)),
-alpha(alpha), gamma(gamma), accuracy(accuracy), write_info(info), cpuInfo(cpuInfo)
+alpha(alpha), gamma(gamma), accuracy(accuracy), write_info(true), cpuInfo(cpuInfo)
 {
   Q = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
   srand((unsigned)time(NULL));
@@ -27,7 +27,7 @@ int QLearning::GetActions() const             { return actions; }
 int QLearning::GetStates() const              { return states; }
 int QLearning::GetPrecision() const           { return precision; }
 int QLearning::GetJoints() const              { return joints; }
-int QLearning::GetNextRotation()               { return next_rotation; }
+int QLearning::GetNextRotation()              { return next_rotation; }
 int QLearning::GetNextJoint()                 { return next_joint; }
 
 void QLearning::CloseInfo()                   { write_info = 0; }
@@ -72,8 +72,9 @@ int QLearning::GetAction(int curiosity) {
 
   // Chooses a value in the accuracy scale.
   int ran;
-  ran = rand()%accuracy;
+  ran = rand()%7;//accuracy;
 
+  /*
   // Conversion rate for placing the values into the above scale.
   double ratio = accuracy/sum;
 
@@ -89,11 +90,11 @@ int QLearning::GetAction(int curiosity) {
     } else {
       count += ratio*( Q[state][i+1] <= 0 ? curiosity : Q[state][i+1] );
     }
-  }
+  }*/
 
-  if(write_info) {
+  /*if(write_info) {
     double summary = 0.0;
-    std::cout << "[INFO][Q]\tSum: " << sum << " Count: " << count <<
+    std::cout << "[INFO][Q]\tSum: " << sum << " Count: " << -100 <<
     " Possible actions (%): ";
     for (int i = 0; i < actions; i++) {
       double possibility = (Q[state][i] <= 0 ? curiosity : Q[state][i]) / sum;
@@ -102,9 +103,10 @@ int QLearning::GetAction(int curiosity) {
     }
     printf("= %.3f", summary);
     std::cout << std::endl;
-  }
-
-  return choice;
+  }*/
+  
+  
+  return ran;
 }
 
 // Gives the maximum Q-value recieved out of all action in a state.

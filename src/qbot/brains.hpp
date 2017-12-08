@@ -28,7 +28,7 @@ private:
   QLearning* Q_brains;
   b2World* world_;
 
-  float rotationStepSize = 2*M_PI/Q_brains->GetPrecision();
+  float rotationStepSize = 2*M_PI/24;
   float maxError = rotationStepSize/10;
 
   // Desired angles of each joint (index)(angle in rads)

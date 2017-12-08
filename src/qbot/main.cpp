@@ -28,6 +28,7 @@ void CreateGround(b2World& world, float X, float Y) {
     b2FixtureDef FixtureDef;
     FixtureDef.density = 0.0f;  // Sets the density of the body
     FixtureDef.shape = &Shape; // Sets the shape
+
     Body->CreateFixture(&FixtureDef); // Apply the fixture definition
 }
 

@@ -30,13 +30,17 @@ Wurm::Wurm(int jointCount, b2World *world) {
   b2FixtureDef bodyPartFixture;
   bodyPartFixture.density = 1.0f;
   bodyPartFixture.shape = &bodyPartShape;
-
+  bodyPartFixture.filter.categoryBits = 1;
+  bodyPartFixture.filter.maskBits = 2;
+  
   // CREATE WURM
   bodies_.push_back(world->CreateBody(&bodyPartDef));
   bodies_.back()->CreateFixture(&bodyPartFixture);
   for(int i = 0; i < jointCount; i++) {    
     bodyPartDef.position.Set(10*i-5, 0.0f);
     bodies_.push_back(world->CreateBody(&bodyPartDef));
+    bodyPartFixture.filter.categoryBits = 1;
+    bodyPartFixture.filter.maskBits = 2;
     bodies_.back()->CreateFixture(&bodyPartFixture);
     
     // REVOLUTE JOINT DEF
@@ -44,9 +48,9 @@ Wurm::Wurm(int jointCount, b2World *world) {
     jointDef.enableLimit = true;
     jointDef.upperAngle = 0;
     jointDef.lowerAngle = 0;
-    jointDef.enableMotor = false;
-    jointDef.motorSpeed = kJointMotorSpeed*2;
-    jointDef.maxMotorTorque = 2000.0f;
+    jointDef.enableMotor = true;
+    jointDef.motorSpeed = 0;
+    jointDef.maxMotorTorque = 20000.0f;
     jointDef.Initialize(bodies_[i], bodies_[i+1], b2Vec2(10.0*(i-1),0));    
     joints_.push_back((b2RevoluteJoint*)world->CreateJoint(&jointDef));
   }
@@ -94,7 +98,7 @@ bool Wurm::SetJointTargetAngle(int joint_index, float angle) {
   
   std::cout << targetAngle << std::endl;
   
-  joint->SetLimits(targetAngle, targetAngle);
+  joint->SetLimits(angle, angle);
   return true;
   /*if(currentAngle < targetAngle) {
     std::cout << "cur < tar" << std::endl;

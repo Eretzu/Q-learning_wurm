@@ -37,7 +37,7 @@ bool Brains::AngleCheck(float maxError) {
   int joints = me->NumberOfJoints();
   bool goodToGo = 1;
   for(int i = 0; i < joints; ++i) {
-    std::cout << "angle: " << me->GetJointAngle(i) - correctAngles[i] << std::endl;
+    std::cout << "angle: " << me->GetJointAngle(i) << " correct: " << correctAngles[i] << std::endl;
     if(me->GetJointAngle(i) - correctAngles[i] >= maxError ||
        me->GetJointAngle(i) - correctAngles[i] <= -maxError) {
       goodToGo = 0;
@@ -51,20 +51,22 @@ return goodToGo;
 void Brains::Think() {
   std::cout << "START THINKING" << std::endl;
   if(Brains::AngleCheck(0.3f)) {
+    newPosition = me->GetWurmPosition()->x;
     if(!isUpdated) {
-      newPosition = me->GetWurmPosition()->x;
       float reward = newPosition - oldPosition;
+      std::cout << reward << " PRIZE" << std::endl;
       Q_brains->UpdateQ(reward);
       isUpdated = 1;
     }
-    oldPosition = me->GetWurmPosition()->x;
-    Q_brains->Act();
+    Q_brains->Act(1, 0.1f);
 
     int joint = Q_brains->GetNextJoint();
     float angleChange = rotationStepSize * Q_brains->GetNextRotation();
+    std::cout << "change: " << angleChange << " " << 2*M_PI/24 << std::endl;
 
     correctAngles[joint] += angleChange;
     isUpdated = 0;
+    oldPosition = me->GetWurmPosition()->x;
   }
 }
 
