@@ -46,8 +46,9 @@ void CreateBox(b2World& world, int MouseX, int MouseY) {
     Body->CreateFixture(&FixtureDef);
 }
 
+
 int main() {
-    sf::View view1(sf::FloatRect(0, 0, 1800, 600));
+    sf::View view1(sf::Vector2f(0, 0), sf::Vector2f(1800, 600));
     sf::RenderWindow window(sf::VideoMode(1800, 600), "Test");
     window.setFramerateLimit(60);
     window.setView(view1);
@@ -59,8 +60,11 @@ int main() {
 
     CreateGround(world, 400.f, 500.f);
     
-    b2Body* bodyOfMikko = world.GetBodyList();
+    int i = 0;
     while (window.isOpen()) {
+        auto xyy = w->GetWurmPosition();
+        view1.setCenter(xyy->x*SCALE, xyy->y*SCALE);
+        window.setView(view1);
         
         sf::Event event;
         while (window.pollEvent(event))
@@ -72,7 +76,7 @@ int main() {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             int MouseX = sf::Mouse::getPosition(window).x;
             int MouseY = sf::Mouse::getPosition(window).y;
-            CreateBox(world, MouseX, MouseY);
+            //CreateBox(world, MouseX, MouseY);
         }
 
         // Simulate the world
@@ -131,11 +135,8 @@ int main() {
             }
           }
         }
-        window.display();
-        
-
-        view1.setCenter(sf::Vector2f(bodyOfMikko->GetPosition().x, 0));
         window.setView(view1);
+        window.display();
     }
 
     return 0;

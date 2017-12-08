@@ -23,6 +23,8 @@ public:
   void MoveJoint(int joint_index, int direction);
   
   std::vector<b2Body*> GetBodies() { return bodies_; }
+  
+  b2Vec2* GetWurmPosition();
 
 private:
   std::vector<b2Joint*> joints_;

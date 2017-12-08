@@ -26,6 +26,18 @@
   }
 
   World::~World() { };
+  
+  b2Vec2* World::GetWurmPosition() {
+    b2Vec2 *ret = new b2Vec2(0.0f, 0.0f);
+    for( auto b : wurmy->GetBodies()) {
+      auto temp = b->GetWorldCenter();
+      ret->x += temp.x;
+      ret->y += temp.y;
+    }
+    ret->x = ret->x / 4;
+    ret->y = ret->y / 4;
+    return ret;
+  }
 
   b2World* World::getWorld() {
     return world;

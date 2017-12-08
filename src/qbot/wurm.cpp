@@ -56,6 +56,18 @@
 
   // DESTRUCTOR
   Wurm::~Wurm() {  }
+  
+  b2Vec2* Wurm::GetWurmPosition() {
+    b2Vec2 *ret = new b2Vec2(0.0f, 0.0f);
+    for( auto b : bodies_) {
+      auto temp = b->GetWorldCenter();
+      ret->x += temp.x;
+      ret->y += temp.y;
+    }
+    ret->x = ret->x / 4;
+    ret->y = ret->y / 4;
+    return ret;
+  }
 
   // Lenght of the wurm, AKA number of joints
   const int Wurm::NumberOfJoints() const {

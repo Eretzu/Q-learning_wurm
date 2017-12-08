@@ -15,6 +15,8 @@ class World {
 
     void start();
     b2World* getWorld();
+    
+    b2Vec2* GetWurmPosition();
   private:
     b2World* world;
     Wurm* wurmy;
