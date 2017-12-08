@@ -56,7 +56,7 @@ int main() {
     /** Prepare the world */
     b2Vec2 Gravity(0.f, 9.8f);
     b2World world(Gravity);
-    Brains* b = new Brains(1, &world);
+    Brains* b = new Brains(24, &world);
 
     CreateGround(world, 400.f, 500.f);
     
