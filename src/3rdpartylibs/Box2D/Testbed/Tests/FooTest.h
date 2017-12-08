@@ -2,33 +2,36 @@
 #define FOOTEST_H
 
 #include <vector>
+#define DEGTORAD 0.0174532925199432957f
+#define RADTODEG 57.295779513082320876f
 
 class FooTest : public Test {
 public:
   FooTest() {
-    b2World* world = m_world;
-    std::vector<b2Body*> bodies_;
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_dynamicBody;
 
-    
-    int jointCount = 3;
-  
-    // GROUND BODY
-    b2BodyDef groundBodyDef;
-    groundBodyDef.position.Set(0.0f, -3.0f);
-    b2Body* groundBody = world->CreateBody(&groundBodyDef);
-    b2PolygonShape groundBox;
-    groundBox.SetAsBox(500000.0f, 1.0f);
-    groundBody->CreateFixture(&groundBox, 0.0f);
-  
-    // WURM FILE ACTUALLY STARTS HERE!!!
-    
-    b2BodyDef bodyPartDef;
-    bodyPartDef.position.Set(-15.0f, 0.0f);
-    bodyPartDef.type = b2_dynamicBody;
-    bodyPartDef.linearDamping = 0.0f;
-    bodyPartDef.angularDamping = 0.01f;
-    bodyPartDef.allowSleep = false;
-    bodyPartDef.awake = true;
+    bodyDef.position.Set(0, 20); //middle
+    b2Body* dynamicBody = m_world->CreateBody(&bodyDef);
+
+    // for (int i = 0; i < joints + 1) {
+    //   bodyDef.position.Set(5*i - 10, 20); //middle
+    //   bodyParts.push_back(m_world->CreateBody(&bodyDef));
+    // }
+    // Prepare shape definition
+    b2PolygonShape polygonShape;
+    b2EdgeShape edgeShape;
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &polygonShape;
+    fixtureDef.density = 1;
+    fixtureDef.friction = 0.5;
+    fixtureDef.restitution = 0.2;
+
+    for (int i = 0; i < 4; i++) {
+      b2Vec2 pos( sinf(i*90*DEGTORAD), cosf(i*90*DEGTORAD));
+      polygonShape.SetAsBox(1, 1, pos, 0);
+      dynamicBody->CreateFixture(&fixtureDef);
+    }
 
     // SHAPE
     b2PolygonShape bodyPartShape;
@@ -38,27 +41,9 @@ public:
     bodyPartFixture.density = 1.0f;
     bodyPartFixture.shape = &bodyPartShape;
 
-    // CREATE WURM
-    bodies_.push_back(world->CreateBody(&bodyPartDef));
-    bodies_.back()->CreateFixture(&bodyPartFixture);
-    for(int i = 0; i < jointCount; i++) {    
-      bodyPartDef.position.Set(10*(i)-5, 0.0f);
-      bodies_.push_back(world->CreateBody(&bodyPartDef));
-      bodies_.back()->CreateFixture(&bodyPartFixture);
-      
-      // REVOLUTE JOINT DEF
-      b2RevoluteJointDef jointDef;
-      jointDef.upperAngle = (M_PI*(24-2)/24);
-      jointDef.lowerAngle = -(M_PI*(24-2)/24);
-      jointDef.enableMotor = false;
-      jointDef.enableLimit = true;
-      jointDef.motorSpeed = -10.0f;
-      jointDef.maxMotorTorque = 10000.0f;
-      jointDef.Initialize(bodies_[i], bodies_[i+1], b2Vec2(10.0*(i-1),0));    
-      joints_.push_back((b2RevoluteJoint*)world->CreateJoint(&jointDef));
-    }
-    
-    m_time = 0.0f;
+    fixtureDef.shape = &edgeShape;
+    edgeShape.Set( b2Vec2(-25,0), b2Vec2(25,0) ); //slightly sloped
+    staticBody->CreateFixture(&fixtureDef);
   }
 
   void Step(Settings* settings) {

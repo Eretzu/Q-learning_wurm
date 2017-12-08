@@ -14,25 +14,23 @@ public:
   const int NumberOfJoints() const;
   
   // Angle of a joint in radians
-  const float GetJointAngle(int joint_index) const;
+  const int GetJointAngle(int joint_index) const;
   
   // Starts rotating joint
   // 1  for clockwise
   // -1 for counter-clockwise
   // 0  to stop rotation
-  bool SetJointTargetAngle(int joint_index, float targetAngle);
+  void MoveJoint(int joint_index, int direction);
   
   std::vector<b2Body*> GetBodies() { return bodies_; }
-  
-  b2Vec2* GetWurmPosition();
 
 private:
   std::vector<b2Joint*> joints_;
   
   std::vector<b2Body*> bodies_;
   
-  // BRAINY THE BRAINS
-  Brains* brainy_;
+  // Brains are propably the q-learning matrix 
+  //??? brains_; // TODO: proper type, 
 };
 
 #endif

@@ -8,19 +8,22 @@
 
 class World {
 
-  public:  
+  public:
     World();
-    
+
     ~World();
     
     void Start();
     
     b2Vec2* GetWurmPosition();
+
+    b2World* GetWorld();
     
+    b2Vec2* GetWurmPosition();
   private:
-    b2World* world;
-    Wurm* wurmy;
-    b2Body* groundBody;
+    b2World* world_;
+    Wurm* wurmy_;
+    b2Body* groundBody_;
 };
 
 #endif
