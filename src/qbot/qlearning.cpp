@@ -64,33 +64,38 @@ int QLearning::GetBestAction(void) {
 }
 
 // Randomizes an action based on the size of the Q-values.
-int QLearning::GetAction(int curiosity) {
+int QLearning::GetAction(float curiosity) {
   // Sums the possible Q-values in a state and curiosity if <= 0
-  double sum = 0.0;
+  /*double sum = 0.0;
   for (int i = 0; i < actions; i++)
     sum += Q[state][i] <= 0 ? curiosity : Q[state][i];
+    */
 
   // Chooses a value in the accuracy scale.
-  int ran;
-  ran = rand()%7;//accuracy;
+  int ran = rand()%actions;//accuracy;
 
-  /*
+  
   // Conversion rate for placing the values into the above scale.
-  double ratio = accuracy/sum;
+  //double ratio = accuracy/sum;
 
   // Initializing the count that will be used to compare where the random falls.
-  int count = ratio*( Q[state][0] <= 0 ? curiosity : Q[state][0] );
-
+  float sum = 0.0f;
+  for(int i = 0; i < ran; ++i) {
+    sum += (Q[state][i+1] <= 0) ? curiosity : Q[state][i+1];
+  }
+  std::cout << "Rand: " << ran << " Total: " << sum << std::endl;
+  float count = 0.0f;
+  
   int choice = 0;
 
   for (int i = 0; i < actions; ++i) {
-    if(ran < count) {
+    if(count >= sum) {
       choice = i;
       break;
     } else {
-      count += ratio*( Q[state][i+1] <= 0 ? curiosity : Q[state][i+1] );
+      count += (Q[state][i+1] <= 0) ? curiosity : Q[state][i+1];
     }
-  }*/
+  }
 
   /*if(write_info) {
     double summary = 0.0;
@@ -106,7 +111,7 @@ int QLearning::GetAction(int curiosity) {
   }*/
   
   
-  return ran;
+  return choice;
 }
 
 // Gives the maximum Q-value recieved out of all action in a state.
@@ -120,7 +125,7 @@ double QLearning::GetMaxQ(int state){
   return temp_max;
 }
 
-void QLearning::Act(int mode, int curiosity) {
+void QLearning::Act(int mode, float curiosity) {
   if(mode == 0) next_action = GetBestAction();
   else next_action = GetAction(curiosity);
 

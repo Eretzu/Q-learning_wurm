@@ -50,7 +50,7 @@ public:
 
   /*  Gives an action. Curiosity denotes how much to care about <= 0 Q-values
       when randomizing based on Q-values. */
-  int GetAction(int curiosity);
+  int GetAction(float curiosity);
   // Gives the new state after performing an action.
   int GetState(int state, int action);
   // Gives the max Q-value achieved by perfoming an action in a state.
@@ -60,7 +60,7 @@ public:
 
   /*  Uses mostly the 4 above functions to complete one step. Outputs index of
       joint and the action to take. -1 counter-clockwise, 0 stay, 1 clockwise */
-  void Act(int mode = 0, int curiosity = 0);
+  void Act(int mode = 1, float curiosity = 0.1f);
 
 
 
