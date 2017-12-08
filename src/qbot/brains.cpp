@@ -54,7 +54,7 @@ void Brains::Think() {
     newPosition = me->GetWurmPosition()->x;
     if(!isUpdated) {
       float reward = newPosition - oldPosition;
-      std::cout << reward << " PRIZE" << std::endl;
+      //std::cout << reward << " PRIZE" << std::endl;
       Q_brains->UpdateQ(reward);
       isUpdated = 1;
     }
@@ -62,7 +62,7 @@ void Brains::Think() {
 
     int joint = Q_brains->GetNextJoint();
     float angleChange = rotationStepSize * Q_brains->GetNextRotation();
-    std::cout << "change: " << angleChange << " " << 2*M_PI/24 << std::endl;
+    //std::cout << "change: " << angleChange << " " << 2*M_PI/24 << std::endl;
 
     correctAngles[joint] += angleChange;
     isUpdated = 0;

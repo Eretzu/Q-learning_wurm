@@ -96,7 +96,7 @@ bool Wurm::SetJointTargetAngle(int joint_index, float angle) {
   
   float currentAngle = GetJointAngle(joint_index);
   
-  std::cout << targetAngle << std::endl;
+  //std::cout << targetAngle << std::endl;
   
   joint->SetLimits(angle, angle);
   return true;
