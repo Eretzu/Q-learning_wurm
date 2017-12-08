@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <vector>
-#include "cpu_time.cpp"
+//#include "cpu_time.cpp"
 
 #include <stdio.h>
 #include <time.h>
@@ -97,7 +97,7 @@ private:
   int destination = 5;
 
   // Benchmark
-  CPU_Time CPU = CPU_Time();
+  //CPU_Time CPU = CPU_Time();
 };
 
 #endif // QLEARNING_HPP
