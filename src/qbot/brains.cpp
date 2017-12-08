@@ -37,19 +37,19 @@ bool Brains::AngleCheck(float maxError) {
   int joints = me->NumberOfJoints();
   bool goodToGo = 1;
   for(int i = 0; i < joints; ++i) {
-    std::cout << "angle: " << me->GetJointAngle(i) << " correct: " << correctAngles[i] << std::endl;
+    //std::cout << "angle: " << me->GetJointAngle(i) << " correct: " << correctAngles[i] << std::endl;
     if(me->GetJointAngle(i) - correctAngles[i] >= maxError ||
        me->GetJointAngle(i) - correctAngles[i] <= -maxError) {
       goodToGo = 0;
       me->SetJointTargetAngle(i, correctAngles[i]);
     }
   }
-std::cout << "Good: " << goodToGo << std::endl;
+//std::cout << "Good: " << goodToGo << std::endl;
 return goodToGo;
 }
 
 void Brains::Think() {
-  std::cout << "START THINKING" << std::endl;
+  //std::cout << "START THINKING" << std::endl;
   if(Brains::AngleCheck(0.3f)) {
     newPosition = me->GetWurmPosition()->x;
     if(!isUpdated) {
