@@ -8,7 +8,7 @@
 class Brains {
 
 public:
-  Brains(short int precision, b2World* world);
+  Brains(int precision, b2World* world);
   ~Brains();
   
   Wurm* GetWurm();

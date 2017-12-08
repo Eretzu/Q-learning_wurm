@@ -10,18 +10,18 @@
 
   World::World() {
     // WORLD
-    world_ = new b2World(b2Vec2(0.0f, -10.0f));
+    world_ = new b2World(b2Vec2(0.0f, 10.0f));
 
     // GROUND BODY
     b2BodyDef groundBodyDef;
-    groundBodyDef.position.Set(0.0f, -10.0f);
+    groundBodyDef.position.Set(0.0f, 10.0f);
     b2Body* groundBody_ = world_->CreateBody(&groundBodyDef);
     b2PolygonShape groundBox;
     groundBox.SetAsBox(500000.0f, 1.0f);
     groundBody_->CreateFixture(&groundBox, 0.0f);
-
+    
     // brainy_ THE WURM
-    brainy_ = new Brains(3, world_);
+    //brainy_ = new Brains(3, world_);
   }
   
   World::~World() { }
@@ -41,7 +41,12 @@
   b2World* World::GetWorld() {
     return world_;
   }
-  void World::Start() {
+  
+  b2Body* World::GetGroundBody() {
+    return groundBody_;
+  }
+  
+  /*void World::Start() {
     float32 timeStep = 1.0f / 60.0f;
 
     int32 velocityIterations = 8;
@@ -68,6 +73,6 @@
     
     // THE END
     std::cout << "The End" << std::endl;
-  }
+  }*/
 
 #endif

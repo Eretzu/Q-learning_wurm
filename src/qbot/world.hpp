@@ -19,9 +19,11 @@ class World {
 
     b2World* GetWorld();
     
+    b2Body* GetGroundBody();
+    
     //b2Vec2* GetWurmPosition();
   private:
-    Brains* brainy_;
+    //Brains* brainy_;
     b2World* world_;
     b2Body* groundBody_;
 };

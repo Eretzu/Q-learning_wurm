@@ -54,11 +54,13 @@ int main() {
     window.setView(view1);
 
     /** Prepare the world */
-    b2Vec2 Gravity(0.f, 9.8f);
-    b2World world(Gravity);
+    //b2Vec2 Gravity(0.f, 9.8f);
+    //b2World world(Gravity);
+    World* worldy = new World();
+    b2World world = *(worldy->GetWorld());
     Brains* b = new Brains(24, &world);
 
-    CreateGround(world, 400.f, 500.f);
+    //CreateGround(world, 400.f, 500.f);
     
     //int i = 0;
     while (window.isOpen()) {
@@ -81,6 +83,9 @@ int main() {
 
         // Simulate the world
         world.Step(1/60.f, 8, 3);
+        b->Think();
+        
+        
 
         // Draw here
         window.clear(sf::Color::White);

@@ -2,6 +2,7 @@
 #define QLEARNING_WURM_CPP
 
 #include <Box2D/Box2D.h>
+#include <iostream>
 
 #include "wurm.hpp"
 
@@ -44,8 +45,8 @@ Wurm::Wurm(int jointCount, b2World *world) {
     jointDef.upperAngle = 0;
     jointDef.lowerAngle = 0;
     jointDef.enableMotor = false;
-    jointDef.motorSpeed = kJointMotorSpeed;
-    jointDef.maxMotorTorque = 1000.0f;
+    jointDef.motorSpeed = kJointMotorSpeed*2;
+    jointDef.maxMotorTorque = 2000.0f;
     jointDef.Initialize(bodies_[i], bodies_[i+1], b2Vec2(10.0*(i-1),0));    
     joints_.push_back((b2RevoluteJoint*)world->CreateJoint(&jointDef));
   }
@@ -91,22 +92,29 @@ bool Wurm::SetJointTargetAngle(int joint_index, float angle) {
   
   float currentAngle = GetJointAngle(joint_index);
   
-  if(currentAngle < targetAngle) {
-    joint->SetLimits(targetAngle, currentAngle);
-    joint->SetMotorSpeed(kJointMotorSpeed*1);
+  std::cout << targetAngle << std::endl;
+  
+  joint->SetLimits(targetAngle, targetAngle);
+  return true;
+  /*if(currentAngle < targetAngle) {
+    std::cout << "cur < tar" << std::endl;
+    joint->SetLimits(currentAngle, targetAngle);
+    joint->SetMotorSpeed(kJointMotorSpeed*2);
     joint->EnableMotor(true);
     return true;
   } else if(currentAngle > targetAngle) {
-    joint->SetLimits(currentAngle, targetAngle);
-    joint->SetMotorSpeed(kJointMotorSpeed*-1);
+    std::cout << "cur > tar" << std::endl;
+    joint->SetLimits(targetAngle, currentAngle);
+    joint->SetMotorSpeed(kJointMotorSpeed*-2);
     joint->EnableMotor(true);
     return true;
   } else {
+    std::cout << "cur = tar" << std::endl;
     joint->SetLimits(currentAngle, currentAngle);
     joint->SetMotorSpeed(0);
     joint->EnableMotor(false);
     return false;
-  }
+  }*/
 }
 
 #endif

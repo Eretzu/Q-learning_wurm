@@ -1,12 +1,13 @@
 #ifndef BRAINS_CPP
 #define BRAINS_CPP
 
+#include <iostream>
 #include <math.h>
 #include "brains.hpp"
 #include "qlearning.hpp"
 
 // Brains(Wurm, int)
-Brains::Brains(short int precision, b2World* world//,
+Brains::Brains(int precision, b2World* world//,
   //double alpha = 0.8,
   //double gamma = 0.8, 
   //bool info = 0,
@@ -16,6 +17,9 @@ Brains::Brains(short int precision, b2World* world//,
   double gamma = 0.8;
   bool info = 0;
   bool cpuInfo = 0;
+  for(int i = 0; i < 3; ++i) {
+    correctAngles.push_back(0);
+  }
   Q_brains = new QLearning(me->NumberOfJoints(), precision, 
                        alpha, gamma, 10000, info, cpuInfo);
 }
@@ -33,17 +37,20 @@ bool Brains::AngleCheck(float maxError) {
   int joints = me->NumberOfJoints();
   bool goodToGo = 1;
   for(int i = 0; i < joints; ++i) {
-    if(me->GetJointAngle(i) - correctAngles[i] < maxError ||
-      me->GetJointAngle(i) - correctAngles[i] > maxError) {
+    std::cout << "angle: " << me->GetJointAngle(i) - correctAngles[i] << std::endl;
+    if(me->GetJointAngle(i) - correctAngles[i] >= maxError ||
+       me->GetJointAngle(i) - correctAngles[i] <= -maxError) {
       goodToGo = 0;
-    me->SetJointTargetAngle(i, correctAngles[i]);
+      me->SetJointTargetAngle(i, correctAngles[i]);
+    }
   }
-}
+std::cout << "Good: " << goodToGo << std::endl;
 return goodToGo;
 }
 
 void Brains::Think() {
-  if(Brains::AngleCheck(maxError)) {
+  std::cout << "START THINKING" << std::endl;
+  if(Brains::AngleCheck(0.3f)) {
     if(!isUpdated) {
       newPosition = me->GetWurmPosition()->x;
       float reward = newPosition - oldPosition;
