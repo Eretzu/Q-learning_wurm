@@ -20,5 +20,7 @@ add_definitions(-Wno-unused-function)
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D")
 add_subdirectory ("${PROJECT_SOURCE_DIR}/qbot")
+include_directories ("${PROJECT_SOURCE_DIR}/qbot")
 include_directories ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D/Box2D")
 link_directories ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D")
+link_directories ("${PROJECT_SOURCE_DIR}/qbot")

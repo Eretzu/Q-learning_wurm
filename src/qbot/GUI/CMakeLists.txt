@@ -1,5 +1,5 @@
 # Some flags for Freeglut and GLUI.
-add_definitions( -DFREEGLUT_EXPORTS -DFREEGLUT_STATIC -D_CRT_SECURE_NO_WARNINGS)
+add_definitions( -DFREEGLUT_EXPORTS -DFREEGLUT_STATIC -D_CRT_SECURE_NO_WARNINGS )
 
 # Define the framework files.
 set(Testbed_Framework_SRCS
@@ -13,7 +13,6 @@ set(Testbed_Framework_SRCS
 #define the test files.
 set(Testbed_Tests_SRCS
 	Tests/TestEntries.cpp
-	Tests/AAWurmTest.h
 	Tests/AddPair.h
 	Tests/ApplyForce.h
 	Tests/BodyTypes.h
@@ -90,5 +89,4 @@ target_link_libraries (
 	glui
 	${ADDITIONAL_LIBRARIES}
 	${OPENGL_LIBRARIES}
-	X11
 ) 
