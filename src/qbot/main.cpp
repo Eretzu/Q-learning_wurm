@@ -1,8 +1,8 @@
-#include "world.hpp"
 #include "brains.hpp"
 #include "draw.hpp"
-#include <SFML/Graphics.hpp>
+#include "world.hpp"
 #include <Box2D/Box2D.h>
+#include <SFML/Graphics.hpp>
 
 const float SCALE = 10.f;
 const int windowWidth = 1400;
