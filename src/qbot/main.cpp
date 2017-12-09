@@ -5,24 +5,24 @@
 #include <Box2D/Box2D.h>
 
 const float SCALE = 10.f;
-sf::Color boxColor = sf::Color::Black;
+const int windowWidth = 1400;
+const int windowHeight = 600;
 
 int main() {
-    sf::View view1(sf::Vector2f(0, 0), sf::Vector2f(1400, 600));
-    sf::RenderWindow window(sf::VideoMode(1400, 600), "Test");
+    // Create window for the program
+    sf::View view1(sf::Vector2f(0, 0), sf::Vector2f(windowWidth, windowHeight));
+    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Test");
     window.setFramerateLimit(60);
+    // Views allow us to move the camera with the wurm
     window.setView(view1);
 
-    /** Prepare the world */
-    //b2Vec2 Gravity(0.f, 9.8f);
-    //b2World world(Gravity);
+    // Stage the world, brains and drawing function
     World* worldy = new World();
     b2World world = *(worldy->GetWorld());
     Brains* b = new Brains(24, &world);
     Draw draw;
-    //CreateGround(world, 400.f, 500.f);
 
-    //int i = 0;
+    // Main loop
     while (window.isOpen()) {
         auto xyy = b->GetWurm()->GetWurmPosition();
         view1.setCenter(xyy->x*SCALE, xyy->y*SCALE);
@@ -39,8 +39,9 @@ int main() {
         b->Think();
 
         // Draw here
-        window.clear(sf::Color::White);
 
+        window.clear(sf::Color::White);
+        // Call to our Draw-class's draw function
         draw.DrawShapes(window, world);
         window.setView(view1);
         window.display();
