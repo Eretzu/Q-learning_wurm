@@ -60,6 +60,8 @@ int main() {
     World* worldy = new World();
     b2World world = *(worldy->GetWorld());
     Brains* b = new Brains(24, &world);
+    
+    int startPos = b->GetWurm()->GetWurmPosition()->x;
 
     //CreateGround(world, 400.f, 500.f);
     
@@ -145,5 +147,7 @@ int main() {
         window.display();
     }
 
+    std::cout << "Total Distance ?moved? :/ -> " << 
+              b->GetWurm()->GetWurmPosition()->x - startPos << std::endl;
     return 0;
 }

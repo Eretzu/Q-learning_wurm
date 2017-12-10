@@ -83,7 +83,7 @@ int QLearning::GetAction(float curiosity) {
   for(int i = 0; i < ran; ++i) {
     sum += (Q[state][i+1] <= 0) ? curiosity : Q[state][i+1];
   }
-  std::cout << "Rand: " << ran << " Total: " << sum << std::endl;
+  //std::cout << "Rand: " << ran << " Total: " << sum << std::endl;
   float count = 0.0f;
   
   int choice = 0;
