@@ -1,0 +1,1 @@
+Run g++ on qtester.cpp to test out qlearning with 50 million learning steps.
