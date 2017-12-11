@@ -15,8 +15,6 @@ int main() {
     sf::View view1(sf::Vector2f(0, 0), sf::Vector2f(windowWidth, windowHeight));
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Test");
     window.setFramerateLimit(60);
-    // Views allow us to move the camera with the wurm
-    window.setView(view1);
 
     // Stage the world, brains and drawing function
     World* worldy = new World();
@@ -26,8 +24,13 @@ int main() {
     int startPos = b->GetWurm()->GetWurmPosition()->x;
 
     Draw draw;
+<<<<<<< HEAD
     float cameraXOffset = 0.f;
     float cameraYOffset = 0.f;
+=======
+    long int iterations = 0;
+
+>>>>>>> origin/master
     // Main loop
     while (window.isOpen()) {
         auto xyy = b->GetWurm()->GetWurmPosition();
@@ -88,6 +91,7 @@ int main() {
         // Simulate the world
         world.Step(1/60.f, 8, 3);
         b->Think();
+        iterations++;
 
         // Draw here
         window.clear(sf::Color::White);
@@ -95,11 +99,16 @@ int main() {
         draw.DrawWaypoints(window);
         // Call to our Draw-class's draw function
         draw.DrawShapes(window, world);
-        window.setView(view1);
+        draw.DrawInfo(window, view1, b, iterations);
         window.display();
     }
 
+<<<<<<< HEAD
     std::cout << "Total Distance ?moved? :/ -> " <<
         b->GetWurm()->GetWurmPosition()->x - startPos << std::endl;
+=======
+    std::cout << "Total distance travelled: " <<
+              b->GetWurm()->GetWurmPosition()->x - startPos << std::endl;
+>>>>>>> origin/master
     return 0;
 }

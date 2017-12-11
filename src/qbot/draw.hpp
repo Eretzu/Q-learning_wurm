@@ -1,6 +1,8 @@
 #ifndef DRAW_HPP
 #define DRAW_HPP
 
+#include "brains.hpp"
+#include "wurm.hpp"
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
 
@@ -14,13 +16,13 @@ public:
 
   /* Draws shapes all shapes from the world to the window */
   void DrawShapes(sf::RenderWindow &window, b2World &world);
-
+  void DrawInfo(sf::RenderWindow &window, sf::View &view, Brains* b, long int iterations);
   /* Draws the background pattern */
   void DrawBackground(sf::RenderWindow &window);
-
   void DrawWaypoints(sf::RenderWindow &window);
+  
 private:
-
+  sf::Font font;
 };
 
 #endif

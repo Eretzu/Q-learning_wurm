@@ -16,7 +16,9 @@ float groundHeight = 16.f;
 sf::Color groundColor = sf::Color::Black;
 
 Draw::Draw() {
-
+  if(!font.loadFromFile("../assets/Montserrat-Regular.ttf")) {
+    std::cout << "Failed to load font!\nThrow error here!" << std::endl;
+  }
 }
 
 void Draw::DrawShapes(sf::RenderWindow &window, b2World &world) {
@@ -90,4 +92,20 @@ void Draw::DrawWaypoints(sf::RenderWindow &window) {
     }
 
   }
+}
+
+void Draw::DrawInfo(sf::RenderWindow &window, sf::View &view, Brains* b, long int iterations) {
+  sf::Text text;
+  text.setFont(font);
+  text.setCharacterSize(24);
+  text.setColor(sf::Color::Black);
+  // Gather info
+  auto infotext = "Iterations: " + std::to_string(iterations);
+  infotext += "\nPosition X: " + std::to_string(b->GetWurm()->GetWurmPosition()->x);
+  infotext += "\nVelocity: N/A";
+
+  text.setString(infotext);
+  text.setPosition(view.getCenter()-sf::Vector2f(675.f,275.f));
+  window.draw(text);
+}
 }
