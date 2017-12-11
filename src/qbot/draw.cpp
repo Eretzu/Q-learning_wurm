@@ -63,7 +63,7 @@ void Draw::DrawBackground(sf::RenderWindow &window) {
   texture.setRepeated(true);
   sf::Sprite sprite;
   sprite.setTexture(texture);
-  sprite.setTextureRect({ 0, 0, 2000, 1000 });
+  sprite.setTextureRect({ 0, 0, 80000, 1000 });
   sprite.setOrigin(1400/2, 600/2);
   sprite.setScale(2.f, 2.f);
   window.draw(sprite);

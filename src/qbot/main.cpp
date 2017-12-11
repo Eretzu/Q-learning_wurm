@@ -3,6 +3,7 @@
 #include "world.hpp"
 #include <Box2D/Box2D.h>
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 const float SCALE = 10.f;
 const int windowWidth = 1400;
@@ -24,17 +25,40 @@ int main() {
     int startPos = b->GetWurm()->GetWurmPosition()->x;
 
     Draw draw;
-
+    float cameraXOffset = 0.f;
+    float cameraYOffset = 0.f;
     // Main loop
     while (window.isOpen()) {
         auto xyy = b->GetWurm()->GetWurmPosition();
-        view1.setCenter(xyy->x*SCALE, xyy->y*SCALE);
+        view1.setCenter((xyy->x + cameraXOffset)*SCALE, (xyy->y + cameraYOffset)*SCALE);
         window.setView(view1);
 
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
+          // Request for closing window
+          if (event.type == sf::Event::Closed)
+            window.close();
+
+          if (event.type == sf::Event::KeyPressed) {
+            // Controls for moving the view center, eg. the camera
+            // 'd' pressed
+            if (event.key.code == sf::Keyboard::D)
+              cameraXOffset += 10;
+            // 'a' pressed
+            if (event.key.code == sf::Keyboard::A)
+              cameraXOffset -= 10;
+            // 's' pressed
+            if (event.key.code == sf::Keyboard::S)
+              cameraYOffset += 10;
+            // 'w' pressed
+            if (event.key.code == sf::Keyboard::W)
+              cameraYOffset -= 10;
+            // Spacebar pressed
+            if (event.key.code == sf::Keyboard::Space) {
+              cameraXOffset = 0;
+              cameraYOffset = 0;
+            }
+          }
         }
 
         // Simulate the world
