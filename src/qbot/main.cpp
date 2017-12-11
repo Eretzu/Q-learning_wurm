@@ -24,13 +24,16 @@ int main() {
     int startPos = b->GetWurm()->GetWurmPosition()->x;
 
     Draw draw;
-<<<<<<< HEAD
     float cameraXOffset = 0.f;
     float cameraYOffset = 0.f;
-=======
     long int iterations = 0;
-
->>>>>>> origin/master
+    int z = 0;
+    // while(z < 1000) {
+    //   world.Step(1/60.f, 8, 3);
+    //   b->Think();
+    //   z++;
+    //   iterations++;
+    // }
     // Main loop
     while (window.isOpen()) {
         auto xyy = b->GetWurm()->GetWurmPosition();
@@ -102,13 +105,7 @@ int main() {
         draw.DrawInfo(window, view1, b, iterations);
         window.display();
     }
-
-<<<<<<< HEAD
-    std::cout << "Total Distance ?moved? :/ -> " <<
-        b->GetWurm()->GetWurmPosition()->x - startPos << std::endl;
-=======
     std::cout << "Total distance travelled: " <<
               b->GetWurm()->GetWurmPosition()->x - startPos << std::endl;
->>>>>>> origin/master
     return 0;
 }
