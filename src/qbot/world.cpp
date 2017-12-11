@@ -14,10 +14,10 @@
 
     // GROUND BODY
     b2BodyDef groundBodyDef;
-    groundBodyDef.position.Set(0.0f, 10.0f);
+    groundBodyDef.position.Set(0.0f, 20.0f);
     b2Body* groundBody_ = world_->CreateBody(&groundBodyDef);
     b2PolygonShape groundBox;
-    groundBox.SetAsBox(80000.0f, 1.0f);
+    groundBox.SetAsBox(80000.0f, 10.0f);
 
     b2FixtureDef groundBodyFixture;
     groundBodyFixture.density = 1.0f;

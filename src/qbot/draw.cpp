@@ -102,6 +102,7 @@ void Draw::DrawInfo(sf::RenderWindow &window, sf::View &view, Brains* b, long in
   // Gather info
   auto infotext = "Iterations: " + std::to_string(iterations);
   infotext += "\nPosition X: " + std::to_string(b->GetWurm()->GetWurmPosition()->x);
+  infotext += "\nPosition Y: " + std::to_string(b->GetWurm()->GetWurmPosition()->y);
   infotext += "\nVelocity: N/A";
 
   text.setString(infotext);

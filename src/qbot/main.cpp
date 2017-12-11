@@ -28,12 +28,12 @@ int main() {
     float cameraYOffset = 0.f;
     long int iterations = 0;
     int z = 0;
-    // while(z < 1000) {
-    //   world.Step(1/60.f, 8, 3);
-    //   b->Think();
-    //   z++;
-    //   iterations++;
-    // }
+    while(z < 100000) {
+      world.Step(1/60.f, 8, 3);
+      b->Think();
+      z++;
+      iterations++;
+    }
     // Main loop
     while (window.isOpen()) {
         auto xyy = b->GetWurm()->GetWurmPosition();
@@ -98,7 +98,7 @@ int main() {
 
         // Draw here
         window.clear(sf::Color::White);
-        draw.DrawBackground(window);
+        // draw.DrawBackground(window);
         draw.DrawWaypoints(window);
         // Call to our Draw-class's draw function
         draw.DrawShapes(window, world);
