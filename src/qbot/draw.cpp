@@ -11,7 +11,7 @@ float sectionWidth = 10.f;
 sf::Color wurmColor = sf::Color(50, 50, 50);
 sf::Color wurmOutlineColor = sf::Color::Black;
 // Variables defining how the ground is drawn
-float groundWidth = 80000.f;
+float groundWidth = 8000.f;
 float groundHeight = 16.f;
 sf::Color groundColor = sf::Color::Black;
 
@@ -67,7 +67,7 @@ void Draw::DrawBackground(sf::RenderWindow &window) {
   texture.setSmooth(true);
   sf::Sprite sprite;
   sprite.setTexture(texture);
-  sprite.setTextureRect({ 0, 0, 80000, 1000 });
+  sprite.setTextureRect({ 0, 0, 8000, 1000 });
   sprite.setOrigin(1400/2, 600/2);
   sprite.setScale(2.f, 2.f);
   window.draw(sprite);
