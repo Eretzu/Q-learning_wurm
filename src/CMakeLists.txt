@@ -24,9 +24,11 @@ if (SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
 endif()
 
+include_directories ("${PROJECT_SOURCE_DIR}/qbot")
+include_directories ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D")
+
 add_subdirectory ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D")
 add_subdirectory ("${PROJECT_SOURCE_DIR}/qbot")
-include_directories ("${PROJECT_SOURCE_DIR}/qbot")
-include_directories ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D/Box2D")
-link_directories ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D/Box2D")
+
+link_directories ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D")
 link_directories ("${PROJECT_SOURCE_DIR}/qbot")
