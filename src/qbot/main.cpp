@@ -33,30 +33,48 @@ int main() {
         view1.setCenter((xyy->x + cameraXOffset)*SCALE, (xyy->y + cameraYOffset)*SCALE);
         window.setView(view1);
 
+        /* Handle all event listening here.
+           Close window, listen to keyboard and mouse, etc. */
         sf::Event event;
         while (window.pollEvent(event)) {
           // Request for closing window
           if (event.type == sf::Event::Closed)
             window.close();
 
+          // A keyboard key was pressed
           if (event.type == sf::Event::KeyPressed) {
-            // Controls for moving the view center, eg. the camera
-            // 'd' pressed
-            if (event.key.code == sf::Keyboard::D)
+            // Controls for changing the view center, eg. moving the camera
+            // Right-arrow-key pressed
+            if (event.key.code == sf::Keyboard::Right)
               cameraXOffset += 10;
-            // 'a' pressed
-            if (event.key.code == sf::Keyboard::A)
+            // Left-arrow-key pressed
+            if (event.key.code == sf::Keyboard::Left)
               cameraXOffset -= 10;
-            // 's' pressed
-            if (event.key.code == sf::Keyboard::S)
+            // Down-arrow-key pressed
+            if (event.key.code == sf::Keyboard::Down)
               cameraYOffset += 10;
-            // 'w' pressed
-            if (event.key.code == sf::Keyboard::W)
+            // Up-arrow-key pressed
+            if (event.key.code == sf::Keyboard::Up)
               cameraYOffset -= 10;
             // Spacebar pressed
             if (event.key.code == sf::Keyboard::Space) {
               cameraXOffset = 0;
               cameraYOffset = 0;
+            }
+            // S pressed
+            if (event.key.code == sf::Keyboard::S) {
+              // TODO: Save file function here
+              std::cout << "Save file" << std::endl; // placeholder
+            }
+            // L pressed
+            if (event.key.code == sf::Keyboard::L) {
+              // TODO: Load file function here
+              std::cout << "Load file" << std::endl; // placeholder
+            }
+            // Enter pressed
+            if (event.key.code == sf::Keyboard::Return) {
+              // TODO: Fastforward function here
+              std::cout << "Fastforward" << std::endl; // placeholder
             }
           }
         }
@@ -66,7 +84,6 @@ int main() {
         b->Think();
 
         // Draw here
-
         window.clear(sf::Color::White);
         draw.DrawBackground(window);
         // Call to our Draw-class's draw function
