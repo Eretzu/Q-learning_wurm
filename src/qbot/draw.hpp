@@ -18,8 +18,9 @@ public:
   /* Draws the background pattern */
   void DrawBackground(sf::RenderWindow &window);
 
+  void DrawWaypoints(sf::RenderWindow &window);
 private:
-  
+
 };
 
 #endif

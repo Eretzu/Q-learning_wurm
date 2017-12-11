@@ -4,6 +4,7 @@
 #include <Box2D/Box2D.h>
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <string>
 
 const float SCALE = 10.f;
 const int windowWidth = 1400;
@@ -41,6 +42,11 @@ int main() {
           if (event.type == sf::Event::Closed)
             window.close();
 
+          if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+              int x = sf::Mouse::getPosition(window).x;
+              //int y = sf::Mouse::getPosition(window).y;
+              std::cout << "Position: " << std::to_string(x) << std::endl;
+          }
           // A keyboard key was pressed
           if (event.type == sf::Event::KeyPressed) {
             // Controls for changing the view center, eg. moving the camera
@@ -86,6 +92,7 @@ int main() {
         // Draw here
         window.clear(sf::Color::White);
         draw.DrawBackground(window);
+        draw.DrawWaypoints(window);
         // Call to our Draw-class's draw function
         draw.DrawShapes(window, world);
         window.setView(view1);
@@ -93,6 +100,6 @@ int main() {
     }
 
     std::cout << "Total Distance ?moved? :/ -> " <<
-              b->GetWurm()->GetWurmPosition()->x - startPos << std::endl;
+        b->GetWurm()->GetWurmPosition()->x - startPos << std::endl;
     return 0;
 }

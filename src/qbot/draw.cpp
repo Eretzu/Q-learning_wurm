@@ -1,5 +1,6 @@
 #include "draw.hpp"
 #include <iostream>
+#include <string>
 
 float SCALE = 10.f;
 
@@ -61,10 +62,32 @@ void Draw::DrawBackground(sf::RenderWindow &window) {
   sf::Texture texture;
   texture.loadFromFile("../assets/hex-tile.png");
   texture.setRepeated(true);
+  texture.setSmooth(true);
   sf::Sprite sprite;
   sprite.setTexture(texture);
   sprite.setTextureRect({ 0, 0, 80000, 1000 });
   sprite.setOrigin(1400/2, 600/2);
   sprite.setScale(2.f, 2.f);
   window.draw(sprite);
+}
+
+void Draw::DrawWaypoints(sf::RenderWindow &window) {
+  sf::Font font;
+  if (!font.loadFromFile("../assets/OpenSans-Regular.ttf"))
+  {
+    // error...
+  }
+  else {
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(24);
+    text.setFillColor(sf::Color::Black);
+    for(int i = 0; i < groundWidth / 10; i++) {
+      // set the string to display
+      text.setString(std::to_string(i * 10));
+      text.setPosition(sf::Vector2f(i * 10 * SCALE, -100.f));
+      window.draw(text);
+    }
+
+  }
 }
