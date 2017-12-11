@@ -13,8 +13,6 @@ int main() {
     sf::View view1(sf::Vector2f(0, 0), sf::Vector2f(windowWidth, windowHeight));
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Test");
     window.setFramerateLimit(60);
-    // Views allow us to move the camera with the wurm
-    window.setView(view1);
 
     // Stage the world, brains and drawing function
     World* worldy = new World();
@@ -24,12 +22,7 @@ int main() {
     int startPos = b->GetWurm()->GetWurmPosition()->x;
 
     Draw draw;
-    int iterations = 0;
-
-    sf::Font font;
-    if(!font.loadFromFile("../assets/Montserrat-Regular.ttf")) {
-      std::cout << "Failed to load font!\nThrow error here!" << std::endl;
-    }
+    long int iterations = 0;
 
     // Main loop
     while (window.isOpen()) {
@@ -49,22 +42,10 @@ int main() {
         iterations++;
 
         // Draw here
-        sf::Text text;
-        text.setFont(font);
-        text.setCharacterSize(12);
-        text.setColor(sf::Color::Black);
-        // Gather info
-        auto infotext = "Iterations: " + std::to_string(iterations);
-        infotext += "\nPosition X: " + std::to_string(b->GetWurm()->GetWurmPosition()->x);
-        infotext += "\nVelocity: N/A";
-
-        text.setString(infotext);
-        text.setPosition(view1.getCenter()-sf::Vector2f(675.f,275.f));
-
         window.clear(sf::Color::White);
         // Call to our Draw-class's draw function
         draw.DrawShapes(window, world);
-        window.draw(text);
+        draw.DrawInfo(window, view1, b, iterations);
         window.display();
     }
 
