@@ -1,4 +1,5 @@
 #include "draw.hpp"
+#include <iostream>
 
 float SCALE = 10.f;
 
@@ -12,6 +13,10 @@ sf::Color wurmOutlineColor = sf::Color::Black;
 float groundWidth = 80000.f;
 float groundHeight = 16.f;
 sf::Color groundColor = sf::Color::Black;
+
+Draw::Draw() {
+
+}
 
 void Draw::DrawShapes(sf::RenderWindow &window, b2World &world) {
   // Iterate trough all bodies in the world
@@ -50,4 +55,16 @@ void Draw::DrawShapes(sf::RenderWindow &window, b2World &world) {
       }
     }
   }
+}
+
+void Draw::DrawBackground(sf::RenderWindow &window) {
+  sf::Texture texture;
+  texture.loadFromFile("../assets/hex-tile.png");
+  texture.setRepeated(true);
+  sf::Sprite sprite;
+  sprite.setTexture(texture);
+  sprite.setTextureRect({ 0, 0, 2000, 1000 });
+  sprite.setOrigin(1400/2, 600/2);
+  sprite.setScale(2.f, 2.f);
+  window.draw(sprite);
 }

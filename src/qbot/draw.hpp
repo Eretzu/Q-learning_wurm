@@ -10,13 +10,16 @@ class Draw {
 public:
   /* window: the window that Draw draws to
      world: the Box2D world that will be drawn */
-  Draw() {};
+  Draw();
 
   /* Draws shapes all shapes from the world to the window */
   void DrawShapes(sf::RenderWindow &window, b2World &world);
 
-private:
+  /* Draws the background pattern */
+  void DrawBackground(sf::RenderWindow &window);
 
+private:
+  
 };
 
 #endif
