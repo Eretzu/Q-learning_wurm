@@ -20,10 +20,16 @@ int main() {
     World* worldy = new World();
     b2World world = *(worldy->GetWorld());
     Brains* b = new Brains(24, &world);
-    
+
     int startPos = b->GetWurm()->GetWurmPosition()->x;
 
     Draw draw;
+    int iterations = 0;
+
+    sf::Font font;
+    if(font.loadFromFile("Montserrat-Regular.ttf")) {
+      std::cout << "Font loaded!" << std::endl;
+    }
 
     // Main loop
     while (window.isOpen()) {
@@ -40,17 +46,29 @@ int main() {
         // Simulate the world
         world.Step(1/60.f, 8, 3);
         b->Think();
+        iterations++;
 
         // Draw here
+        sf::Text text;
+        text.setFont(font);
+        text.setCharacterSize(12);
+        text.setColor(sf::Color::Black);
+        // Gather info
+        auto infotext = "Iterations: " + std::to_string(iterations);
+        infotext += "\nPosition X: " + std::to_string(b->GetWurm()->GetWurmPosition()->x);
+        infotext += "\nVelocity: N/A";
+
+        text.setString(infotext);
+        text.setPosition(view1.getCenter()-sf::Vector2f(675.f,275.f));
 
         window.clear(sf::Color::White);
         // Call to our Draw-class's draw function
         draw.DrawShapes(window, world);
-        window.setView(view1);
+        window.draw(text);
         window.display();
     }
 
-    std::cout << "Total Distance ?moved? :/ -> " << 
+    std::cout << "Total distance travelled: " <<
               b->GetWurm()->GetWurmPosition()->x - startPos << std::endl;
     return 0;
 }
