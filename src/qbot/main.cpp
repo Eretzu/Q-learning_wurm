@@ -27,7 +27,7 @@ int main() {
     int iterations = 0;
 
     sf::Font font;
-    if(font.loadFromFile("Montserrat-Regular.ttf")) {
+    if(font.loadFromFile("./../Montserrat-Regular.ttf")) {
       std::cout << "Font loaded!" << std::endl;
     }
 
