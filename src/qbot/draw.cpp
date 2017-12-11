@@ -108,4 +108,3 @@ void Draw::DrawInfo(sf::RenderWindow &window, sf::View &view, Brains* b, long in
   text.setPosition(view.getCenter()-sf::Vector2f(675.f,275.f));
   window.draw(text);
 }
-}
