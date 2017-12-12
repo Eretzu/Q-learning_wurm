@@ -40,7 +40,7 @@ int main() {
     int z = 0;
     while(z < 100000) {
       world.Step(1/60.f, 8, 3);
-      b->Think();
+      for(i : wurms) i->Think();
       z++;
       iterations++;
     }

@@ -84,7 +84,7 @@ void Draw::DrawWaypoints(sf::RenderWindow &window) {
     sf::Text text;
     text.setFont(font);
     text.setCharacterSize(24);
-    text.setFillColor(sf::Color::Black);
+    text.setColor(sf::Color::Black);
     for(int i = 0; i < groundWidth / 10; i++) {
       // set the string to display
       text.setString(std::to_string(i * 10));
