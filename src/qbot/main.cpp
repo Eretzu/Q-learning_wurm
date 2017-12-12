@@ -3,6 +3,8 @@
 #include "world.hpp"
 #include <Box2D/Box2D.h>
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include <string>
 
 const float SCALE = 10.f;
 const int windowWidth = 1400;
@@ -32,18 +34,71 @@ int main() {
     int startPos = wurms[0]->GetWurm()->GetWurmPosition()->x;
 
     Draw draw;
+    float cameraXOffset = 0.f;
+    float cameraYOffset = 0.f;
     long int iterations = 0;
-
+    int z = 0;
+    while(z < 100000) {
+      world.Step(1/60.f, 8, 3);
+      b->Think();
+      z++;
+      iterations++;
+    }
     // Main loop
     while (window.isOpen()) {
         auto xyy = wurms[0]->GetWurm()->GetWurmPosition();
         view1.setCenter(xyy->x*SCALE, xyy->y*SCALE);
         window.setView(view1);
 
+        /* Handle all event listening here.
+           Close window, listen to keyboard and mouse, etc. */
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
+          // Request for closing window
+          if (event.type == sf::Event::Closed)
+            window.close();
+
+          if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+              int x = sf::Mouse::getPosition(window).x;
+              //int y = sf::Mouse::getPosition(window).y;
+              std::cout << "Position: " << std::to_string(x) << std::endl;
+          }
+          // A keyboard key was pressed
+          if (event.type == sf::Event::KeyPressed) {
+            // Controls for changing the view center, eg. moving the camera
+            // Right-arrow-key pressed
+            if (event.key.code == sf::Keyboard::Right)
+              cameraXOffset += 10;
+            // Left-arrow-key pressed
+            if (event.key.code == sf::Keyboard::Left)
+              cameraXOffset -= 10;
+            // Down-arrow-key pressed
+            if (event.key.code == sf::Keyboard::Down)
+              cameraYOffset += 10;
+            // Up-arrow-key pressed
+            if (event.key.code == sf::Keyboard::Up)
+              cameraYOffset -= 10;
+            // Spacebar pressed
+            if (event.key.code == sf::Keyboard::Space) {
+              cameraXOffset = 0;
+              cameraYOffset = 0;
+            }
+            // S pressed
+            if (event.key.code == sf::Keyboard::S) {
+              // TODO: Save file function here
+              std::cout << "Save file" << std::endl; // placeholder
+            }
+            // L pressed
+            if (event.key.code == sf::Keyboard::L) {
+              // TODO: Load file function here
+              std::cout << "Load file" << std::endl; // placeholder
+            }
+            // Enter pressed
+            if (event.key.code == sf::Keyboard::Return) {
+              // TODO: Fastforward function here
+              std::cout << "Fastforward" << std::endl; // placeholder
+            }
+          }
         }
 
         // Simulate the world
@@ -55,12 +110,13 @@ int main() {
 
         // Draw here
         window.clear(sf::Color::White);
+        // draw.DrawBackground(window);
+        draw.DrawWaypoints(window);
         // Call to our Draw-class's draw function
         draw.DrawShapes(window, world);
         draw.DrawInfo(window, view1, init_wurm, iterations);
         window.display();
     }
-
     std::cout << "Total distance travelled: " <<
     init_wurm->GetWurm()->GetWurmPosition()->x - startPos << std::endl;
     return 0;
