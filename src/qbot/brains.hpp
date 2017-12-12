@@ -11,7 +11,7 @@ class Brains {
 public:
   // Parameters: joints, precision, *world, (alpha, gamma, info, cpuInfo, load)
   Brains(short int joints, short int precision, b2World* world,
-    std::string name = "", float alpha = 0.8,
+    std::string name = "", bool collective = 0, float alpha = 0.8,
     float gamma = 0.8, bool info = 1, bool cpuInfo = 1);
   ~Brains();
   
