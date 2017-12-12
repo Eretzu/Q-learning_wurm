@@ -20,7 +20,7 @@ class QLearning
 public:
   // Constructor
   QLearning(short int joints, short int precision, std::string name, double alpha, double gamma, 
-    bool info, bool cpuInfo, long int& step);
+    bool info, bool cpuInfo, long int& step, int frequency = 1000);
   // Destructor
   ~QLearning();
 
@@ -34,6 +34,8 @@ public:
   int GetJoints() const;
   int GetNextRotation();
   int GetNextJoint();
+
+  bool PrintOK();
 
   // Saving and loading from a text file.
   void Save(std::string n = "Default_Name");
@@ -74,6 +76,8 @@ private:
   int state = 0;
   long int number_of_actions = 0;
   std::string name;
+
+  int frequency;
 
   // Amount of: (accuracy is the accuracy in randomization, more in getAction)
   short int joints; // Amount of joints

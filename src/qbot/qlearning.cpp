@@ -12,13 +12,13 @@
     still, so the Q-matrix has 3 actions per joint. States are
     determined by the precision and amount of joints. */
 QLearning::QLearning(short int joints, short int precision, std::string name, double alpha,
-  double gamma, bool info, bool cpuInfo, long int& step) : joints(joints),
+  double gamma, bool info, bool cpuInfo, long int& step, int frequency) : joints(joints),
 precision(precision), actions(1+joints*2), states(pow(precision,joints)),
-alpha(alpha), gamma(gamma), write_info(info), cpuInfo(cpuInfo), step(step), name(name)
+alpha(alpha), gamma(gamma), write_info(info), cpuInfo(cpuInfo), step(step), name(name), frequency(frequency)
 {
 
   Q = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
-  if(write_info) {
+  if(write_info && PrintOK()) {
     std::cout << "Initialized Q-matrix\n";
   }
   srand((unsigned)time(NULL));
@@ -39,6 +39,8 @@ int QLearning::GetPrecision() const           { return precision; }
 int QLearning::GetJoints() const              { return joints; }
 int QLearning::GetNextRotation()              { return next_rotation; }
 int QLearning::GetNextJoint()                 { return next_joint; }
+
+bool QLearning::PrintOK() { return 0 == number_of_actions%frequency; }
 
 void QLearning::Load(std::string name) {
   std::fstream myfile(name, std::ios_base::in);
@@ -127,7 +129,7 @@ std::vector<int> QLearning::GetOrientation(int current_state) {
 }
 
 int QLearning::GetBestAction(void) {
-  if(cpuInfo) sub_timer->Start();
+  if(cpuInfo && PrintOK()) sub_timer->Start();
   
   int best_action = rand()%actions;
   double temp_max_q = Q[state][best_action];
@@ -138,8 +140,8 @@ int QLearning::GetBestAction(void) {
     }
   }
 
-  if(cpuInfo) GetBestActionInfo += sub_timer->End() + "\t";
-  if(write_info) {
+  if(cpuInfo && PrintOK()) GetBestActionInfo += sub_timer->End() + "\t";
+  if(write_info && PrintOK()) {
     double summary = 0.0;
     std::stringstream text;
     text << "best_action: " << best_action;
@@ -151,7 +153,7 @@ int QLearning::GetBestAction(void) {
 
 // Randomizes an action based on the size of the Q-values.
 int QLearning::GetAction(float curiosity) {
-  if(cpuInfo) sub_timer->Start();
+  if(cpuInfo && PrintOK()) sub_timer->Start();
 
   int accuracy = 100000;
   // Sums the Q-values in each action; curiosity if Q is <= 0
@@ -180,8 +182,8 @@ int QLearning::GetAction(float curiosity) {
     }
   }
 
-  if(cpuInfo) getActionInfo += sub_timer->End() + "\t";
-  if(write_info) {
+  if(cpuInfo && PrintOK()) getActionInfo += sub_timer->End() + "\t";
+  if(write_info && PrintOK()) {
     double summary = 0.0;
     std::stringstream text;
     text << "Sum: " << sum << " Count: " << count <<
@@ -200,7 +202,7 @@ int QLearning::GetAction(float curiosity) {
 
 // Gives the maximum Q-value recieved out of all action in a state.
 double QLearning::GetMaxQ(int state) {
-  if(cpuInfo) sub_timer->Start();
+  if(cpuInfo && PrintOK()) sub_timer->Start();
 
   double temp_max = 0;
   for (int i = 0; i < actions; ++i) {
@@ -209,23 +211,23 @@ double QLearning::GetMaxQ(int state) {
     }
   }
 
-  if(cpuInfo) getMaxQInfo += sub_timer->End() + "\t";
-  if(write_info) getMaxQInfo += "temp_max: " + std::to_string(temp_max);
+  if(cpuInfo && PrintOK()) getMaxQInfo += sub_timer->End() + "\t";
+  if(write_info && PrintOK()) getMaxQInfo += "temp_max: " + std::to_string(temp_max);
 
   return temp_max;
 }
 
 void QLearning::Act(int mode, float curiosity) {
   number_of_actions++;
-  if(cpuInfo) main_timer->Start();
+  if(cpuInfo && PrintOK()) main_timer->Start();
   if(mode == 0) next_action = GetBestAction();
   else next_action = GetAction(curiosity);
   // Gets next state based on next_action.
 
   next_state = GetState(state, next_action);
 
-  if(cpuInfo) actInfo += main_timer->End() + "\t\t\t";
-  if(write_info) {
+  if(cpuInfo && PrintOK()) actInfo += main_timer->End() + "\t\t\t";
+  if(write_info && PrintOK()) {
     std::stringstream text;
     std::vector<int> old_ori = GetOrientation(state);
     std::vector<int> new_ori = GetOrientation(next_state);
@@ -243,7 +245,7 @@ void QLearning::Act(int mode, float curiosity) {
 }
 
 void QLearning::UpdateQ(float reward) {
-  if(cpuInfo) main_timer->Start();
+  if(cpuInfo && PrintOK()) main_timer->Start();
   double max_q = GetMaxQ(next_state);
   double updatedQ = alpha * (reward - 0.1 + gamma * max_q - Q[state][next_action]);
   Q[state][next_action] += updatedQ;
@@ -254,13 +256,13 @@ void QLearning::UpdateQ(float reward) {
   " -> " << Q[state][next_action] << std::endl;
   */
   /*
-  if(write_info) {
+  if(write_info && PrintOK()) {
     std::cout << "[INFO][Q]\tAction: " <<
     next_action << " State: " <<
     state <<" Next state: " << next_state << std::endl;
   */
-  if(cpuInfo) updateQInfo += main_timer->End() + "\t\t";
-  if(write_info){
+  if(cpuInfo && PrintOK()) updateQInfo += main_timer->End() + "\t\t";
+  if(write_info && PrintOK()){
     std::stringstream text;
     text << "STEP: " << step << " Q-algorithm: Q += " << updatedQ <<
     " == " << alpha << " * (" << reward << " - " << 0.1 << " + " << gamma << " * " << max_q <<
@@ -270,21 +272,22 @@ void QLearning::UpdateQ(float reward) {
   }
 
   state = next_state;
-  std::cout << step << std::endl;
-  if(write_info) PrintInfo();
-  if(write_info) Save(name);
+  if(PrintOK()) {
+    if(write_info && PrintOK()) PrintInfo();
+    Save(name);
+  }
 }
 
 
 
 // [UPDATED] Changes the state in the Q-matrix.
 int QLearning::GetState(int state, int action){
-  if(cpuInfo) sub_timer->Start();
+  if(cpuInfo && PrintOK()) sub_timer->Start();
   // No movement, 0
   if(action == 0) {
     next_rotation = 0;
-    if(cpuInfo) getStateInfo += sub_timer->End() + "\t";
-    if(write_info) getStateInfo += "GetState: NO ACTION";
+    if(cpuInfo && PrintOK()) getStateInfo += sub_timer->End() + "\t";
+    if(write_info && PrintOK()) getStateInfo += "GetState: NO ACTION";
     return state;
   }
 
@@ -302,8 +305,8 @@ int QLearning::GetState(int state, int action){
 
   int rtrn = state+(new_angle - old_angle)*pow(precision,joint);
 
-  if(cpuInfo) getStateInfo += sub_timer->End() + "\t";
-  if(write_info){
+  if(cpuInfo && PrintOK()) getStateInfo += sub_timer->End() + "\t";
+  if(write_info && PrintOK()){
     std::stringstream text;
     text << "state: " << state << " action: " << action <<
     " change: " << change << " joint: " << joint << " old_angle: " <<

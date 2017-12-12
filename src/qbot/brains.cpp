@@ -44,7 +44,6 @@ return goodToGo;
 
 void Brains::Think() {
   step++;
-  if(cpuInfo) CPU_B->Start();
   if(AngleCheck()) {
     if(!isUpdated) {
       newPosition = me->GetWurmPosition()->x;
@@ -60,15 +59,6 @@ void Brains::Think() {
 
     correctAngles[joint] += angleChange;
     isUpdated = 0;
-    if(cpuInfo && 1==step%1000) {
-      std::cout << "Step: " << step << " [Action]\t\t\t";
-      CPU_B->End();
-    }
-  } else {
-    if(cpuInfo && 1==step%1000) {
-      std::cout << "Step: " << step << "\t\t";
-      CPU_B->End();
-    }
   }
 }
 
