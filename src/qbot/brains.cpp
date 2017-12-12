@@ -11,7 +11,7 @@
 Brains::Brains(short int joints, short int precision, b2World* world,
   float alpha, float gamma, bool info, bool cpuInfo, std::string load_q_txt) :
 cpuInfo(cpuInfo), world_(world), rotationStepSize(2.0*M_PI/precision),
-maxError(rotationStepSize/100), info(info) {
+maxError(rotationStepSize/2), info(info) {
   me = new Wurm(joints, world);
   for(short int i = 0; i < joints; ++i) {
     correctAngles.push_back(0.0);
@@ -53,7 +53,7 @@ void Brains::Think() {
       isUpdated = 1;
     }
     oldPosition = me->GetWurmPosition()->x;
-    Q_brains->Act();
+    Q_brains->Act(0,0.1f);
 
     int joint = Q_brains->GetNextJoint();
     float angleChange = rotationStepSize * Q_brains->GetNextRotation();

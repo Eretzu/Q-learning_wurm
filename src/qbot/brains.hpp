@@ -12,7 +12,7 @@ public:
   // Parameters: joints, precision, *world, (alpha, gamma, info, cpuInfo, load)
   Brains(short int joints, short int precision, b2World* world,
     float alpha = 0.8, float gamma = 0.8, bool info = 1, bool cpuInfo = 1,
-    std::string load_q_txt = "");
+    std::string load_q_txt = "[13824][7]:_Maister_wurm.txt");
   ~Brains();
   
   Wurm* GetWurm();

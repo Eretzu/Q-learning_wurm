@@ -72,6 +72,7 @@ private:
 
   // State (row) inside the Q-matrix.
   int state = 0;
+  long int number_of_actions = 0;
 
   // Amount of: (accuracy is the accuracy in randomization, more in getAction)
   short int joints; // Amount of joints
@@ -84,9 +85,11 @@ private:
   // Testing CPU times
   std::string actInfo = "";
   std::string getActionInfo = "";
+  std::string GetBestActionInfo = "";
   std::string getStateInfo = "";
   std::string updateQInfo = "";
   std::string getMaxQInfo = "";
+  
   
 
   int next_action = 0;
