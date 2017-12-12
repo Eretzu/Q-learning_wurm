@@ -25,7 +25,6 @@ alpha(alpha), gamma(gamma), write_info(info), cpuInfo(cpuInfo), step(step)
   if(!load_q_txt.empty()) {
     Load(load_q_txt);
   }
-  if(write_info) Save("Intial.txt");
   
 }
 
