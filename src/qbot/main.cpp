@@ -36,12 +36,13 @@ int main() {
     Draw draw;
     float cameraXOffset = 0.f;
     float cameraYOffset = 0.f;
+    float cameraZoomOffset = 1.f;
     long int iterations = 0;
 
     // Main loop
     while (window.isOpen()) {
         auto xyy = wurms[0]->GetWurm()->GetWurmPosition();
-        view.setCenter(xyy->x*SCALE, xyy->y*SCALE);
+        view.setCenter((xyy->x+cameraXOffset)*SCALE, (xyy->y+cameraYOffset)*SCALE);
         window.setView(view);
 
         /* Handle all event listening here.
@@ -52,11 +53,15 @@ int main() {
           if (event.type == sf::Event::Closed)
             window.close();
 
-          if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-            view.zoom(0.95f);
-          }
-          if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-            view.zoom(1.05f);
+          if (event.type == sf::Event::MouseButtonPressed) {
+            if(event.mouseButton.button == sf::Mouse::Right) {
+              view.zoom(1.05f);
+              cameraZoomOffset *= 1.05f;
+            }
+            else if(event.mouseButton.button == sf::Mouse::Left) {
+              view.zoom(0.95f);
+              cameraZoomOffset *= 0.95f;
+            }
           }
           // A keyboard key was pressed
           if (event.type == sf::Event::KeyPressed) {
@@ -77,6 +82,8 @@ int main() {
             if (event.key.code == sf::Keyboard::Space) {
               cameraXOffset = 0;
               cameraYOffset = 0;
+              view.zoom(1/cameraZoomOffset);
+              cameraZoomOffset = 1.f;
             }
             // S pressed
             if (event.key.code == sf::Keyboard::S) {
