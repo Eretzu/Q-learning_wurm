@@ -1,0 +1,16 @@
+1. To run the project, navigate to the directory /src/build.
+
+2.a Run cmake with the command: cmake ..
+2.b IF cmake has errors:
+	navigate to /src/3rdpartylibs/Box2D/Build
+	run the command: cmake ..
+	run make: make
+	install the files: sudo make install
+	Repeat from step 1.
+
+3. After cmake has succesfully made the Makefiles, compile the program by simply typing: make
+
+4. Run the program by typing the command: ./qbot/bot
+
+=
+cd ~/path_to_build && cmake .. && make && ./qbot/bot

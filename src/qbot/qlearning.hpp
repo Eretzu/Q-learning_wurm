@@ -3,16 +3,15 @@
 #define QLEARNING_HPP
 
 #include <iostream>
-#include <string>
-#include <string.h>
 #include <ctime>
 #include <cstdlib>
 #include <iostream>
 #include <vector>
-//#include "cpu_time.cpp"
-
 #include <stdio.h>
 #include <time.h>
+#include <fstream>
+#include "cpu_time.hpp"
+#include <string>
 
 //namespace QLearn {
 
@@ -20,33 +19,37 @@ class QLearning
 {
 public:
   // Constructor
-  QLearning(short int joints, short int precision, double alpha, double gamma,
-    int accuracy, bool info, bool cpuInfo);
+  QLearning(short int joints, short int precision, std::string name, double alpha, double gamma, 
+    bool info, bool cpuInfo, long int& step, int frequency = 1000);
   // Destructor
   ~QLearning();
 
-  // Interact with the current state inside the Q-matrix, "int state".
-  int GetCurrentState() const;
-  void SetCurrentState(int newState);
+  // Interact with the current state inside the Q-matrix: "int state".
   void UpdateQ(float newValue);
 
-  // Get amount of actions, states, precision and joints
-  int GetActions() const;
-  int GetStates() const;
+  // Get amount of actions, states, precision, joints etc.
+  int GetActions();
+  int GetStates();
   int GetPrecision() const;
   int GetJoints() const;
   int GetNextRotation();
   int GetNextJoint();
 
-  // Disables the printing of status messages.
-  void CloseInfo();
+  bool PrintOK();
+
+  // Saving and loading from a text file.
+  void Save(std::string n = "Default_Name");
+  void Load(std::string name);
+
   // Prints the Q-matrix
   void PrintMatrix();
+  // Print some stats
+  void PrintInfo(short int tabs = 2);
 
   // Get the orientation of all joints.
   // State 409, 3 joints, 10 precision = ( 9 0 4 )
   // State 23, 2 joints, 5 precision = ( 3 4 )
-  std::vector<int> GetOrientation() const;
+  std::vector<int> GetOrientation(int current_state);
 
   /*  Gives an action. Curiosity denotes how much to care about <= 0 Q-values
       when randomizing based on Q-values. */
@@ -66,6 +69,16 @@ public:
 
 
 private:
+  // Q-matrix
+  std::vector<std::vector<double>> Q;
+
+  // State (row) inside the Q-matrix.
+  int state = 0;
+  long int number_of_actions = 0;
+  std::string name;
+
+  int frequency;
+
   // Amount of: (accuracy is the accuracy in randomization, more in getAction)
   short int joints; // Amount of joints
   short int precision; // Leeway in moving joints
@@ -73,33 +86,33 @@ private:
   short int states; // pow(precision,joints)
   double alpha; // 0 to 1
   double gamma; // 0 to 1
-  int accuracy; // High enough to provide accuracy to 0.1 %.
 
-  int state;
+  // Testing CPU times
+  std::string actInfo = "";
+  std::string getActionInfo = "";
+  std::string GetBestActionInfo = "";
+  std::string getStateInfo = "";
+  std::string updateQInfo = "";
+  std::string getMaxQInfo = "";
+  
+  
 
   int next_action = 0;
   int next_state = 0;
   int next_joint = 0;
   int next_rotation = 0;
   // Contains the latest step. Index of joint and action.
-  
 
-  // Q-matrix
-  std::vector<std::vector<double>> Q;
-  
-  // Wurm food
+  // Which step the program is moving at in the world.
+  long int& step;
 
   // Toggles most of the info printing functions.
   bool write_info;
   bool cpuInfo;
 
-  // OBSOLETE
-  int destination = 5;
-
   // Benchmark
-  //CPU_Time CPU = CPU_Time();
+  CPU_Time* sub_timer = new CPU_Time();
+  CPU_Time* main_timer = new CPU_Time();
 };
 
 #endif // QLEARNING_HPP
-
-//} // namespace QLearn

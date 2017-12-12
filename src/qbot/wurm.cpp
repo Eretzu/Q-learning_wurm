@@ -9,14 +9,14 @@
 const float kJointMotorSpeed = 10.0f;
 
 // CONSTRUCTOR
-Wurm::Wurm(int jointCount, b2World *world) {
+Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid, float pos) {
   //std::vector<b2Joint*> joints_(jointCount);
   //std::vector<b2Body*> bodies_(jointCount+1);
   //brainy_ = Brains(this, precision);
 
   // BODY DEFINITIONS
   b2BodyDef bodyPartDef;
-  bodyPartDef.position.Set(-15.0f, 0.0f);
+  bodyPartDef.position.Set(-bodyLen, 0.0f);
   bodyPartDef.type = b2_dynamicBody;
   bodyPartDef.linearDamping = 0.0f;
   bodyPartDef.angularDamping = 0.01f;
@@ -50,7 +50,7 @@ Wurm::Wurm(int jointCount, b2World *world) {
     jointDef.lowerAngle = 0;
     jointDef.enableMotor = true;
     jointDef.motorSpeed = 0;
-    jointDef.maxMotorTorque = 20000.0f;
+    jointDef.maxMotorTorque = 20000;
     jointDef.Initialize(bodies_[i], bodies_[i+1], b2Vec2(10.0*(i-1),0));    
     joints_.push_back((b2RevoluteJoint*)world->CreateJoint(&jointDef));
   }

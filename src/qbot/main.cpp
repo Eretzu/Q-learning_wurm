@@ -19,9 +19,19 @@ int main() {
     // Stage the world, brains and drawing function
     World* worldy = new World();
     b2World world = *(worldy->GetWorld());
-    Brains* b = new Brains(24, &world);
 
-    int startPos = b->GetWurm()->GetWurmPosition()->x;
+    int wurm_count = 5;
+    Brains* wurms[wurm_count] = {
+        new Brains(3, 24, &world, "Maister_wurm"),
+        new Brains(2, 24, &world, "shorty"),
+        new Brains(3, 24, &world, "new_guy"),
+        new Brains(2, 24, &world, "tiny"),
+        new Brains(1, 24, &world, "tick"),
+    };
+
+    Brains* init_wurm = wurms[0];
+
+    int startPos = wurms[0]->GetWurm()->GetWurmPosition()->x;
 
     Draw draw;
     float cameraXOffset = 0.f;
@@ -36,8 +46,8 @@ int main() {
     }
     // Main loop
     while (window.isOpen()) {
-        auto xyy = b->GetWurm()->GetWurmPosition();
-        view1.setCenter((xyy->x + cameraXOffset)*SCALE, (xyy->y + cameraYOffset)*SCALE);
+        auto xyy = wurms[0]->GetWurm()->GetWurmPosition();
+        view1.setCenter(xyy->x*SCALE, xyy->y*SCALE);
         window.setView(view1);
 
         /* Handle all event listening here.
@@ -93,8 +103,10 @@ int main() {
 
         // Simulate the world
         world.Step(1/60.f, 8, 3);
-        b->Think();
-        iterations++;
+
+        for(i : wurms) i->Think();
+
+            iterations++;
 
         // Draw here
         window.clear(sf::Color::White);
@@ -102,10 +114,10 @@ int main() {
         draw.DrawWaypoints(window);
         // Call to our Draw-class's draw function
         draw.DrawShapes(window, world);
-        draw.DrawInfo(window, view1, b, iterations);
+        draw.DrawInfo(window, view1, init_wurm, iterations);
         window.display();
     }
     std::cout << "Total distance travelled: " <<
-              b->GetWurm()->GetWurmPosition()->x - startPos << std::endl;
+    init_wurm->GetWurm()->GetWurmPosition()->x - startPos << std::endl;
     return 0;
 }
