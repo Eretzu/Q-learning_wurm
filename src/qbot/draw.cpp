@@ -12,13 +12,14 @@ sf::Color wurmColor = sf::Color(50, 50, 50);
 sf::Color wurmOutlineColor = sf::Color::Black;
 // Variables defining how the ground is drawn
 float groundWidth = 8000.f;
-float groundHeight = 16.f;
+float groundHeight = 20.f;
 sf::Color groundColor = sf::Color::Black;
 
 Draw::Draw() {
   if(!font.loadFromFile("../assets/Montserrat-Regular.ttf")) {
     std::cout << "Failed to load font!\nThrow error here!" << std::endl;
   }
+
 }
 
 void Draw::DrawShapes(sf::RenderWindow &window, b2World &world) {
@@ -49,9 +50,9 @@ void Draw::DrawShapes(sf::RenderWindow &window, b2World &world) {
     // Only non-dynamic body in our world is the ground
     else {
       for (b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
-          sf::RectangleShape ground(sf::Vector2f(groundWidth, groundHeight));
+          sf::RectangleShape ground(sf::Vector2f(groundWidth * SCALE, groundHeight * SCALE));
           ground.setFillColor(groundColor);
-          ground.setOrigin(groundWidth/2, groundHeight/2);
+          ground.setOrigin(groundWidth*SCALE/2, groundHeight*SCALE/2);
           ground.setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
           ground.setRotation(body->GetAngle() * 180/b2_pi);
           window.draw(ground);
