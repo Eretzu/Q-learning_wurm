@@ -9,15 +9,15 @@
 
 // Brains(Wurm, int)
 Brains::Brains(short int joints, short int precision, b2World* world,
-  float alpha, float gamma, bool info, bool cpuInfo, std::string load_q_txt) :
+  std::string name, float alpha, float gamma, bool info, bool cpuInfo) :
 cpuInfo(cpuInfo), world_(world), rotationStepSize(2.0*M_PI/precision),
-maxError(rotationStepSize/100), info(info) {
+maxError(rotationStepSize/2), info(info) {
   me = new Wurm(joints, world);
   for(short int i = 0; i < joints; ++i) {
     correctAngles.push_back(0.0);
   }
   Q_brains = new QLearning(me->NumberOfJoints(), precision, 
-   alpha, gamma, info, cpuInfo, load_q_txt, step);
+   name, alpha, gamma, info, cpuInfo, step);
 }
 
 Brains::~Brains() { }
@@ -44,7 +44,6 @@ return goodToGo;
 
 void Brains::Think() {
   step++;
-  if(cpuInfo) CPU_B->Start();
   if(AngleCheck()) {
     if(!isUpdated) {
       newPosition = me->GetWurmPosition()->x;
@@ -53,22 +52,13 @@ void Brains::Think() {
       isUpdated = 1;
     }
     oldPosition = me->GetWurmPosition()->x;
-    Q_brains->Act();
+    Q_brains->Act(0,0.1f);
 
     int joint = Q_brains->GetNextJoint();
     float angleChange = rotationStepSize * Q_brains->GetNextRotation();
 
     correctAngles[joint] += angleChange;
     isUpdated = 0;
-    if(cpuInfo && 1==step%1000) {
-      std::cout << "Step: " << step << " [Action]\t\t\t";
-      CPU_B->End();
-    }
-  } else {
-    if(cpuInfo && 1==step%1000) {
-      std::cout << "Step: " << step << "\t\t";
-      CPU_B->End();
-    }
   }
 }
 

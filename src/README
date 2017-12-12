@@ -12,4 +12,5 @@
 
 4. Run the program by typing the command: ./qbot/bot
 
-
+=
+cd ~/path_to_build && cmake .. && make && ./qbot/bot
