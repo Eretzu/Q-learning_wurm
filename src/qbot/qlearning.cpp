@@ -2,6 +2,8 @@
 #define QLEARNING_CPP
 
 #include "qlearning.hpp"
+#include "cpu_time.hpp"
+#include <string>
 #include <ctgmath>
 
 /*  Amount of joints and how many steps they have. Q-matrix is
@@ -10,31 +12,84 @@
     still, so the Q-matrix has 3 actions per joint. States are
     determined by the precision and amount of joints. */
 QLearning::QLearning(short int joints, short int precision, double alpha,
-  double gamma, int accuracy, bool info, bool cpuInfo) : joints(joints),
+  double gamma, bool info, bool cpuInfo, std::string load_q_txt, long int& step) : joints(joints),
 precision(precision), actions(1+joints*2), states(pow(precision,joints)),
-alpha(alpha), gamma(gamma), accuracy(accuracy), write_info(true), cpuInfo(cpuInfo)
+alpha(alpha), gamma(gamma), write_info(info), cpuInfo(cpuInfo), step(step)
 {
+
   Q = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
+  if(write_info) {
+    std::cout << "Initialized Q-matrix\n";
+    PrintMatrix();
+  }
   srand((unsigned)time(NULL));
+  if(!load_q_txt.empty()) {
+    Load(load_q_txt);
+  }
+  if(write_info) Save("Hello.txt");
+  
 }
 
 // Destructor
 QLearning::~QLearning() {  }
 
-int QLearning::GetCurrentState() const        { return state; }
-void QLearning::SetCurrentState(int newState) { state = newState; }
-int QLearning::GetActions() const             { return actions; }
-int QLearning::GetStates() const              { return states; }
+int QLearning::GetActions()                   { return actions; }
+int QLearning::GetStates()                    { return states; }
 int QLearning::GetPrecision() const           { return precision; }
 int QLearning::GetJoints() const              { return joints; }
 int QLearning::GetNextRotation()              { return next_rotation; }
 int QLearning::GetNextJoint()                 { return next_joint; }
 
-void QLearning::CloseInfo()                   { write_info = 0; }
+void QLearning::Load(std::string name) {
+  std::fstream myfile(name, std::ios_base::in);
+
+  int columns = GetActions();
+  long int step = 0;
+  double point;
+
+  int s = 0;
+  int a = 0;
+
+  while (myfile >> point)
+  {
+    Q[s][a] = point;
+    step++;
+    a = step%columns;
+    s = step/columns;
+  }
+  if(write_info) {
+    std::cout << "Loaded Q-matrix: " << name << std::endl;
+    PrintMatrix();
+  }
+}
+
+void QLearning::Save(std::string name) {
+  std::string finalName = "[" + std::to_string(states) + "][" + 
+  std::to_string(actions) + "]_Step_" + std::to_string(step) + ":_" + name;
+  std::ofstream myfile (finalName);
+  int pointSize = sizeof(double);
+  int rows = GetStates();
+  int columns = GetActions();
+  if (myfile.is_open())
+  {
+    for(int i = 0; i < rows; ++i) {
+      for(int j = 0; j < columns; ++j) {
+        myfile << std::fixed << std::setprecision(pointSize) << Q[i][j] << " ";
+      }
+      myfile << "\n";
+    }
+    myfile.close();
+  }
+  else std::cout << "Unable to open file";
+  if(write_info) {
+    std::cout << "Saved Q-matrix: " << finalName << std::endl;
+    PrintMatrix();
+  }
+}
 
 void QLearning::PrintMatrix(void){
   for (int i = 0; i < states; ++i) {
-    std::cout << i << "\t";
+    std::cout << i << '\t';
     for (int j = 0; j < actions; ++j) {
       printf("%.3f \t", Q[i][j]);
     }
@@ -42,11 +97,32 @@ void QLearning::PrintMatrix(void){
   }
 }
 
-std::vector<int> QLearning::GetOrientation() const {
+void QLearning::PrintInfo(short int tabs) {
+  std::cout << std::string(tabs, '\t') << "QLearning\n";
+  std::cout << std::string(tabs, '\t');
+  printf("Act(%s)\n", actInfo.c_str());
+  std::cout << std::string(tabs+1, '\t');
+  printf("GetAction(%s)\n", getActionInfo.c_str());
+  std::cout << std::string(tabs+1, '\t');
+  printf("GetState(%s)\n", getStateInfo.c_str());
+  std::cout << std::string(tabs, '\t');
+  printf("UpdateQ(%s)\n", updateQInfo.c_str());
+  std::cout << std::string(tabs+1, '\t');
+  printf("GetMaxQ(%s)\n", getMaxQInfo.c_str());
+
+  actInfo = "";
+  getActionInfo = "";
+  getStateInfo = "";
+  updateQInfo = "";
+  getMaxQInfo = "";
+}
+
+std::vector<int> QLearning::GetOrientation(int current_state) {
+
   std::vector<int> Orientation(joints,0);
 
   for(int i = 0; i < joints; ++i) {
-    Orientation[i] = (int)(state/pow(precision,i))%precision;
+    Orientation[i] = (int)(current_state/pow(precision,i))%precision;
   }
   return Orientation;
 }
@@ -65,75 +141,98 @@ int QLearning::GetBestAction(void) {
 
 // Randomizes an action based on the size of the Q-values.
 int QLearning::GetAction(float curiosity) {
-  // Sums the possible Q-values in a state and curiosity if <= 0
-  /*double sum = 0.0;
+  if(cpuInfo) sub_timer->Start();
+
+  int accuracy = 100000;
+  // Sums the Q-values in each action; curiosity if Q is <= 0
+  double sum = 0.0;
   for (int i = 0; i < actions; i++)
     sum += Q[state][i] <= 0 ? curiosity : Q[state][i];
-    */
 
   // Chooses a value in the accuracy scale.
-  int ran = rand()%actions;//accuracy;
+  int ran;
+  ran = rand()%accuracy;
 
-  
   // Conversion rate for placing the values into the above scale.
-  //double ratio = accuracy/sum;
+  double ratio = accuracy/sum;
 
   // Initializing the count that will be used to compare where the random falls.
-  float sum = 0.0f;
-  for(int i = 0; i < ran; ++i) {
-    sum += (Q[state][i+1] <= 0) ? curiosity : Q[state][i+1];
-  }
-  //std::cout << "Rand: " << ran << " Total: " << sum << std::endl;
-  float count = 0.0f;
-  
+  int count = ratio*( Q[state][0] <= 0 ? curiosity : Q[state][0] );
+
   int choice = 0;
 
   for (int i = 0; i < actions; ++i) {
-    if(count >= sum) {
+    if(ran < count) {
       choice = i;
       break;
     } else {
-      count += (Q[state][i+1] <= 0) ? curiosity : Q[state][i+1];
+      count += ratio*( Q[state][i+1] <= 0 ? curiosity : Q[state][i+1] );
     }
   }
 
-  /*if(write_info) {
+  if(cpuInfo) getActionInfo += sub_timer->End() + "\t";
+  if(write_info) {
     double summary = 0.0;
-    std::cout << "[INFO][Q]\tSum: " << sum << " Count: " << -100 <<
+    std::stringstream text;
+    text << "Sum: " << sum << " Count: " << count <<
     " Possible actions (%): ";
     for (int i = 0; i < actions; i++) {
       double possibility = (Q[state][i] <= 0 ? curiosity : Q[state][i]) / sum;
-      printf("%.3f ", possibility);
+      text << std::fixed << std::setprecision(3) << possibility << " ";
       summary += possibility;
     }
-    printf("= %.3f", summary);
-    std::cout << std::endl;
-  }*/
-  
-  
+    text << std::fixed << std::setprecision(3) << "= " << summary;
+    getActionInfo += text.str();
+  }
+
   return choice;
 }
 
 // Gives the maximum Q-value recieved out of all action in a state.
-double QLearning::GetMaxQ(int state){
+double QLearning::GetMaxQ(int state) {
+  if(cpuInfo) sub_timer->Start();
+
   double temp_max = 0;
   for (int i = 0; i < actions; ++i) {
     if (Q[state][i] > temp_max){
       temp_max = Q[state][i];
     }
   }
+
+  if(cpuInfo) getMaxQInfo += sub_timer->End() + "\t";
+  if(write_info) getMaxQInfo += "temp_max: " + std::to_string(temp_max);
+
   return temp_max;
 }
 
 void QLearning::Act(int mode, float curiosity) {
+  if(cpuInfo) main_timer->Start();
   if(mode == 0) next_action = GetBestAction();
   else next_action = GetAction(curiosity);
-
   // Gets next state based on next_action.
+
   next_state = GetState(state, next_action);
+
+  if(cpuInfo) actInfo += main_timer->End() + "\t\t\t";
+  if(write_info) {
+    std::stringstream text;
+    std::vector<int> old_ori = GetOrientation(state);
+    std::vector<int> new_ori = GetOrientation(next_state);
+    text << "STEP: " << step << " ( ";
+    for(int i = 0; i < joints; ++i) {
+      text << std::to_string(old_ori[i]) + " ";
+    }
+    text << ") -> ( ";
+    for(int i = 0; i < joints; ++i) {
+      text << std::to_string(new_ori[i]) + " ";
+    }
+    text << ")";
+    actInfo += text.str();
+  }
 }
 
 void QLearning::UpdateQ(float reward) {
+  if(cpuInfo) main_timer->Start();
   double max_q = GetMaxQ(next_state);
   double updatedQ = alpha * (reward + gamma * max_q - Q[state][next_action]);
   Q[state][next_action] += updatedQ;
@@ -149,16 +248,30 @@ void QLearning::UpdateQ(float reward) {
     next_action << " State: " <<
     state <<" Next state: " << next_state << std::endl;
   */
+  if(cpuInfo) updateQInfo += main_timer->End() + "\t\t";
+  if(write_info){
+    std::stringstream text;
+    text << "STEP: " << step << " Q-algorithm: Q += " << updatedQ <<
+    " == " << alpha << " * (" << reward << " + " << gamma << " * " << max_q <<
+    " - Q[" << state << "][" << next_action << "])";
+    updateQInfo += text.str();
+  }
+
   state = next_state;
+  std::cout << step << std::endl;
+  if(write_info) PrintInfo();
 }
 
 
 
 // [UPDATED] Changes the state in the Q-matrix.
 int QLearning::GetState(int state, int action){
+  if(cpuInfo) sub_timer->Start();
   // No movement, 0
   if(action == 0) {
     next_rotation = 0;
+    if(cpuInfo) getStateInfo += sub_timer->End() + "\t";
+    if(write_info) getStateInfo += "GetState: NO ACTION";
     return state;
   }
 
@@ -175,6 +288,16 @@ int QLearning::GetState(int state, int action){
     precision + (old_angle+change) : (old_angle+change)) % precision;
 
   int rtrn = state+(new_angle - old_angle)*pow(precision,joint);
+
+  if(cpuInfo) getStateInfo += sub_timer->End() + "\t";
+  if(write_info){
+    std::stringstream text;
+    text << "state: " << state << " action: " << action <<
+    " change: " << change << " joint: " << joint << " old_angle: " <<
+    old_angle << " new_angle: " << new_angle << " new_state: " << rtrn;
+    getStateInfo += text.str();
+  }
+
   return rtrn;
 }
 
