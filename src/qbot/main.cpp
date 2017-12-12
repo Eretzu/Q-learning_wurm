@@ -19,7 +19,7 @@ int main() {
     // Stage the world, brains and drawing function
     World* worldy = new World();
     b2World world = *(worldy->GetWorld());
-    Brains* b = new Brains(24, &world);
+    Brains* b = new Brains(3, 24, &world);
     
     int startPos = b->GetWurm()->GetWurmPosition()->x;
 
