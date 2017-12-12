@@ -1,6 +1,8 @@
 #ifndef DRAW_HPP
 #define DRAW_HPP
 
+#include "brains.hpp"
+#include "wurm.hpp"
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
 
@@ -10,13 +12,13 @@ class Draw {
 public:
   /* window: the window that Draw draws to
      world: the Box2D world that will be drawn */
-  Draw() {};
+  Draw();
 
   /* Draws shapes all shapes from the world to the window */
   void DrawShapes(sf::RenderWindow &window, b2World &world);
-
+  void DrawInfo(sf::RenderWindow &window, sf::View &view, Brains* b, long int iterations);
 private:
-
+  sf::Font font;
 };
 
 #endif
