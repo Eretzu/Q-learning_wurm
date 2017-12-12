@@ -11,10 +11,10 @@
     in x-coordinates. Joint can rotate to both directions or stay
     still, so the Q-matrix has 3 actions per joint. States are
     determined by the precision and amount of joints. */
-QLearning::QLearning(short int joints, short int precision, double alpha,
-  double gamma, bool info, bool cpuInfo, std::string load_q_txt, long int& step) : joints(joints),
+QLearning::QLearning(short int joints, short int precision, std::string name, double alpha,
+  double gamma, bool info, bool cpuInfo, long int& step) : joints(joints),
 precision(precision), actions(1+joints*2), states(pow(precision,joints)),
-alpha(alpha), gamma(gamma), write_info(info), cpuInfo(cpuInfo), step(step)
+alpha(alpha), gamma(gamma), write_info(info), cpuInfo(cpuInfo), step(step), name(name)
 {
 
   Q = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
@@ -22,8 +22,10 @@ alpha(alpha), gamma(gamma), write_info(info), cpuInfo(cpuInfo), step(step)
     std::cout << "Initialized Q-matrix\n";
   }
   srand((unsigned)time(NULL));
-  if(!load_q_txt.empty()) {
-    Load(load_q_txt);
+  if(!name.empty()) {
+    std::string finalName = "[" + std::to_string(states) + "][" + 
+    std::to_string(actions) + "]:_" + name + ".txt";
+    Load(finalName);
   }
   
 }
@@ -60,9 +62,9 @@ void QLearning::Load(std::string name) {
   }
 }
 
-void QLearning::Save(std::string name) {
+void QLearning::Save(std::string n) {
   std::string finalName = "[" + std::to_string(states) + "][" + 
-  std::to_string(actions) + "]:_" + name;
+  std::to_string(actions) + "]:_" + n + ".txt";
   std::ofstream myfile (finalName);
   int pointSize = sizeof(double);
   int rows = GetStates();
@@ -92,7 +94,7 @@ void QLearning::PrintMatrix(void){
 }
 
 void QLearning::PrintInfo(short int tabs) {
-  std::cout << std::string(tabs, '\t') << "QLearning\n";
+  std::cout << std::string(tabs, '\t') << "QLearning " << name << "\n";
   std::cout << std::string(tabs+1, '\t');
   printf("Act(%s)\n", actInfo.c_str());
   std::cout << std::string(tabs+2, '\t');
@@ -126,6 +128,7 @@ std::vector<int> QLearning::GetOrientation(int current_state) {
 
 int QLearning::GetBestAction(void) {
   if(cpuInfo) sub_timer->Start();
+  
   int best_action = rand()%actions;
   double temp_max_q = Q[state][best_action];
   for (int i = 0; i < actions; ++i) {
@@ -269,7 +272,7 @@ void QLearning::UpdateQ(float reward) {
   state = next_state;
   std::cout << step << std::endl;
   if(write_info) PrintInfo();
-  if(write_info) Save("Maister_wurm.txt");
+  if(write_info) Save(name);
 }
 
 
