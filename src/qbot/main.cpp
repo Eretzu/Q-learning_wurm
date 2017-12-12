@@ -12,8 +12,8 @@ const int windowHeight = 600;
 
 int main() {
     // Create window for the program
-    sf::View view1(sf::Vector2f(0, 0), sf::Vector2f(windowWidth, windowHeight));
-    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Test");
+    sf::View view(sf::Vector2f(0, 0), sf::Vector2f(windowWidth, windowHeight));
+    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "QBot");
     window.setFramerateLimit(60);
 
     // Stage the world, brains and drawing function
@@ -37,18 +37,12 @@ int main() {
     float cameraXOffset = 0.f;
     float cameraYOffset = 0.f;
     long int iterations = 0;
-    int z = 0;
-    while(z < 100000) {
-      world.Step(1/60.f, 8, 3);
-      for(i : wurms) i->Think();
-      z++;
-      iterations++;
-    }
+
     // Main loop
     while (window.isOpen()) {
         auto xyy = wurms[0]->GetWurm()->GetWurmPosition();
-        view1.setCenter(xyy->x*SCALE, xyy->y*SCALE);
-        window.setView(view1);
+        view.setCenter(xyy->x*SCALE, xyy->y*SCALE);
+        window.setView(view);
 
         /* Handle all event listening here.
            Close window, listen to keyboard and mouse, etc. */
@@ -59,9 +53,10 @@ int main() {
             window.close();
 
           if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-              int x = sf::Mouse::getPosition(window).x;
-              //int y = sf::Mouse::getPosition(window).y;
-              std::cout << "Position: " << std::to_string(x) << std::endl;
+            view.zoom(0.95f);
+          }
+          if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+            view.zoom(1.05f);
           }
           // A keyboard key was pressed
           if (event.type == sf::Event::KeyPressed) {
@@ -101,20 +96,16 @@ int main() {
           }
         }
 
-        // Simulate the world
-        world.Step(1/60.f, 8, 3);
-
-        for(i : wurms) i->Think();
-
-            iterations++;
+        world.Step(1/60.f, 8, 3); // Simulate the world
+        for(i : wurms) i->Think(); // All wurms do an action
+        iterations++;
 
         // Draw here
         window.clear(sf::Color::White);
-        // draw.DrawBackground(window);
+        draw.DrawBackground(window);
         draw.DrawWaypoints(window);
-        // Call to our Draw-class's draw function
         draw.DrawShapes(window, world);
-        draw.DrawInfo(window, view1, init_wurm, iterations);
+        draw.DrawInfo(window, view, init_wurm, iterations);
         window.display();
     }
     std::cout << "Total distance travelled: " <<
