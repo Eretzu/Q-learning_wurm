@@ -6,7 +6,7 @@
 
 #include "wurm.hpp"
 
-const float kJointMotorSpeed = 10.0f;
+const float kJointMotorSpeed = 0.5f;
 
 // CONSTRUCTOR
 Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid, float pos) {
@@ -48,9 +48,9 @@ Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid, float p
     jointDef.enableLimit = true;
     jointDef.upperAngle = 0;
     jointDef.lowerAngle = 0;
-    jointDef.enableMotor = true;
-    jointDef.motorSpeed = 0;
-    jointDef.maxMotorTorque = 20000;
+    jointDef.enableMotor = false;
+    jointDef.motorSpeed = kJointMotorSpeed;
+    jointDef.maxMotorTorque = 10000;
     jointDef.Initialize(bodies_[i], bodies_[i+1], b2Vec2(10.0*(i-1),0));    
     joints_.push_back((b2RevoluteJoint*)world->CreateJoint(&jointDef));
   }
@@ -86,39 +86,31 @@ float Wurm::GetJointAngle(int joint_index) {
 bool Wurm::SetJointTargetAngle(int joint_index, float angle) {
   b2RevoluteJoint *joint = (b2RevoluteJoint*)joints_[joint_index];
   float targetAngle = angle;
-  //int precision = 24;//brainy->GetPrecision();
-  //int kLimit = 2;
-  
-  /*if(targetAngle > (M_PI*(precision-kLimit)/precision)) 
-    targetAngle = (M_PI*(precision-kLimit)/precision);
-  else if(targetAngle < -(M_PI*(precision-kLimit)/precision)) 
-    targetAngle = -(M_PI*(precision-kLimit)/precision);*/
   
   float currentAngle = GetJointAngle(joint_index);
   
   //std::cout << targetAngle << std::endl;
   
-  joint->SetLimits(angle, angle);
-  return true;
-  /*if(currentAngle < targetAngle) {
-    std::cout << "cur < tar" << std::endl;
+  //joint->SetLimits(angle, angle);
+  //return true;
+  //std::cout << currentAngle << " " << targetAngle << " " << joint_index << std::endl;
+  //std::cout << joint->GetLowerLimit() << " " << joint->GetUpperLimit() << std::endl;
+  if(currentAngle < targetAngle) {
     joint->SetLimits(currentAngle, targetAngle);
-    joint->SetMotorSpeed(kJointMotorSpeed*2);
+    joint->SetMotorSpeed(kJointMotorSpeed*1);
     joint->EnableMotor(true);
     return true;
   } else if(currentAngle > targetAngle) {
-    std::cout << "cur > tar" << std::endl;
     joint->SetLimits(targetAngle, currentAngle);
-    joint->SetMotorSpeed(kJointMotorSpeed*-2);
+    joint->SetMotorSpeed(kJointMotorSpeed*-1);
     joint->EnableMotor(true);
     return true;
   } else {
-    std::cout << "cur = tar" << std::endl;
     joint->SetLimits(currentAngle, currentAngle);
     joint->SetMotorSpeed(0);
     joint->EnableMotor(false);
     return false;
-  }*/
+  }
 }
 
 #endif
