@@ -20,7 +20,7 @@ int main() {
     World* worldy = new World();
     b2World world = *(worldy->GetWorld());
 
-    int wurm_count = 5;
+    const int wurm_count = 5;
     Brains* wurms[wurm_count] = {
         new Brains(3, 24, &world, "Maister_wurm"),
         new Brains(2, 24, &world, "shorty"),
@@ -37,13 +37,13 @@ int main() {
     float cameraXOffset = 0.f;
     float cameraYOffset = 0.f;
     long int iterations = 0;
-    int z = 0;
-    while(z < 100000) {
-      world.Step(1/60.f, 8, 3);
-      for(i : wurms) i->Think();
-      z++;
-      iterations++;
-    }
+    // Haxy fast-forward
+    // while(iterations < 100000) {
+    //   world.Step(1/60.f, 8, 3);
+    //   for(auto i : wurms) i->Think();
+    //   iterations++;
+    // }
+    
     // Main loop
     while (window.isOpen()) {
         auto xyy = wurms[0]->GetWurm()->GetWurmPosition();
@@ -104,7 +104,7 @@ int main() {
         // Simulate the world
         world.Step(1/60.f, 8, 3);
 
-        for(i : wurms) i->Think();
+        for(auto i : wurms) i->Think();
 
             iterations++;
 
