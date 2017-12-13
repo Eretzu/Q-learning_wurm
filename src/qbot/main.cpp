@@ -20,13 +20,13 @@ int main() {
     World* worldy = new World();
     b2World world = *(worldy->GetWorld());
 
-    const int wurm_count = 1;
+    const int wurm_count = 5;
     Brains* wurms[wurm_count] = {
         new Brains(3, 24, &world, "Maister_wurm"),
-        /*new Brains(2, 24, &world, "shorty"),
+        new Brains(2, 24, &world, "shorty"),
         new Brains(3, 24, &world, "new_guy"),
         new Brains(2, 24, &world, "tiny"),
-        new Brains(1, 24, &world, "tick"),*/
+        new Brains(1, 24, &world, "tick"),
     };
 
     Brains* init_wurm = wurms[0];
@@ -41,7 +41,7 @@ int main() {
      /*while(iterations < 20000) {
        world.Step(1/60.f, 8, 3);
        for(auto i : wurms) i->Think();
-       iterations++;
+       ++iterations;
      }*/
     
     // Main loop
@@ -88,7 +88,7 @@ int main() {
               while(iterations < temp+1000) {
                 world.Step(1/60.f, 8, 3);
                 for(auto i : wurms) i->Think();
-                iterations++;
+                ++iterations;
               }
             }
             // S pressed
@@ -114,7 +114,7 @@ int main() {
 
         for(auto i : wurms) i->Think();
 
-            iterations++;
+            ++iterations;
 
         // Draw here
         window.clear(sf::Color::White);

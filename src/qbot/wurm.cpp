@@ -36,7 +36,7 @@ Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid, float p
   // CREATE WURM
   bodies_.push_back(world->CreateBody(&bodyPartDef));
   bodies_.back()->CreateFixture(&bodyPartFixture);
-  for(int i = 0; i < jointCount; i++) {    
+  for(int i = 0; i < jointCount; ++i) {    
     bodyPartDef.position.Set(10*i-5, 0.0f);
     bodies_.push_back(world->CreateBody(&bodyPartDef));
     bodyPartFixture.filter.categoryBits = 1;
