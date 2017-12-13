@@ -43,7 +43,7 @@ int main() {
        for(auto i : wurms) i->Think();
        ++iterations;
      }*/
-    
+
     // Main loop
     while (window.isOpen()) {
         auto xyy = wurms[0]->GetWurm()->GetWurmPosition();
@@ -85,6 +85,7 @@ int main() {
             }
             if (event.key.code == sf::Keyboard::U) {
               int temp = iterations;
+              std::cout << "Fastforwarding..." << std::endl;
               while(iterations < temp+1000) {
                 world.Step(1/60.f, 8, 3);
                 for(auto i : wurms) i->Think();
@@ -100,11 +101,6 @@ int main() {
             if (event.key.code == sf::Keyboard::L) {
               // TODO: Load file function here
               std::cout << "Load file" << std::endl; // placeholder
-            }
-            // Enter pressed
-            if (event.key.code == sf::Keyboard::Return) {
-              // TODO: Fastforward function here
-              std::cout << "Fastforward" << std::endl; // placeholder
             }
           }
         }
