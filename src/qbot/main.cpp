@@ -37,12 +37,12 @@ int main() {
     float cameraXOffset = 0.f;
     float cameraYOffset = 0.f;
     long int iterations = 0;
-    // Haxy fast-forward
-    // while(iterations < 100000) {
-    //   world.Step(1/60.f, 8, 3);
-    //   for(auto i : wurms) i->Think();
-    //   iterations++;
-    // }
+     //Haxy fast-forward
+     /*while(iterations < 20000) {
+       world.Step(1/60.f, 8, 3);
+       for(auto i : wurms) i->Think();
+       ++iterations;
+     }*/
 
     // Main loop
     while (window.isOpen()) {
@@ -83,6 +83,15 @@ int main() {
               cameraXOffset = 0;
               cameraYOffset = 0;
             }
+            if (event.key.code == sf::Keyboard::U) {
+              int temp = iterations;
+              std::cout << "Fastforwarding..." << std::endl;
+              while(iterations < temp+1000) {
+                world.Step(1/60.f, 8, 3);
+                for(auto i : wurms) i->Think();
+                ++iterations;
+              }
+            }
             // S pressed
             if (event.key.code == sf::Keyboard::S) {
               // TODO: Save file function here
@@ -93,11 +102,6 @@ int main() {
               // TODO: Load file function here
               std::cout << "Load file" << std::endl; // placeholder
             }
-            // Enter pressed
-            if (event.key.code == sf::Keyboard::Return) {
-              // TODO: Fastforward function here
-              std::cout << "Fastforward" << std::endl; // placeholder
-            }
           }
         }
 
@@ -106,7 +110,7 @@ int main() {
 
         for(auto i : wurms) i->Think();
 
-            iterations++;
+            ++iterations;
 
         // Draw here
         window.clear(sf::Color::White);
