@@ -43,11 +43,11 @@ int main() {
     //   for(auto i : wurms) i->Think();
     //   iterations++;
     // }
-    
+
     // Main loop
     while (window.isOpen()) {
         auto xyy = wurms[0]->GetWurm()->GetWurmPosition();
-        view1.setCenter(xyy->x*SCALE, xyy->y*SCALE);
+        view1.setCenter((xyy->x + cameraXOffset)*SCALE, (xyy->y + cameraYOffset)*SCALE);
         window.setView(view1);
 
         /* Handle all event listening here.
