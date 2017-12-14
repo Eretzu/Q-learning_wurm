@@ -11,7 +11,7 @@ public:
   Brains(short int joints,
     short int precision,
     b2World* world,
-    std::string name = "",
+    std::string name = "Default_Name",
     bool collective = false,
     float alpha = 0.8,
     float gamma = 0.8,
