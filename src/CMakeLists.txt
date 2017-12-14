@@ -18,21 +18,17 @@ add_definitions(-pedantic)
 add_definitions(-Wno-unused-function)
 add_definitions(-std=c++11)
 
-
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
 find_package(SFML REQUIRED system window graphics network audio)
 if (SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
 endif()
 
-find_package(Box2D REQUIRED PATHS "${PROJECT_SOURCE_DIR}")
-if (Box2D_FOUND)
-    include_directories(${BOX2D_INCLUDE_DIR})
-endif()
-
-#add_subdirectory ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D")
-add_subdirectory ("${PROJECT_SOURCE_DIR}/qbot")
 include_directories ("${PROJECT_SOURCE_DIR}/qbot")
-#include_directories ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D/Box2D")
-#link_directories ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D")
+include_directories ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D")
+
+add_subdirectory ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D")
+add_subdirectory ("${PROJECT_SOURCE_DIR}/qbot")
+
+link_directories ("${PROJECT_SOURCE_DIR}/3rdpartylibs/Box2D")
 link_directories ("${PROJECT_SOURCE_DIR}/qbot")
