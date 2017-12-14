@@ -20,7 +20,7 @@ int main() {
     World* worldy = new World();
     b2World world = *(worldy->GetWorld());
 
-    const int swarm_count = 30;
+    const int swarm_count = 5;
 
     std::vector<Brains*> wurms = {
       new Brains(3, 24, &world, "Maister_wurm"),
