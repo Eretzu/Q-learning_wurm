@@ -97,7 +97,7 @@ void Draw::DrawShapes(sf::RenderWindow &window, b2World &world) {
   }
 }
 
-void Draw::DrawBackground(sf::RenderWindow &window, float zoom) {
+void Draw::DrawBackground(sf::RenderWindow &window, sf::View &view, float zoom) {
   sf::Texture texture;
   texture.loadFromFile("../assets/hex-tile.png");
   texture.setRepeated(true);
@@ -105,7 +105,7 @@ void Draw::DrawBackground(sf::RenderWindow &window, float zoom) {
   sf::Sprite sprite;
   sprite.setTexture(texture);
   sprite.setTextureRect({ 0, 0, 8000, 1000 });
-  sprite.setOrigin(1400/2, 600/2);
+  sprite.setPosition(view.getCenter()-sf::Vector2f(view.getSize().x/2, view.getSize().y));
   sprite.setScale(zoom, zoom);
   window.draw(sprite);
 }
@@ -131,7 +131,7 @@ void Draw::DrawWaypoints(sf::RenderWindow &window) {
   }
 }
 
-void Draw::DrawInfo(sf::RenderWindow &window, sf::View &view, Brains* b, long int iterations, float zoom) {
+void Draw::DrawInfo(sf::RenderWindow &window, sf::View &view, long int iterations, float zoom) {
   sf::Text text;
   text.setFont(font);
   text.setCharacterSize(24);

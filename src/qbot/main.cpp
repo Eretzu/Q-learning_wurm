@@ -12,8 +12,8 @@ const int windowHeight = 600;
 
 int main() {
     // Create window for the program
-    sf::View view1(sf::Vector2f(0, 0), sf::Vector2f(windowWidth, windowHeight));
-    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Test");
+    sf::View view(sf::Vector2f(0, 0), sf::Vector2f(windowWidth, windowHeight));
+    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "QBot");
     window.setFramerateLimit(60);
 
     // Stage the world, brains and drawing function
@@ -93,10 +93,10 @@ int main() {
 
         // Draw here
         window.clear(sf::Color::White);
-        draw.DrawBackground(window, cameraZoomOffset);
+        draw.DrawBackground(window, view, cameraZoomOffset);
         draw.DrawWaypoints(window);
         draw.DrawShapes(window, world);
-        draw.DrawInfo(window, view, init_wurm, iterations, cameraZoomOffset);
+        draw.DrawInfo(window, view, iterations, cameraZoomOffset);
         window.display();
     }
     std::cout << "Total distance travelled: " <<
