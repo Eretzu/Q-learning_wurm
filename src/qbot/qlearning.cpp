@@ -13,21 +13,20 @@
     determined by the precision and amount of joints. */
 QLearning::QLearning(short int joints, short int precision, std::string name, double alpha,
   double gamma, bool info, bool cpuInfo, long int& step, int frequency) : joints(joints),
-precision(precision), actions(1+joints*2), states(pow(precision,joints)),
-alpha(alpha), gamma(gamma), write_info(info), cpuInfo(cpuInfo), step(step), name(name), frequency(frequency)
+precision(precision), name(name), alpha(alpha), gamma(gamma), write_info(info),
+cpuInfo(cpuInfo), step(step), frequency(frequency), actions(1+joints*2), states(pow(precision,joints))
 {
-
   Q = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
   if(write_info && PrintOK()) {
     std::cout << "Initialized Q-matrix\n";
   }
   srand((unsigned)time(NULL));
   if(!name.empty()) {
-    std::string finalName = "[" + std::to_string(states) + "][" + 
+    std::string finalName = "[" + std::to_string(states) + "][" +
     std::to_string(actions) + "]:_" + name + ".txt";
     Load(finalName);
   }
-  
+
 }
 
 // Destructor
@@ -65,7 +64,7 @@ void QLearning::Load(std::string name) {
 }
 
 void QLearning::Save(std::string n) {
-  std::string finalName = "[" + std::to_string(states) + "][" + 
+  std::string finalName = "[" + std::to_string(states) + "][" +
   std::to_string(actions) + "]:_" + n + ".txt";
   std::ofstream myfile (finalName);
   int pointSize = sizeof(double);
@@ -130,7 +129,7 @@ std::vector<int> QLearning::GetOrientation(int current_state) {
 
 int QLearning::GetBestAction(void) {
   if(cpuInfo && PrintOK()) sub_timer->Start();
-  
+
   int best_action = rand()%actions;
   double temp_max_q = Q[state][best_action];
   for (int i = 0; i < actions; ++i) {
@@ -249,7 +248,7 @@ void QLearning::UpdateQ(float reward) {
   double max_q = GetMaxQ(next_state);
   double updatedQ = alpha * (reward - 0.1 + gamma * max_q - Q[state][next_action]);
   Q[state][next_action] += updatedQ;
-  
+
   /*" Q-algorithm: " <<
   alpha << " * ( " << "reward" << " + " << gamma << " * " <<
   max_q << " - " << Q[state][next_action] << " ) = " << addToQ <<
