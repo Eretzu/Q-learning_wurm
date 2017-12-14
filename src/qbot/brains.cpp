@@ -1,10 +1,7 @@
 #ifndef BRAINS_CPP
 #define BRAINS_CPP
 
-#include <iostream> // OUT
-#include <math.h> // OUT
 #include "brains.hpp"
-#include "qlearning.hpp" //??
 #include "cpu_time.cpp"
 
 //======================= CONSTRUCTORS AND DESTRUCTORS =========================
@@ -31,9 +28,9 @@ Brains::Brains(short int joints,      // Amount of joints
   // Step = reference to current step inside Brain loop
   // 500 (frequency) = how often to print info
   Q_brains = new QLearning(
-    joints,
-    precision,
-    name,
+    joints,         // Stored in Q
+    precision,      // Stored in Q
+    name,           // For initial
     alpha,gamma,
     info,
     cpuInfo,

@@ -1,7 +1,6 @@
 #ifndef BRAINS_HPP
 #define BRAINS_HPP
 
-#include <Box2D/Box2D.h> // OUT?
 #include "wurm.hpp"
 #include "qlearning.hpp"
 #include "cpu_time.hpp"
@@ -46,6 +45,7 @@ private:
 
   CPU_Time* CPU_B = new CPU_Time(); // For measuring runtime
   long int step = 0;                // Loop count
+
 };
 
 #endif // BRAINS_HPP
