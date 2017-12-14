@@ -26,7 +26,7 @@ Draw::Draw() {
 // Draw certain wurms with distinct colors.
 void Draw::DrawWurms(sf::RenderWindow &window, std::vector<Brains*> wurms) {
   sf::Color wurmyColor; //= sf::Color(255, 179, 79);
-  for(i : wurms) {
+  for(auto i : wurms) {
     Wurm* me = i->GetWurm();
     if(i->GetName().find("swarm-intelligence") == 0)
       wurmyColor = sf::Color(255, 179, 79); // Swarm-wurm
@@ -35,7 +35,7 @@ void Draw::DrawWurms(sf::RenderWindow &window, std::vector<Brains*> wurms) {
     else
       wurmyColor = sf::Color(50, 50, 50); // Normal wurm
     std::vector<b2Body*> bodies = me->GetBodies();
-    for(body : bodies) {
+    for(auto body : bodies) {
       for (b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
         // Draw differently based on what shape the fixture has.
         // Currently the wurm only consists of rectangular polygonshapes

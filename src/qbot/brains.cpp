@@ -9,7 +9,7 @@
 
 // Brains(Wurm, int)
 Brains::Brains(short int joints, short int precision, b2World* world,
-  std::string name, float alpha, float gamma, bool info, bool cpuInfo) :
+  std::string name, bool collective, float alpha, float gamma, bool info, bool cpuInfo) :
 cpuInfo(cpuInfo), rotationStepSize(2.0*M_PI/precision),
 maxError(rotationStepSize/2), info(info) {
   me = new Wurm(joints, world);

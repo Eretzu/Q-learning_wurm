@@ -12,19 +12,11 @@
     still, so the Q-matrix has 3 actions per joint. States are
     determined by the precision and amount of joints. */
 QLearning::QLearning(short int joints, short int precision, std::string name, double alpha,
-<<<<<<< HEAD
-  double gamma, bool info, bool cpuInfo, long int& step, int frequency) : name(name),
-  frequency(frequency), joints(joints), precision(precision), actions(1+joints*2),
-  states(pow(precision,joints)), alpha(alpha), gamma(gamma), step(step), write_info(info),
-  cpuInfo(cpuInfo)
-{
-=======
   double gamma, bool info, bool cpuInfo, long int& step, int frequency, bool collective) : joints(joints),
-precision(precision), actions(1+joints*2), states(pow(precision,joints)),
-alpha(alpha), gamma(gamma), write_info(info), cpuInfo(cpuInfo), step(step), name(name), frequency(frequency), collective(collective)
+  precision(precision), actions(1+joints*2), states(pow(precision,joints)),
+  alpha(alpha), gamma(gamma), write_info(info), cpuInfo(cpuInfo), step(step), name(name), frequency(frequency), collective(collective)
 {
   if(collective) Q_Swarm = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
->>>>>>> master
   Q = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
   if(write_info && PrintOK()) {
     std::cout << "Initialized Q-matrix\n";
@@ -260,7 +252,7 @@ void QLearning::UpdateQ(float reward) {
     Q_Swarm[state][next_action] += updatedQ;
   }
   else Q[state][next_action] += updatedQ;
-  
+
   if(cpuInfo && PrintOK()) updateQInfo += main_timer->End() + "\t\t";
   if(write_info && PrintOK()){
     std::stringstream text;
