@@ -18,7 +18,8 @@ Brains::Brains(short int joints,
                bool info,
                bool cpuInfo) :
                rotationStepSize(2.0*M_PI/precision),
-               maxError(rotationStepSize/2) {
+               maxError(rotationStepSize/2),
+               name(name) {
   me = new Wurm(joints, world);
 
   for(short int i = 0; i < joints; ++i) {
@@ -27,7 +28,7 @@ Brains::Brains(short int joints,
 
   Q_brains = new QLearning(me->NumberOfJoints(), precision,
                            name, alpha, gamma, info, cpuInfo,
-                           step, 1000, collective);
+                           step, 500, collective);
 }
 
 Brains::~Brains() { }
