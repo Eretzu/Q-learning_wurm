@@ -36,11 +36,9 @@ private:
   float rotationStepSize;
   float maxError;
 
-  bool info;
-
   // Desired angles of each joint (index)(angle in rads)
   std::vector<float> correctAngles;
-  
+
   std::string name;
 
   bool isUpdated = 1;
@@ -50,7 +48,6 @@ private:
 
   CPU_Time* CPU_B = new CPU_Time();
   long int step = 0;
-  bool cpuInfo;
 };
 
 #endif // BRAINS_HPP

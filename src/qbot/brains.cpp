@@ -8,10 +8,17 @@
 #include "cpu_time.cpp"
 
 // Brains(Wurm, int)
-Brains::Brains(short int joints, short int precision, b2World* world,
-  std::string name, bool collective, float alpha, float gamma, bool info, bool cpuInfo) :
-cpuInfo(cpuInfo), rotationStepSize(2.0*M_PI/precision),
-maxError(rotationStepSize/2), info(info) {
+Brains::Brains(short int joints,
+               short int precision,
+               b2World* world,
+               std::string name,
+               bool collective,
+               float alpha,
+               float gamma,
+               bool info,
+               bool cpuInfo) :
+               rotationStepSize(2.0*M_PI/precision),
+               maxError(rotationStepSize/2) {
   me = new Wurm(joints, world);
 
   for(short int i = 0; i < joints; ++i) {
