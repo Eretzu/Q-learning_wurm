@@ -22,7 +22,6 @@ Draw::Draw() {
 
 }
 
-
 // Draw certain wurms with distinct colors.
 void Draw::DrawWurms(sf::RenderWindow &window, std::vector<Brains*> wurms) {
   sf::Color wurmyColor; //= sf::Color(255, 179, 79);

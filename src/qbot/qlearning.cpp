@@ -11,10 +11,28 @@
     in x-coordinates. Joint can rotate to both directions or stay
     still, so the Q-matrix has 3 actions per joint. States are
     determined by the precision and amount of joints. */
-QLearning::QLearning(short int joints, short int precision, std::string name, double alpha,
-  double gamma, bool info, bool cpuInfo, long int& step, int frequency, bool collective) : joints(joints),
-  precision(precision), actions(1+joints*2), states(pow(precision,joints)),
-  alpha(alpha), gamma(gamma), write_info(info), cpuInfo(cpuInfo), step(step), name(name), frequency(frequency), collective(collective)
+QLearning::QLearning(short int joints,
+                     short int precision,
+                     std::string name,
+                     double alpha,
+                     double gamma,
+                     bool info,
+                     bool cpuInfo,
+                     long int& step,
+                     int frequency,
+                     bool collective) :
+                     name(name),
+                     frequency(frequency),
+                     joints(joints),
+                     precision(precision),
+                     actions(1+joints*2),
+                     states(pow(precision,joints)),
+                     alpha(alpha),
+                     gamma(gamma),
+                     step(step),
+                     write_info(info),
+                     cpuInfo(cpuInfo),
+                     collective(collective)
 {
   if(collective) Q_Swarm = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
   Q = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
