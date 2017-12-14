@@ -93,7 +93,7 @@ int main() {
         draw.DrawBackground(window);
         draw.DrawWaypoints(window);
         draw.DrawShapes(window, world);
-        draw.DrawInfo(window, view, init_wurm, iterations);
+        draw.DrawInfo(window, view, init_wurm, iterations, cameraZoomOffset);
         window.display();
     }
     std::cout << "Total distance travelled: " <<
