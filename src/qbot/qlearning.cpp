@@ -231,7 +231,7 @@ void QLearning::Act(int mode, float curiosity) {
     std::stringstream text;
     std::vector<int> old_ori = GetOrientation(state);
     std::vector<int> new_ori = GetOrientation(next_state);
-    text << number_of_actions << "th ACTION, STEP: " << step << " ( ";
+    text << number_of_actions << " ACTIONS DONE, STEP: " << step << " ( ";
     for(int i = 0; i < joints; ++i) {
       text << std::to_string(old_ori[i]) + " ";
     }
