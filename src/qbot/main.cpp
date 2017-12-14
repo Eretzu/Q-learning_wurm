@@ -35,14 +35,13 @@ int main() {
 
     Draw draw;
     float cameraXOffset = 0.f;
-    float cameraYOffset = 0.f;
     float cameraZoomOffset = 1.f;
     long int iterations = 0;
 
     // Main loop
     while (window.isOpen()) {
         auto xyy = wurms[0]->GetWurm()->GetWurmPosition();
-        view.setCenter((xyy->x+cameraXOffset)*SCALE, (xyy->y+cameraYOffset)*SCALE);
+        view.setCenter((xyy->x+cameraXOffset)*SCALE, -10*SCALE);
         window.setView(view);
 
         /* Handle all event listening here.
