@@ -20,7 +20,7 @@ int main() {
     World* worldy = new World();
     b2World world = *(worldy->GetWorld());
 
-    int wurm_count = 5;
+    const int wurm_count = 5;
     Brains* wurms[wurm_count] = {
         new Brains(3, 24, &world, "Maister_wurm"),
         new Brains(2, 24, &world, "shorty"),
@@ -85,6 +85,15 @@ int main() {
               view.zoom(1/cameraZoomOffset);
               cameraZoomOffset = 1.f;
             }
+            if (event.key.code == sf::Keyboard::U) {
+              int temp = iterations;
+              std::cout << "Fastforwarding..." << std::endl;
+              while(iterations < temp+1000) {
+                world.Step(1/60.f, 8, 3);
+                for(auto i : wurms) i->Think();
+                ++iterations;
+              }
+            }
             // S pressed
             if (event.key.code == sf::Keyboard::S) {
               // TODO: Save file function here
@@ -95,16 +104,11 @@ int main() {
               // TODO: Load file function here
               std::cout << "Load file" << std::endl; // placeholder
             }
-            // Enter pressed
-            if (event.key.code == sf::Keyboard::Return) {
-              // TODO: Fastforward function here
-              std::cout << "Fastforward" << std::endl; // placeholder
-            }
           }
         }
 
         world.Step(1/60.f, 8, 3); // Simulate the world
-        for(i : wurms) i->Think(); // All wurms do an action
+        for(auto i : wurms) i->Think(); // All wurms do an action
         iterations++;
 
         // Draw here
