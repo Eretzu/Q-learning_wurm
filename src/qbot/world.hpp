@@ -12,18 +12,19 @@ class World {
     World();
 
     ~World();
-    
+
     void Start();
-    
+
     //b2Vec2* GetWurmPosition();
 
     b2World* GetWorld();
-    
+
     b2Body* GetGroundBody();
-    
+
     //b2Vec2* GetWurmPosition();
   private:
     //Brains* brainy_;
+
     b2World* world_;
     b2Body* groundBody_;
 };

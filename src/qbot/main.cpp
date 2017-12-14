@@ -22,7 +22,6 @@ int main() {
 
     const int swarm_count = 30;
 
-    const int wurm_count = 3;
     std::vector<Brains*> wurms = {
       new Brains(3, 24, &world, "Maister_wurm"),
       new Brains(2, 24, &world, "shorty"),

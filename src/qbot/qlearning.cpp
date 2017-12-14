@@ -11,10 +11,28 @@
     in x-coordinates. Joint can rotate to both directions or stay
     still, so the Q-matrix has 3 actions per joint. States are
     determined by the precision and amount of joints. */
-QLearning::QLearning(short int joints, short int precision, std::string name, double alpha,
-  double gamma, bool info, bool cpuInfo, long int& step, int frequency, bool collective) : joints(joints),
-precision(precision), actions(1+joints*2), states(pow(precision,joints)),
-alpha(alpha), gamma(gamma), write_info(info), cpuInfo(cpuInfo), step(step), name(name), frequency(frequency), collective(collective)
+QLearning::QLearning(short int joints,
+                     short int precision,
+                     std::string name,
+                     double alpha,
+                     double gamma,
+                     bool info,
+                     bool cpuInfo,
+                     long int& step,
+                     int frequency,
+                     bool collective) :
+                     name(name),
+                     frequency(frequency),
+                     joints(joints),
+                     precision(precision),
+                     actions(1+joints*2),
+                     states(pow(precision,joints)),
+                     alpha(alpha),
+                     gamma(gamma),
+                     step(step),
+                     write_info(info),
+                     cpuInfo(cpuInfo),
+                     collective(collective)
 {
   if(collective) Q_Swarm = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
   Q = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
@@ -23,11 +41,11 @@ alpha(alpha), gamma(gamma), write_info(info), cpuInfo(cpuInfo), step(step), name
   }
   srand((unsigned)time(NULL));
   if(!name.empty()) {
-    std::string finalName = "[" + std::to_string(states) + "][" + 
+    std::string finalName = "[" + std::to_string(states) + "][" +
     std::to_string(actions) + "]:_" + name + ".txt";
     Load(finalName);
   }
-  
+
 }
 
 // Destructor
@@ -65,7 +83,7 @@ void QLearning::Load(std::string name) {
 }
 
 void QLearning::Save(std::string n) {
-  std::string finalName = "[" + std::to_string(states) + "][" + 
+  std::string finalName = "[" + std::to_string(states) + "][" +
   std::to_string(actions) + "]:_" + n + ".txt";
   std::ofstream myfile (finalName);
   int pointSize = sizeof(double);
@@ -130,7 +148,7 @@ std::vector<int> QLearning::GetOrientation(int current_state) {
 
 int QLearning::GetBestAction(void) {
   if(cpuInfo && PrintOK()) sub_timer->Start();
-  
+
   int best_action = rand()%actions;
   double temp_max_q = Q[state][best_action];
   for (int i = 0; i < actions; ++i) {
@@ -142,7 +160,6 @@ int QLearning::GetBestAction(void) {
 
   if(cpuInfo && PrintOK()) GetBestActionInfo += sub_timer->End() + "\t";
   if(write_info && PrintOK()) {
-    double summary = 0.0;
     std::stringstream text;
     text << "best_action: " << best_action;
     GetBestActionInfo += text.str();
@@ -253,18 +270,7 @@ void QLearning::UpdateQ(float reward) {
     Q_Swarm[state][next_action] += updatedQ;
   }
   else Q[state][next_action] += updatedQ;
-  
-  /*" Q-algorithm: " <<
-  alpha << " * ( " << "reward" << " + " << gamma << " * " <<
-  max_q << " - " << Q[state][next_action] << " ) = " << addToQ <<
-  " -> " << Q[state][next_action] << std::endl;
-  */
-  /*
-  if(write_info && PrintOK()) {
-    std::cout << "[INFO][Q]\tAction: " <<
-    next_action << " State: " <<
-    state <<" Next state: " << next_state << std::endl;
-  */
+
   if(cpuInfo && PrintOK()) updateQInfo += main_timer->End() + "\t\t";
   if(write_info && PrintOK()){
     std::stringstream text;
@@ -283,7 +289,7 @@ void QLearning::UpdateQ(float reward) {
 
   if(collective && number_of_actions%100 == 0) {
 
-    std::string finalName = "[" + std::to_string(states) + "][" + 
+    std::string finalName = "[" + std::to_string(states) + "][" +
     std::to_string(actions) + "]:_" + name + ".txt";
     Load(finalName);
     number_of_actions += 100;
