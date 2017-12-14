@@ -12,21 +12,22 @@
     still, so the Q-matrix has 3 actions per joint. States are
     determined by the precision and amount of joints. */
 QLearning::QLearning(short int joints, short int precision, std::string name, double alpha,
-  double gamma, bool info, bool cpuInfo, long int& step, int frequency, bool collective) : joints(joints),
+  double gamma, bool info, bool cpuInfo, long int& step, int frequency) : joints(joints),
 precision(precision), actions(1+joints*2), states(pow(precision,joints)),
-alpha(alpha), gamma(gamma), write_info(info), cpuInfo(cpuInfo), step(step), name(name), frequency(frequency),
-collective(collective)
+alpha(alpha), gamma(gamma), write_info(info), cpuInfo(cpuInfo), step(step), name(name), frequency(frequency)
 {
-  if(collective) Q_Swarm = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
-  Q = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
 
+  Q = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
+  if(write_info && PrintOK()) {
+    std::cout << "Initialized Q-matrix\n";
+  }
   srand((unsigned)time(NULL));
-  std::cout << "Trying to load... ";
   if(!name.empty()) {
     std::string finalName = "[" + std::to_string(states) + "][" + 
     std::to_string(actions) + "]:_" + name + ".txt";
     Load(finalName);
   }
+  
 }
 
 // Destructor
@@ -58,13 +59,14 @@ void QLearning::Load(std::string name) {
     a = step%columns;
     s = step/columns;
   }
-  std::cout << "Loaded Q-matrix: " << name << std::endl;
+  if(write_info) {
+    std::cout << "Loaded Q-matrix: " << name << std::endl;
+  }
 }
 
 void QLearning::Save(std::string n) {
   std::string finalName = "[" + std::to_string(states) + "][" + 
   std::to_string(actions) + "]:_" + n + ".txt";
-  if(write_info) std::cout << "Trying to save... ";
   std::ofstream myfile (finalName);
   int pointSize = sizeof(double);
   int rows = GetStates();
@@ -78,7 +80,6 @@ void QLearning::Save(std::string n) {
       }
       myfile << "\n";
     }
-    std::cout << "Saved Q-matrix: " << finalName << std::endl;
     myfile.close();
   }
   else std::cout << "Unable to open file";
@@ -130,9 +131,9 @@ std::vector<int> QLearning::GetOrientation(int current_state) {
 int QLearning::GetBestAction(void) {
   if(cpuInfo && PrintOK()) sub_timer->Start();
   
-  int best_action = (rand()%actions-1)+1;
+  int best_action = rand()%actions;
   double temp_max_q = Q[state][best_action];
-  for (int i = 1; i < actions; ++i) {
+  for (int i = 0; i < actions; ++i) {
     if (Q[state][i] > temp_max_q){
       temp_max_q = Q[state][i];
       best_action = i;
@@ -275,7 +276,7 @@ void QLearning::UpdateQ(float reward) {
   }
 
   state = next_state;
-  if(PrintOK() && !collective) {
+  if(PrintOK()) {
     if(write_info && PrintOK()) PrintInfo();
     Save(name);
   }
