@@ -117,8 +117,6 @@ private:
   // Toggles most of the info printing functions.
   bool write_info;
   bool cpuInfo;
-  bool collective;
-
 
   // Whether to use shared Q-matrix.
   bool collective;
