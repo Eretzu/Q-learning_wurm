@@ -15,7 +15,6 @@ public:
   Draw();
 
   /* Draws shapes all shapes from the world to the window */
-  void DrawWurms(sf::RenderWindow &window, std::vector<Brains*> wurms);
   void DrawShapes(sf::RenderWindow &window, b2World &world);
   void DrawInfo(sf::RenderWindow &window, sf::View &view, Brains* b, long int iterations);
   /* Draws the background pattern */
