@@ -13,7 +13,7 @@ const int windowHeight = 600;
 int main() {
     // Create window for the program
     sf::View view1(sf::Vector2f(0, 0), sf::Vector2f(windowWidth, windowHeight));
-    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Test");
+    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Q-learning Wurms");
     window.setFramerateLimit(60);
 
     // Stage the world, brains and drawing function
