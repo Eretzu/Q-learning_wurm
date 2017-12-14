@@ -10,9 +10,6 @@ const float kJointMotorSpeed = 0.5f;
 
 // CONSTRUCTOR
 Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid, float pos) {
-  //std::vector<b2Joint*> joints_(jointCount);
-  //std::vector<b2Body*> bodies_(jointCount+1);
-  //brainy_ = Brains(this, precision);
 
   // BODY DEFINITIONS
   b2BodyDef bodyPartDef;
@@ -26,7 +23,8 @@ Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid, float p
   // SHAPE
   b2PolygonShape bodyPartShape;
   bodyPartShape.SetAsBox(5, 1);
-  // BODY FIXTURE //TODO: Shape
+  
+  // BODY FIXTURE
   b2FixtureDef bodyPartFixture;
   bodyPartFixture.density = 1.0f;
   bodyPartFixture.shape = &bodyPartShape;
@@ -34,16 +32,18 @@ Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid, float p
   bodyPartFixture.filter.maskBits = 2;
   
   // CREATE WURM
+  // Create first body part.
   bodies_.push_back(world->CreateBody(&bodyPartDef));
   bodies_.back()->CreateFixture(&bodyPartFixture);
   for(int i = 0; i < jointCount; ++i) {    
+    // Create later body parts
     bodyPartDef.position.Set(10*i-5, 0.0f);
     bodies_.push_back(world->CreateBody(&bodyPartDef));
     bodyPartFixture.filter.categoryBits = 1;
     bodyPartFixture.filter.maskBits = 2;
     bodies_.back()->CreateFixture(&bodyPartFixture);
     
-    // REVOLUTE JOINT DEF
+    // Create a joint between last and current body part
     b2RevoluteJointDef jointDef;
     jointDef.enableLimit = true;
     jointDef.upperAngle = 0;
@@ -59,42 +59,49 @@ Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid, float p
 // DESTRUCTOR
 Wurm::~Wurm() {  }
 
-b2Vec2* Wurm::GetWurmPosition() {
-  b2Vec2 *ret = new b2Vec2(0.0f, 0.0f);
-  for( auto b : bodies_) {
-    auto temp = b->GetWorldCenter();
-    ret->x += temp.x;
-    ret->y += temp.y;
-  }
-  ret->x = ret->x / 4;
-  ret->y = ret->y / 4;
-  return ret;
-}
-
-// Lenght of the wurm, AKA number of joints
-int Wurm::NumberOfJoints() {
-  return joints_.size();
-}
-
-// Angle of a joint in radians
+// Returns the angle of a joint in radians
 float Wurm::GetJointAngle(int joint_index) {
   b2RevoluteJoint *joint = (b2RevoluteJoint*)joints_[joint_index];
   return joint->GetJointAngle();
 }
 
-// Starts rotating joint
-bool Wurm::SetJointTargetAngle(int joint_index, float angle) {
-  b2RevoluteJoint *joint = (b2RevoluteJoint*)joints_[joint_index];
-  float targetAngle = angle;
+// Returns the wurm position in the world
+// Returns it as an average of all the bodypart positions
+b2Vec2* Wurm::GetWurmPosition() {
+  // Empty position vector
+  b2Vec2 *ret = new b2Vec2(0.0f, 0.0f);
   
+  // Sum positions of all the body parts
+  for( auto b : bodies_) {
+    auto temp = b->GetWorldCenter();
+    ret->x += temp.x;
+    ret->y += temp.y;
+  }
+  
+  // Takes the average of all the positions and returns it as a vector
+  ret->x = ret->x / 4;
+  ret->y = ret->y / 4;
+  return ret;
+}
+
+// Returns the number of joints of the wurm
+int Wurm::NumberOfJoints() {
+  return joints_.size();
+}
+
+// Starts rotating // Sets a target angle for given joint index.
+// It utilizes joint limits and motors to get to this given angle.
+bool Wurm::SetJointTargetAngle(int joint_index, float angle) {
+  // Gets the wanted joint
+  b2RevoluteJoint *joint = (b2RevoluteJoint*)joints_[joint_index];
+  
+  // targetAngle is position the joint should get to.
+  // currentAngle is the current angle of the joint.
+  float targetAngle = angle;
   float currentAngle = GetJointAngle(joint_index);
   
-  //std::cout << targetAngle << std::endl;
-  
-  //joint->SetLimits(angle, angle);
-  //return true;
-  //std::cout << currentAngle << " " << targetAngle << " " << joint_index << std::endl;
-  //std::cout << joint->GetLowerLimit() << " " << joint->GetUpperLimit() << std::endl;
+  // Set proper limits and direction for motor.
+  // Depends if current angle is smaller or larger that targetAngle.
   if(currentAngle < targetAngle) {
     joint->SetLimits(currentAngle, targetAngle);
     joint->SetMotorSpeed(kJointMotorSpeed*1);

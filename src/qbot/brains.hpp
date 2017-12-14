@@ -38,9 +38,7 @@ private:
   bool info;
 
   // Desired angles of each joint (index)(angle in rads)
-  std::vector<float> correctAngles;
-  
-  bool isUpdated = 1;
+  std::vector<float> correctAngles; 
 
   float oldPosition = 0.0f;
   float newPosition = 0.0f;
