@@ -12,9 +12,10 @@
     still, so the Q-matrix has 3 actions per joint. States are
     determined by the precision and amount of joints. */
 QLearning::QLearning(short int joints, short int precision, std::string name, double alpha,
-  double gamma, bool info, bool cpuInfo, long int& step, int frequency) : joints(joints),
-precision(precision), name(name), alpha(alpha), gamma(gamma), write_info(info),
-cpuInfo(cpuInfo), step(step), frequency(frequency), actions(1+joints*2), states(pow(precision,joints))
+  double gamma, bool info, bool cpuInfo, long int& step, int frequency) : name(name),
+  frequency(frequency), joints(joints), precision(precision), actions(1+joints*2),
+  states(pow(precision,joints)), alpha(alpha), gamma(gamma), step(step), write_info(info),
+  cpuInfo(cpuInfo)
 {
   Q = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
   if(write_info && PrintOK()) {
@@ -141,7 +142,6 @@ int QLearning::GetBestAction(void) {
 
   if(cpuInfo && PrintOK()) GetBestActionInfo += sub_timer->End() + "\t";
   if(write_info && PrintOK()) {
-    double summary = 0.0;
     std::stringstream text;
     text << "best_action: " << best_action;
     GetBestActionInfo += text.str();
