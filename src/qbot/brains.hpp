@@ -48,8 +48,6 @@ private:
 
   std::string name;
 
-  bool isUpdated = 1;
-
   float oldPosition = 0.0f;
   float newPosition = 0.0f;
 

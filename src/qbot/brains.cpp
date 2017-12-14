@@ -56,12 +56,10 @@ return goodToGo;
 void Brains::Think() {
   step++;
   if(AngleCheck()) {
-    if(!isUpdated) {
-      newPosition = me->GetWurmPosition()->x;
-      float reward = newPosition - oldPosition;
-      Q_brains->UpdateQ(reward);
-      isUpdated = 1;
-    }
+    newPosition = me->GetWurmPosition()->x;
+    float reward = newPosition - oldPosition;
+    Q_brains->UpdateQ(reward);
+    
     oldPosition = me->GetWurmPosition()->x;
     Q_brains->Act(0,0.1f);
 
@@ -69,7 +67,6 @@ void Brains::Think() {
     float angleChange = rotationStepSize * Q_brains->GetNextRotation();
 
     correctAngles[joint] += angleChange;
-    isUpdated = 0;
   }
 }
 
