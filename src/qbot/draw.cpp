@@ -61,7 +61,7 @@ void Draw::DrawShapes(sf::RenderWindow &window, b2World &world) {
   }
 }
 
-void Draw::DrawBackground(sf::RenderWindow &window) {
+void Draw::DrawBackground(sf::RenderWindow &window, float zoom) {
   sf::Texture texture;
   texture.loadFromFile("../assets/hex-tile.png");
   texture.setRepeated(true);
@@ -70,7 +70,7 @@ void Draw::DrawBackground(sf::RenderWindow &window) {
   sprite.setTexture(texture);
   sprite.setTextureRect({ 0, 0, 8000, 1000 });
   sprite.setOrigin(1400/2, 600/2);
-  sprite.setScale(2.f, 2.f);
+  sprite.setScale(zoom, zoom);
   window.draw(sprite);
 }
 

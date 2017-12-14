@@ -90,7 +90,7 @@ int main() {
 
         // Draw here
         window.clear(sf::Color::White);
-        draw.DrawBackground(window);
+        draw.DrawBackground(window, cameraZoomOffset);
         draw.DrawWaypoints(window);
         draw.DrawShapes(window, world);
         draw.DrawInfo(window, view, init_wurm, iterations, cameraZoomOffset);
