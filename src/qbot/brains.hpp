@@ -10,9 +10,16 @@ class Brains {
 
 public:
   // Parameters: joints, precision, *world, (alpha, gamma, info, cpuInfo, load)
-  Brains(short int joints, short int precision, b2World* world,
-    std::string name = "", bool collective = false, float alpha = 0.8,
-    float gamma = 0.8, bool info = 1, bool cpuInfo = 1);
+  Brains(short int joints,
+    short int precision,
+    b2World* world,
+    std::string name = "",
+    bool collective = false,
+    float alpha = 0.8,
+    float gamma = 0.8,
+    bool info = 1,
+    bool cpuInfo = 1);
+    
   ~Brains();
 
   Wurm* GetWurm();
