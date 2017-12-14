@@ -20,7 +20,7 @@ class QLearning
 public:
   // Constructor
   QLearning(short int joints, short int precision, std::string name, double alpha, double gamma, 
-    bool info, bool cpuInfo, long int& step, int frequency = 1000, bool collective = 0);
+    bool info, bool cpuInfo, long int& step, int frequency = 1000);
   // Destructor
   ~QLearning();
 
@@ -71,7 +71,6 @@ public:
 private:
   // Q-matrix
   std::vector<std::vector<double>> Q;
-  std::vector<std::vector<double>> Q_Swarm;
 
   // State (row) inside the Q-matrix.
   int state = 0;
@@ -110,7 +109,6 @@ private:
   // Toggles most of the info printing functions.
   bool write_info;
   bool cpuInfo;
-  bool collective;
 
   // Benchmark
   CPU_Time* sub_timer = new CPU_Time();

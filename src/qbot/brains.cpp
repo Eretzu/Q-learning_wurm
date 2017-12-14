@@ -9,15 +9,15 @@
 
 // Brains(Wurm, int)
 Brains::Brains(short int joints, short int precision, b2World* world,
-  std::string name, bool collective, float alpha, float gamma, bool info, bool cpuInfo) :
+  std::string name, float alpha, float gamma, bool info, bool cpuInfo) :
 cpuInfo(cpuInfo), world_(world), rotationStepSize(2.0*M_PI/precision),
-maxError(rotationStepSize/10), info(info), name(name) {
+maxError(rotationStepSize/2), info(info) {
   me = new Wurm(joints, world);
   for(short int i = 0; i < joints; ++i) {
     correctAngles.push_back(0.0);
   }
   Q_brains = new QLearning(me->NumberOfJoints(), precision, 
-   name, alpha, gamma, info, cpuInfo, step, 500, collective);
+   name, alpha, gamma, info, cpuInfo, step);
 }
 
 Brains::~Brains() { }
@@ -25,8 +25,6 @@ Brains::~Brains() { }
 Wurm* Brains::GetWurm() {
   return me;
 }
-
-std::string Brains::GetName() { return name; }
 
 int Brains::GetPrecision() { return Q_brains->GetPrecision(); }
 
