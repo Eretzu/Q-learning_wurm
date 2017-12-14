@@ -93,20 +93,15 @@ int main() {
               // TODO: Load file function here
               std::cout << "Load file" << std::endl; // placeholder
             }
-            // Enter pressed
-            if (event.key.code == sf::Keyboard::Return) {
-              // TODO: Fastforward function here
-              std::cout << "Fastforward" << std::endl; // placeholder
-            }
           }
         }
 
         // Simulate the world
         world.Step(1/60.f, 8, 3);
 
-        for(i : wurms) i->Think();
+        for(auto i : wurms) i->Think();
 
-          iterations++;
+            ++iterations;
 
         // Draw here
         window.clear(sf::Color::White);
@@ -122,3 +117,7 @@ int main() {
       init_wurm->GetWurm()->GetWurmPosition()->x - startPos << std::endl;
       return 0;
     }
+    std::cout << "Total distance travelled: " <<
+    init_wurm->GetWurm()->GetWurmPosition()->x - startPos << std::endl;
+    return 0;
+}
