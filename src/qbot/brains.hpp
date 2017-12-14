@@ -14,7 +14,7 @@ public:
     std::string name = "", float alpha = 0.8,
     float gamma = 0.8, bool info = 1, bool cpuInfo = 1);
   ~Brains();
-  
+
   Wurm* GetWurm();
 
   // Returns precision from QLearning.
@@ -30,7 +30,6 @@ public:
 private:
   Wurm* me;
   QLearning* Q_brains;
-  b2World* world_;
 
   float rotationStepSize;
   float maxError;
@@ -39,7 +38,7 @@ private:
 
   // Desired angles of each joint (index)(angle in rads)
   std::vector<float> correctAngles;
-  
+
   bool isUpdated = 1;
 
   float oldPosition = 0.0f;
