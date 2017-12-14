@@ -21,6 +21,7 @@
 
     b2FixtureDef groundBodyFixture;
     groundBodyFixture.density = 1.0f;
+    groundBodyFixture.friction = 5.0f;
     groundBodyFixture.shape = &groundBox;
     groundBodyFixture.filter.categoryBits = 2;
     groundBodyFixture.filter.maskBits = 1;

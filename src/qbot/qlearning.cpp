@@ -246,7 +246,7 @@ void QLearning::Act(int mode, float curiosity) {
 void QLearning::UpdateQ(float reward) {
   if(cpuInfo && PrintOK()) main_timer->Start();
   double max_q = GetMaxQ(next_state);
-  double updatedQ = alpha * (reward - 0.035 + gamma * max_q - Q[state][next_action]);
+  double updatedQ = alpha * (reward - 0.6 + gamma * max_q - Q[state][next_action]);
   if(collective) {
     Q[state][next_action] += updatedQ;
     Q_Swarm[state][next_action] += updatedQ;
@@ -268,7 +268,7 @@ void QLearning::UpdateQ(float reward) {
   if(write_info && PrintOK()){
     std::stringstream text;
     text << "STEP: " << step << " Q-algorithm: Q += " << updatedQ <<
-    " == " << alpha << " * (" << reward << " - " << 0.1 << " + " << gamma << " * " << max_q <<
+    " == " << alpha << " * (" << reward << " - " << 0.6 << " + " << gamma << " * " << max_q <<
     " - Q[" << state << "][" << next_action << "](" << Q[state][next_action] <<
     "))";
     updateQInfo += text.str();
@@ -279,7 +279,9 @@ void QLearning::UpdateQ(float reward) {
     if(write_info && PrintOK()) PrintInfo();
     Save(name);
   }
-  if(collective && number_of_actions%1000 == 0) {
+
+  if(collective && number_of_actions%100 == 0) {
+
     std::string finalName = "[" + std::to_string(states) + "][" + 
     std::to_string(actions) + "]:_" + name + ".txt";
     Load(finalName);
