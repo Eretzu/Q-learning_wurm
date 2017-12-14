@@ -13,7 +13,7 @@ Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid) {
 
   // BODY DEFINITIONS
   b2BodyDef bodyPartDef;
-  bodyPartDef.position.Set(-bodyLen, 0.0f);
+  bodyPartDef.position.Set(-15.0f, 0.0f);
   bodyPartDef.type = b2_dynamicBody;
   bodyPartDef.linearDamping = 0.0f;
   bodyPartDef.angularDamping = 0.01f;
