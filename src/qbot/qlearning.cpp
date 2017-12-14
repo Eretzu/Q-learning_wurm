@@ -249,17 +249,6 @@ void QLearning::UpdateQ(float reward) {
   double updatedQ = alpha * (reward - 0.1 + gamma * max_q - Q[state][next_action]);
   Q[state][next_action] += updatedQ;
 
-  /*" Q-algorithm: " <<
-  alpha << " * ( " << "reward" << " + " << gamma << " * " <<
-  max_q << " - " << Q[state][next_action] << " ) = " << addToQ <<
-  " -> " << Q[state][next_action] << std::endl;
-  */
-  /*
-  if(write_info && PrintOK()) {
-    std::cout << "[INFO][Q]\tAction: " <<
-    next_action << " State: " <<
-    state <<" Next state: " << next_state << std::endl;
-  */
   if(cpuInfo && PrintOK()) updateQInfo += main_timer->End() + "\t\t";
   if(write_info && PrintOK()){
     std::stringstream text;
