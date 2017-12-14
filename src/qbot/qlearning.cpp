@@ -247,8 +247,12 @@ void QLearning::Act(int mode, float curiosity) {
 void QLearning::UpdateQ(float reward) {
   if(cpuInfo && PrintOK()) main_timer->Start();
   double max_q = GetMaxQ(next_state);
-  double updatedQ = alpha * (reward - 0.1 + gamma * max_q - Q[state][next_action]);
-  Q[state][next_action] += updatedQ;
+  double updatedQ = alpha * (reward - 0.6 + gamma * max_q - Q[state][next_action]);
+  if(collective) {
+    Q[state][next_action] += updatedQ;
+    Q_Swarm[state][next_action] += updatedQ;
+  }
+  else Q[state][next_action] += updatedQ;
   
   /*" Q-algorithm: " <<
   alpha << " * ( " << "reward" << " + " << gamma << " * " <<
@@ -265,7 +269,7 @@ void QLearning::UpdateQ(float reward) {
   if(write_info && PrintOK()){
     std::stringstream text;
     text << "STEP: " << step << " Q-algorithm: Q += " << updatedQ <<
-    " == " << alpha << " * (" << reward << " - " << 0.1 << " + " << gamma << " * " << max_q <<
+    " == " << alpha << " * (" << reward << " - " << 0.6 << " + " << gamma << " * " << max_q <<
     " - Q[" << state << "][" << next_action << "](" << Q[state][next_action] <<
     "))";
     updateQInfo += text.str();
@@ -274,6 +278,23 @@ void QLearning::UpdateQ(float reward) {
   state = next_state;
   if(PrintOK()) {
     if(write_info && PrintOK()) PrintInfo();
+    Save(name);
+  }
+
+  if(collective && number_of_actions%100 == 0) {
+
+    std::string finalName = "[" + std::to_string(states) + "][" + 
+    std::to_string(actions) + "]:_" + name + ".txt";
+    Load(finalName);
+    number_of_actions += 100;
+    int rows = GetStates();
+    int columns = GetActions();
+    for(int i = 0; i < rows; ++i) {
+      for(int j = 0; j < columns; ++j) {
+        Q[i][j] += Q_Swarm[i][j];
+      }
+    }
+    Q_Swarm = std::vector<std::vector<double>>(states, std::vector<double>(actions,0.0));
     Save(name);
   }
 }
