@@ -20,6 +20,8 @@ public:
   // Returns precision from QLearning.
   int GetPrecision();
 
+  std::string GetName();
+
   // See if the current angles match the desired angles by leeway of maxError
   // If not for i, send angle
   bool AngleCheck();
@@ -39,6 +41,8 @@ private:
 
   // Desired angles of each joint (index)(angle in rads)
   std::vector<float> correctAngles;
+
+  std::string name;
   
   bool isUpdated = 1;
 
