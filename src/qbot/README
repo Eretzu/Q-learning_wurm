@@ -1,1 +1,2 @@
-Run g++ on qtester.cpp to test out qlearning with 50 million learning steps.
+!!! IMPORTANT !!!
+Info and cpu info (printing functions) are toggled in Brains.hpp constructor parameters for now.
