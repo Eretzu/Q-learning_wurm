@@ -115,10 +115,11 @@ int main() {
         // Draw here
         window.clear(sf::Color::White);
         // draw.DrawBackground(window);
-        draw.DrawWaypoints(window);
+
         // Call to our Draw-class's draw function
         draw.DrawShapes(window, world);
         draw.DrawInfo(window, view1, init_wurm, iterations);
+        draw.DrawWaypoints(window);
         window.display();
     }
     std::cout << "Total distance travelled: " <<
