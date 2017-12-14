@@ -17,7 +17,7 @@ maxError(rotationStepSize/10), info(info), name(name) {
     correctAngles.push_back(0.0);
   }
   Q_brains = new QLearning(me->NumberOfJoints(), precision, 
-   name, alpha, gamma, info, cpuInfo, step, 1000, collective);
+   name, alpha, gamma, info, cpuInfo, step, 500, collective);
 }
 
 Brains::~Brains() { }
