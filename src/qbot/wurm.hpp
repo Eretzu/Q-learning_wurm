@@ -3,12 +3,11 @@
 
 #include <Box2D/Box2D.h>
 #include <vector>
-//#include "brains.hpp"
 
 class Wurm {
 
 public:
-  Wurm(int joints, b2World *world, float bodyLen = 15.0f, float bodyWid = 0.0f, float pos = 0.0f);
+  Wurm(int joints, b2World *world, float bodyLen = 5.0f, float bodyWid = 1.0f);
   ~Wurm();
   
   // Returns vector of bodies

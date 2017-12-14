@@ -9,11 +9,11 @@
 const float kJointMotorSpeed = 0.5f;
 
 // CONSTRUCTOR
-Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid, float pos) {
+Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid) {
 
   // BODY DEFINITIONS
   b2BodyDef bodyPartDef;
-  bodyPartDef.position.Set(-bodyLen, 0.0f);
+  bodyPartDef.position.Set(-15.0f, 0.0f);
   bodyPartDef.type = b2_dynamicBody;
   bodyPartDef.linearDamping = 0.0f;
   bodyPartDef.angularDamping = 0.01f;
@@ -22,15 +22,14 @@ Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid, float p
 
   // SHAPE
   b2PolygonShape bodyPartShape;
-  bodyPartShape.SetAsBox(5, 1);
-  
+  bodyPartShape.SetAsBox(bodyLen, bodyWid);
   // BODY FIXTURE
   b2FixtureDef bodyPartFixture;
   bodyPartFixture.density = 1.0f;
   bodyPartFixture.shape = &bodyPartShape;
   bodyPartFixture.filter.categoryBits = 1;
   bodyPartFixture.filter.maskBits = 2;
-  
+
   // CREATE WURM
   // Create first body part.
   bodies_.push_back(world->CreateBody(&bodyPartDef));
@@ -51,7 +50,7 @@ Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid, float p
     jointDef.enableMotor = false;
     jointDef.motorSpeed = kJointMotorSpeed;
     jointDef.maxMotorTorque = 10000;
-    jointDef.Initialize(bodies_[i], bodies_[i+1], b2Vec2(10.0*(i-1),0));    
+    jointDef.Initialize(bodies_[i], bodies_[i+1], b2Vec2(10.0*(i-1),0));
     joints_.push_back((b2RevoluteJoint*)world->CreateJoint(&jointDef));
   }
 }
@@ -119,5 +118,6 @@ bool Wurm::SetJointTargetAngle(int joint_index, float angle) {
     return false;
   }
 }
+
 
 #endif

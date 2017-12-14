@@ -8,16 +8,26 @@
 #include "cpu_time.cpp"
 
 // Brains(Wurm, int)
-Brains::Brains(short int joints, short int precision, b2World* world,
-  std::string name, float alpha, float gamma, bool info, bool cpuInfo) :
-cpuInfo(cpuInfo), world_(world), rotationStepSize(2.0*M_PI/precision),
-maxError(rotationStepSize/2), info(info) {
+Brains::Brains(short int joints,
+               short int precision,
+               b2World* world,
+               std::string name,
+               bool collective,
+               float alpha,
+               float gamma,
+               bool info,
+               bool cpuInfo) :
+               rotationStepSize(2.0*M_PI/precision),
+               maxError(rotationStepSize/2) {
   me = new Wurm(joints, world);
+
   for(short int i = 0; i < joints; ++i) {
     correctAngles.push_back(0.0);
   }
-  Q_brains = new QLearning(me->NumberOfJoints(), precision, 
-   name, alpha, gamma, info, cpuInfo, step);
+
+  Q_brains = new QLearning(me->NumberOfJoints(), precision,
+                           name, alpha, gamma, info, cpuInfo,
+                           step, 1000, collective);
 }
 
 Brains::~Brains() { }
@@ -25,7 +35,7 @@ Brains::~Brains() { }
 Wurm* Brains::GetWurm() {
   return me;
 }
-
+std::string Brains::GetName() { return name; }
 int Brains::GetPrecision() { return Q_brains->GetPrecision(); }
 
 // See if the current angles match the desired angles by leeway of maxError
