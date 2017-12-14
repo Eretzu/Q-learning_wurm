@@ -8,7 +8,7 @@
 class Wurm {
 
 public:
-  Wurm(int joints, b2World *world, float bodyLen = 5.0f, float bodyWid = 1.0f, float pos = 0.0f);
+  Wurm(int joints, b2World *world, float bodyLen = 5.0f, float bodyWid = 1.0f);
   ~Wurm();
 
   // Lenght of the wurm, AKA number of joints
