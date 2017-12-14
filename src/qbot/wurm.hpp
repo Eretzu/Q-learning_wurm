@@ -3,7 +3,6 @@
 
 #include <Box2D/Box2D.h>
 #include <vector>
-//#include "brains.hpp"
 
 class Wurm {
 
@@ -29,8 +28,6 @@ private:
 
   std::vector<b2Body*> bodies_;
 
-  // BRAINY THE BRAINS
-  //Brains* brainy_;
 };
 
 #endif

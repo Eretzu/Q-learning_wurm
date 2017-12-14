@@ -10,9 +10,7 @@ const float kJointMotorSpeed = 0.5f;
 
 // CONSTRUCTOR
 Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid) {
-  //std::vector<b2Joint*> joints_(jointCount);
-  //std::vector<b2Body*> bodies_(jointCount+1);
-  //brainy_ = Brains(this, precision);
+
   // BODY DEFINITIONS
   b2BodyDef bodyPartDef;
   bodyPartDef.position.Set(-bodyLen, 0.0f);
@@ -88,12 +86,6 @@ bool Wurm::SetJointTargetAngle(int joint_index, float angle) {
 
   float currentAngle = GetJointAngle(joint_index);
 
-  //std::cout << targetAngle << std::endl;
-
-  //joint->SetLimits(angle, angle);
-  //return true;
-  //std::cout << currentAngle << " " << targetAngle << " " << joint_index << std::endl;
-  //std::cout << joint->GetLowerLimit() << " " << joint->GetUpperLimit() << std::endl;
   if(currentAngle < targetAngle) {
     joint->SetLimits(currentAngle, targetAngle);
     joint->SetMotorSpeed(kJointMotorSpeed*1);
