@@ -53,60 +53,38 @@ int main() {
           if (event.type == sf::Event::Closed)
             window.close();
 
-          if (event.type == sf::Event::MouseButtonPressed) {
-            if(event.mouseButton.button == sf::Mouse::Right) {
-              view.zoom(1.05f);
-              cameraZoomOffset *= 1.05f;
+          if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+            cameraXOffset += 2;
+          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+            cameraXOffset -= 2;
+          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+            view.zoom(0.95f);
+            cameraZoomOffset *= 0.95f;
+          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+            view.zoom(1.05f);
+            cameraZoomOffset *= 1.05f;
+          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
+            int temp = iterations;
+            std::cout << "Fastforwarding..." << std::endl;
+            while (iterations < temp+1000) {
+              world.Step(1/60.f, 8, 3);
+              for (auto i : wurms) i->Think();
+              ++iterations;
             }
-            else if(event.mouseButton.button == sf::Mouse::Left) {
-              view.zoom(0.95f);
-              cameraZoomOffset *= 0.95f;
-            }
-          }
-          // A keyboard key was pressed
-          if (event.type == sf::Event::KeyPressed) {
-            // Controls for changing the view center, eg. moving the camera
-            // Right-arrow-key pressed
-            if (event.key.code == sf::Keyboard::Right)
-              cameraXOffset += 10;
-            // Left-arrow-key pressed
-            if (event.key.code == sf::Keyboard::Left)
-              cameraXOffset -= 10;
-            // Down-arrow-key pressed
-            if (event.key.code == sf::Keyboard::Down)
-              cameraYOffset += 10;
-            // Up-arrow-key pressed
-            if (event.key.code == sf::Keyboard::Up)
-              cameraYOffset -= 10;
-            // Spacebar pressed
-            if (event.key.code == sf::Keyboard::Space) {
-              cameraXOffset = 0;
-              cameraYOffset = 0;
-              view.zoom(1/cameraZoomOffset);
-              cameraZoomOffset = 1.f;
-            }
-            if (event.key.code == sf::Keyboard::U) {
-              int temp = iterations;
-              std::cout << "Fastforwarding..." << std::endl;
-              while(iterations < temp+1000) {
-                world.Step(1/60.f, 8, 3);
-                for(auto i : wurms) i->Think();
-                ++iterations;
-              }
-            }
-            // S pressed
-            if (event.key.code == sf::Keyboard::S) {
-              // TODO: Save file function here
-              std::cout << "Save file" << std::endl; // placeholder
-            }
-            // L pressed
-            if (event.key.code == sf::Keyboard::L) {
-              // TODO: Load file function here
-              std::cout << "Load file" << std::endl; // placeholder
-            }
+          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+            cameraXOffset = 0;
+            view.zoom(1/cameraZoomOffset);
+            cameraZoomOffset = 1.f;
+          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+            // TODO: Save file functon here
+            std::cout << "Saving..." << std::endl;
+          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
+            // TODO: Load file function here
+            std::cout << "Loading..." << std::endl;
+          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+            window.close();
           }
         }
-
         world.Step(1/60.f, 8, 3); // Simulate the world
         for(auto i : wurms) i->Think(); // All wurms do an action
         iterations++;
