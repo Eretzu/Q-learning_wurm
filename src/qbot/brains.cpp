@@ -9,7 +9,7 @@
 
 // Brains(Wurm, int)
 Brains::Brains(short int joints, short int precision, b2World* world,
-  std::string name, float alpha, float gamma, bool info, bool cpuInfo) :
+  std::string name, bool collective, float alpha, float gamma, bool info, bool cpuInfo) :
 cpuInfo(cpuInfo), world_(world), rotationStepSize(2.0*M_PI/precision),
 maxError(rotationStepSize/3), info(info), name(name) {
   me = new Wurm(joints, world);
@@ -28,7 +28,7 @@ Brains::~Brains() { }
 Wurm* Brains::GetWurm() {
   return me;
 }
-
+std::string Brains::GetName() { return name; }
 int Brains::GetPrecision() { return Q_brains->GetPrecision(); }
 
 // See if the current angles match the desired angles by leeway of maxError
