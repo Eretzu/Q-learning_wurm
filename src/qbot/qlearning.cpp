@@ -247,7 +247,10 @@ void QLearning::UpdateQ(float reward) {
   if(cpuInfo && PrintOK()) main_timer->Start();
   double max_q = GetMaxQ(next_state);
   double updatedQ = alpha * (reward - 0.035 + gamma * max_q - Q[state][next_action]);
-  if(collective) Q_Swarm[state][next_action] += updatedQ;
+  if(collective) {
+    Q[state][next_action] += updatedQ;
+    Q_Swarm[state][next_action] += updatedQ;
+  }
   else Q[state][next_action] += updatedQ;
   
   /*" Q-algorithm: " <<
