@@ -12,22 +12,26 @@ const int windowHeight = 600;
 
 int main() {
     // Create window for the program
-    sf::View view(sf::Vector2f(0, 0), sf::Vector2f(windowWidth, windowHeight));
-    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "QBot");
+    sf::View view1(sf::Vector2f(0, 0), sf::Vector2f(windowWidth, windowHeight));
+    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Test");
     window.setFramerateLimit(60);
 
     // Stage the world, brains and drawing function
     World* worldy = new World();
     b2World world = *(worldy->GetWorld());
 
-    const int wurm_count = 5;
-    Brains* wurms[wurm_count] = {
-        new Brains(3, 24, &world, "Maister_wurm"),
-        new Brains(2, 24, &world, "shorty"),
-        new Brains(3, 24, &world, "new_guy"),
-        new Brains(2, 24, &world, "tiny"),
-        new Brains(1, 24, &world, "tick"),
+    const int swarm_count = 30;
+
+    std::vector<Brains*> wurms = {
+      new Brains(3, 24, &world, "Maister_wurm"),
+      new Brains(2, 24, &world, "shorty"),
+      new Brains(3, 24, &world, "new_guy")
     };
+
+    // Wurms that share the same Q-Matrix
+    for(int i = 0; i < swarm_count; ++i) {
+      wurms.push_back(new Brains(3, 24, &world, "swarm-intelligence", 1, 0.8, 0.8, 0, 0));
+    }
 
     Brains* init_wurm = wurms[0];
 
@@ -43,7 +47,6 @@ int main() {
         auto xyy = wurms[0]->GetWurm()->GetWurmPosition();
         view.setCenter((xyy->x+cameraXOffset)*SCALE, -10*SCALE);
         window.setView(view);
-
         /* Handle all event listening here.
            Close window, listen to keyboard and mouse, etc. */
         sf::Event event;
