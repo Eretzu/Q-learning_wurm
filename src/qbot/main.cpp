@@ -84,108 +84,105 @@ int main() {
            Close window, listen to keyboard and mouse, etc. */
     sf::Event event;
     while (window.pollEvent(event)) {
-          // Request for closing window
-      if (event.type == sf::Event::Closed)
+      // Request for closing window
+      if (event.type == sf::Event::Closed) {
         window.close();
-
-          if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-            cameraXOffset += 2;
-          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-            cameraXOffset -= 2;
-          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-            view.zoom(0.95f);
-            cameraZoomOffset *= 0.95f;
-          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-            view.zoom(1.05f);
-            cameraZoomOffset *= 1.05f;
-          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
-            int temp = iterations;
-            std::cout << "Fastforwarding..." << std::endl;
-            while (iterations < temp+1000) {
-              world.Step(1/60.f, 8, 3);
-              for (auto i : wurms) i->Think();
-              ++iterations;
-            }
-          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-            cameraXOffset = 0;
-            view.zoom(1/cameraZoomOffset);
-            cameraZoomOffset = 1.f;
-          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            std::cout << "Saving..." << std::endl;
-            for(auto i : wurms) {
-              if(i->GetName().find("swarm-intelligence") != 0) {
-                i->GetQLearning()->Save();
-              }
-            }
-          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
-            std::cout << "Loading..." << std::endl;
-            for(auto i : wurms) {
-              i->GetQLearning()->Load();
-            }
-          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-            window.close();
-          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
-            int change = 1000;
-            int result = wurms[0]->GetWurm()->AlterTorque(change);
-            int size = wurms.size();
-            for(int i = 1; i < size; ++i) {
-              wurms[i]->GetWurm()->AlterTorque(change);
-            }
-            std::cout << "Wurm motor torgue: " << result << std::endl;
-          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-            int change = -1000;
-            int result = wurms[0]->GetWurm()->AlterTorque(change);
-            int size = wurms.size();
-            for(int i = 1; i < size; ++i) {
-              wurms[i]->GetWurm()->AlterTorque(change);
-            }
-            std::cout << "Wurm motor torgue: " << result << std::endl;
-          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
-            float32 change = 0.1f;
-            float32 result = wurms[0]->GetWurm()->AlterSpeed(change);
-            int size = wurms.size();
-            for(int i = 1; i < size; ++i) {
-              wurms[i]->GetWurm()->AlterSpeed(change);
-            }
-            std::cout << "Wurm motor speed: " << result << std::endl;
-          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
-            float32 change = -0.1f;
-            float32 result = wurms[0]->GetWurm()->AlterSpeed(change);
-            int size = wurms.size();
-            for(int i = 1; i < size; ++i) {
-              wurms[i]->GetWurm()->AlterSpeed(change);
-            }
-            std::cout << "Wurm motor speed: " << result << std::endl;
-          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::H)) {
-            float32 change = 1.f;
-            if(sim_speed + change < 1.f) {
-              sim_speed = 1.f;
-            }
-            else if(sim_speed + change > 1000.f) {
-              sim_speed = 1000.f;
-            }
-            else {
-              sim_speed = sim_speed + change;
-            }
-            std::cout << "Simulation speed: " << 1/sim_speed << std::endl;
-          } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) {
-            float32 change = -1.f;
-            if(sim_speed + change < 1.f) {
-              sim_speed = 1.f;
-            }
-            else if(sim_speed + change > 1000.f) {
-              sim_speed = 1000.f;
-            }
-            else {
-              sim_speed = sim_speed + change;
-            }
-            std::cout << "Simulation speed: " << 1/sim_speed << std::endl;
+      }
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        cameraXOffset += 2;
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        cameraXOffset -= 2;
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+        view.zoom(0.95f);
+        cameraZoomOffset *= 0.95f;
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+        view.zoom(1.05f);
+        cameraZoomOffset *= 1.05f;
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
+        int temp = iterations;
+        std::cout << "Fastforwarding..." << std::endl;
+        while (iterations < temp+1000) {
+          world.Step(1/60.f, 8, 3);
+          for (auto i : wurms) i->Think();
+          ++iterations;
+        }
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        cameraXOffset = 0;
+        view.zoom(1/cameraZoomOffset);
+        cameraZoomOffset = 1.f;
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+        std::cout << "Saving..." << std::endl;
+        for(auto i : wurms) {
+          if(i->GetName().find("swarm-intelligence") != 0) {
+            i->GetQLearning()->Save();
           }
         }
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
+        std::cout << "Loading..." << std::endl;
+        for(auto i : wurms) {
+          i->GetQLearning()->Load();
+        }
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+        window.close();
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
+        int change = 1000;
+        int result = wurms[0]->GetWurm()->AlterTorque(change);
+        int size = wurms.size();
+        for(int i = 1; i < size; ++i) {
+          wurms[i]->GetWurm()->AlterTorque(change);
+        }
+        std::cout << "Wurm motor torgue: " << result << std::endl;
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        int change = -1000;
+        int result = wurms[0]->GetWurm()->AlterTorque(change);
+        int size = wurms.size();
+        for(int i = 1; i < size; ++i) {
+          wurms[i]->GetWurm()->AlterTorque(change);
+        }
+        std::cout << "Wurm motor torgue: " << result << std::endl;
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
+        float32 change = 0.1f;
+        float32 result = wurms[0]->GetWurm()->AlterSpeed(change);
+        int size = wurms.size();
+        for(int i = 1; i < size; ++i) {
+          wurms[i]->GetWurm()->AlterSpeed(change);
+        }
+        std::cout << "Wurm motor speed: " << result << std::endl;
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
+        float32 change = -0.1f;
+        float32 result = wurms[0]->GetWurm()->AlterSpeed(change);
+        int size = wurms.size();
+        for(int i = 1; i < size; ++i) {
+          wurms[i]->GetWurm()->AlterSpeed(change);
+        }
+        std::cout << "Wurm motor speed: " << result << std::endl;
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::H)) {
+        float32 change = 1.f;
+        if(sim_speed + change < 1.f) {
+          sim_speed = 1.f;
+        }
+        else if(sim_speed + change > 1000.f) {
+          sim_speed = 1000.f;
+        }
+        else {
+          sim_speed = sim_speed + change;
+        }
+        std::cout << "Simulation speed: " << 1/sim_speed << std::endl;
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) {
+        float32 change = -1.f;
+        if(sim_speed + change < 1.f) {
+          sim_speed = 1.f;
+        }
+        else if(sim_speed + change > 1000.f) {
+          sim_speed = 1000.f;
+        }
+        else {
+          sim_speed = sim_speed + change;
+        }
+        std::cout << "Simulation speed: " << 1/sim_speed << std::endl;
       }
     }
-
-        // Simulate the world
+    // Simulate the world
     world.Step(1/sim_speed, 8, 3);
     for(auto i : wurms) i->Think();
     ++iterations;
