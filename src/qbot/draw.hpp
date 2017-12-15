@@ -19,7 +19,7 @@ public:
   void DrawInfo(sf::RenderWindow &window, sf::View &view, long int iterations, float zoom);
   /* Draws the background pattern */
   void DrawBackground(sf::RenderWindow &window, sf::View &view, float zoom);
-  void DrawWurms(sf::RenderWindow &window, std::vector<Brains*> wurms);
+  void DrawWurms(sf::RenderWindow &window, Brains &wurms);
   void DrawWaypoints(sf::RenderWindow &window);
 
 private:

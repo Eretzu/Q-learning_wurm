@@ -49,9 +49,6 @@ QLearning::QLearning(int joints,
   if(!name.empty()) Load();     // Autoload a save if one if found.
 }
 
-// Destructor
-QLearning::~QLearning() {  }
-
 //======================= GET AND SET FUNCTIONS ================================
 
 int QLearning::GetActions()                   { return actions; }

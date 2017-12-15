@@ -29,8 +29,6 @@ public:
             int step,
             int frequency = 500,
             bool collective = false);
-  // Destructor
-  ~QLearning();
 
   // Interact with the current state inside the Q-matrix: "int state".
   void UpdateQ(float newValue);

@@ -1,5 +1,6 @@
 #include "draw.hpp"
 #include <iostream>
+#include "brains.hpp"
 //#include <string>
 
 float SCALE = 10.f;
@@ -22,37 +23,34 @@ Draw::Draw() {
 }
 
 // Draw certain wurms with distinct colors.
-void Draw::DrawWurms(sf::RenderWindow &window, std::vector<Brains*> wurms) {
+void Draw::DrawWurms(sf::RenderWindow &window, Brains &wurm) {
   sf::Color wurmyColor; //= sf::Color(255, 179, 79);
-  for(auto i : wurms) {
-    Wurm &me = i->GetWurm();
-    if(i->GetName().find("swarm-intelligence") == 0)
-      wurmyColor = sf::Color(88, 222, 255); // Swarm-wurm
-    else if(i->GetName().find("Maister_wurm") == 0)
-      wurmyColor = sf::Color(255, 131, 0); // Maister-wurm
-    else if(i->GetName().find("goofy_wurmy") == 0)
-      wurmyColor = sf::Color(168, 255, 99); // Maister-wurm
-    else
-      wurmyColor = sf::Color(50, 50, 50); // Normal wurm
-    std::vector<b2Body*> bodies = me.GetBodies();
-    for(auto body : bodies) {
-      for (b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
-        // Draw differently based on what shape the fixture has.
-        // Currently the wurm only consists of rectangular polygonshapes
-        b2Shape::Type shapeType = fixture->GetType();
-        if (shapeType == b2Shape::e_polygon) {
-          // Create an SFML shape that matches the wurm fixture's Box2D shape
-          sf::RectangleShape w(sf::Vector2f(sectionWidth*SCALE, sectionHeight*SCALE));
-          w.setFillColor(wurmyColor);
-          w.setOrigin(sectionWidth*SCALE/2, sectionHeight*SCALE/2);
-          w.setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
-          w.setRotation(body->GetAngle() * 180 / b2_pi);
-          // Add outline to better make out the different parts of the wurm
-          w.setOutlineThickness(1.f);
-          w.setOutlineColor(wurmOutlineColor);
-          // Draw wurm fixture
-          window.draw(w);
-        }
+  if(wurm.GetName().find("swarm-intelligence") == 0)
+    wurmyColor = sf::Color(88, 222, 255); // Swarm-wurm
+  else if(wurm.GetName().find("Maister_wurm") == 0)
+    wurmyColor = sf::Color(255, 131, 0); // Maister-wurm
+  else if(wurm.GetName().find("goofy_wurmy") == 0)
+    wurmyColor = sf::Color(168, 255, 99); // Maister-wurm
+  else
+    wurmyColor = sf::Color(50, 50, 50); // Normal wurm
+  std::vector<b2Body*> bodies = wurm.GetWurm().GetBodies();
+  for(auto body : bodies) {
+    for (b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+      // Draw differently based on what shape the fixture has.
+      // Currently the wurm only consists of rectangular polygonshapes
+      b2Shape::Type shapeType = fixture->GetType();
+      if (shapeType == b2Shape::e_polygon) {
+        // Create an SFML shape that matches the wurm fixture's Box2D shape
+        sf::RectangleShape w(sf::Vector2f(sectionWidth*SCALE, sectionHeight*SCALE));
+        w.setFillColor(wurmyColor);
+        w.setOrigin(sectionWidth*SCALE/2, sectionHeight*SCALE/2);
+        w.setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
+        w.setRotation(body->GetAngle() * 180 / b2_pi);
+        // Add outline to better make out the different parts of the wurm
+        w.setOutlineThickness(1.f);
+        w.setOutlineColor(wurmOutlineColor);
+        // Draw wurm fixture
+        window.draw(w);
       }
     }
   }

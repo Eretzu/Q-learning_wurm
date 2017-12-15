@@ -48,8 +48,8 @@ int main() {
   
   // Parameters:
   // joints, precision, world, name, collective, alpha, gamma, info, cpu info
-  //wurms.push_back(new Brains(2, 24, world, "shorty", false, alpha, gamma, info, cpu_info));
-  //wurms.push_back(new Brains(3, 24, world, "new_guy", false, alpha, gamma, info, cpu_info));
+  //wurms.push_back(Brains(2, 24, world, "shorty", false, alpha, gamma, info, cpu_info));
+  //wurms.push_back(Brains(3, 24, world, "new_guy", false, alpha, gamma, info, cpu_info));
   wurms.push_back(Brains(3, 24, world, "Maister_wurm", false, alpha, gamma, info, cpu_info));
   
   Brains &maisterWurm = wurms.back();
@@ -242,7 +242,9 @@ int main() {
     window.clear(sf::Color::White);
     draw.DrawBackground(window, view, cameraZoomOffset);
     draw.DrawShapes(window, world);
-    //draw.DrawWurms(window, wurms);
+    for(auto w : wurms) {
+      draw.DrawWurms(window, w);
+    }
     draw.DrawInfo(window, view, iterations, cameraZoomOffset);
     draw.DrawWaypoints(window);
     window.display();
