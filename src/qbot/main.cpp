@@ -9,10 +9,6 @@ const int windowWidth = 1400;
 const int windowHeight = 600;
 
 int main() {
-  // Create window for the program
-  sf::View view(sf::Vector2f(0, 0), sf::Vector2f(windowWidth, windowHeight));
-  sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Q-learning Wurms");
-  window.setFramerateLimit(60);
 
   // Stage the world, brains and drawing function
   World worldy;
@@ -22,35 +18,52 @@ int main() {
   const int long_count = 0;
 
   // ADJUST FEATURES
-  const bool info = true;
-  const bool cpu_info = true;
+  bool info = true;
+  bool cpu_info = true;
   const double alpha = 0.8;
   const double gamma = 0.8;
 
   float sim_speed = 60.f;
 
   std::vector<Brains*> wurms;
-  
-  if(long_count) {
-    for(int i = 0; i < long_count; ++i) {
-      wurms.push_back(new Brains(7, 4, world,
-        "goofy_wurmy" + std::to_string(i), true, alpha, gamma, info, cpu_info));
-    }
+
+  int user_num = 0;
+
+  std::cout << "Disable info & cpu_info (1 = yes, 0 = no)" << std::endl;
+  std::cin >> user_num;
+  if(user_num > 0) {
+    info = false;
+    cpu_info = false;
   }
 
-  // Wurms that share the same Q-Matrix
-  if(swarm_count) {
-    for(int i = 0; i < swarm_count; ++i) {
-      wurms.push_back(new Brains(3, 24, world,
-        "swarm-intelligence", true, alpha, gamma, info, cpu_info));
-    }
-  }
-  
+  user_num = 0;
+
   // Parameters:
   // joints, precision, world, name, collective, alpha, gamma, info, cpu info
   wurms.push_back(new Brains(2, 24, world, "shorty", false, alpha, gamma, info, cpu_info));
   wurms.push_back(new Brains(3, 24, world, "new_guy", false, alpha, gamma, info, cpu_info));
   wurms.push_back(new Brains(3, 24, world, "Maister_wurm", false, alpha, gamma, info, cpu_info));
+
+  std::cout << "How many normal BLACK, default 0 (own Q-matrix [3][24]) do you want?" << std::endl;
+  std::cin >> user_num;
+  for(int i = 0; i < user_num; ++i) {
+    wurms.push_back(new Brains(3, 24, world,
+      "normie" + std::to_string(i), true, alpha, gamma, info, cpu_info));
+  }
+  user_num = 0;
+  std::cout << "How many swarm-wurms CYAN, default 20 (shared Q-matrix [3][24]) do you want?" << std::endl;
+  std::cin >> user_num;
+  for(int i = 0; i < user_num; ++i) {
+    wurms.push_back(new Brains(3, 24, world,
+      "swarm-intelligence", true, alpha, gamma, info, cpu_info));
+  }
+  user_num = 0;
+  std::cout << "How many goofy_wurms GREEN, default 0, fun with high speed joints (shared Q-matrix [7][4]) do you want?" << std::endl;
+  std::cin >> user_num;
+  for(int i = 0; i < user_num; ++i) {
+    wurms.push_back(new Brains(7, 4, world,
+      "goofy_wurmy", true, alpha, gamma, info, cpu_info));
+  }
   
   Brains &maisterWurm = *(wurms.back());
   int startPos = maisterWurm.GetWurm().GetWurmPosition().x;
@@ -59,6 +72,11 @@ int main() {
   float cameraXOffset = 0.f;
   float cameraZoomOffset = 1.f;
   long int iterations = 0;
+
+  // Create window for the program
+  sf::View view(sf::Vector2f(0, 0), sf::Vector2f(windowWidth, windowHeight));
+  sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Q-learning Wurms");
+  window.setFramerateLimit(60);
 
 
   std::cout <<std::endl;
