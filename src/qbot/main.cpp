@@ -17,8 +17,8 @@ int main() {
   window.setFramerateLimit(60);
 
   // Stage the world, brains and drawing function
-  World worldy();
-  b2World world = *(worldy.GetWorld());
+  World worldy;
+  b2World &world = worldy.GetWorld();
 
   const int swarm_count = 5;
   const int long_count = 0;
