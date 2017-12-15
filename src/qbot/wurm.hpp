@@ -7,8 +7,7 @@
 class Wurm {
 
 public:
-  Wurm(int joints, b2World *world, float bodyLen = 5.0f, float bodyWid = 1.0f);
-  ~Wurm();
+  Wurm(int joints, b2World &world, float bodyLen = 5.0f, float bodyWid = 1.0f);
   
   // Returns vector of bodies
   std::vector<b2Body*> GetBodies() { return bodies_; }
@@ -18,7 +17,7 @@ public:
   
   // Returns the wurm position in the world
   // Returns it as an average of all the bodypart positions
-  b2Vec2* GetWurmPosition();
+  const b2Vec2 GetWurmPosition() const;
 
   float32 AlterSpeed(float32 amount);
   int AlterTorque(int amount);

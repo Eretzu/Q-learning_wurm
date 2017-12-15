@@ -2,33 +2,34 @@
 #define QLEARNING_WORLD_HPP
 
 #include <Box2D/Box2D.h>
-//#include <vector>
 
 #include "brains.hpp"
 
 class World {
 
   public:
+    // Constructor
     World();
-
+    
+    // Destructor
+    // World is not meant to be copied so 
     ~World();
-
+    
+    // Changes the friction of ground.
     float32 ChangeFriction(float32 amount);
-
-    void Start();
-
-    //b2Vec2* GetWurmPosition();
-
-    b2World* GetWorld();
-
-    b2Body* GetGroundBody();
-
-    //b2Vec2* GetWurmPosition();
+    
+    // Returns a reference to the world.
+    b2World &GetWorld();
+    
   private:
-    //Brains* brainy_;
-
     b2World* world_;
     b2Body* groundBody_;
+    
+    // Copying and moving is disallowed
+    World (const World&);
+    World (const World&&);
+    World& operator= (const World&);
+    World& operator= (const World&&);
 };
 
 #endif

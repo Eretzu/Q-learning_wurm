@@ -8,29 +8,26 @@
 class Brains {
 
 public:
-  Brains(short int joints,
-    short int precision,
-    b2World* world,
+  Brains(int joints,
+    int precision,
+    b2World &world,
     std::string name = "Default_Name",
     bool collective = false,
     float alpha = 0.8,
     float gamma = 0.8,
     bool info = true,
     bool cpuInfo = true);
-    
-  ~Brains();
 
-  Wurm* GetWurm();              // Returns a pointer to the Box2D form.
-  QLearning* GetQLearning();    // Returns a pointer to QLearning.
-  int GetPrecision();           // Useless to store in many places, so get it.
-  std::string GetName();        // Storing name in Brains.
-  bool AngleCheck();            // Fix joint angle if more than maxError.
-
+  Wurm &GetWurm();              // Returns a pointer to the Box2D form.
+  QLearning &GetQLearning();    // Returns a pointer to QLearning.
+  int GetPrecision() const;     // Useless to store in many places, so get it.
+  std::string GetName() const;  // Storing name in Brains.
+  bool AngleCheck();      // Fix joint angle if more than maxError.
   void Think();                 // Acts and updates Q.
 
 private:
-  Wurm* me;
-  QLearning* Q_brains;
+  Wurm me;
+  QLearning qBrains;
 
   float rotationStepSize;       // 2pi / precision
   float maxError;               // Currently 33.3% of rotationStepSize.
@@ -43,8 +40,8 @@ private:
   float oldPosition = 0.0f;     // Storing of angles to calculate reward
   float newPosition = 0.0f;     // = newPos.x - oldPos.x == Q-reward
 
-  CPU_Time* CPU_B = new CPU_Time(); // For measuring runtime
-  long int step = 0;                // Loop count
+  CPU_Time CPU_B; // For measuring runtime
+  int step = 0;                // Loop count
 
 };
 

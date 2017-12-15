@@ -9,7 +9,7 @@
 const float kJointMotorSpeed = 0.5f;
 
 // CONSTRUCTOR
-Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid) {
+Wurm::Wurm(int jointCount, b2World &world, float bodyLen, float bodyWid) {
 
   // BODY DEFINITIONS
   b2BodyDef bodyPartDef;
@@ -32,12 +32,12 @@ Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid) {
 
   // CREATE WURM
   // Create first body part.
-  bodies_.push_back(world->CreateBody(&bodyPartDef));
+  bodies_.push_back(world.CreateBody(&bodyPartDef));
   bodies_.back()->CreateFixture(&bodyPartFixture);
   for(int i = 0; i < jointCount; ++i) {    
     // Create later body parts
     bodyPartDef.position.Set(10*i-5, 0.0f);
-    bodies_.push_back(world->CreateBody(&bodyPartDef));
+    bodies_.push_back(world.CreateBody(&bodyPartDef));
     bodyPartFixture.filter.categoryBits = 1;
     bodyPartFixture.filter.maskBits = 2;
     bodies_.back()->CreateFixture(&bodyPartFixture);
@@ -51,12 +51,9 @@ Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid) {
     jointDef.motorSpeed = kJointMotorSpeed;
     jointDef.maxMotorTorque = 100000;
     jointDef.Initialize(bodies_[i], bodies_[i+1], b2Vec2(10.0*(i-1),0));
-    joints_.push_back((b2RevoluteJoint*)world->CreateJoint(&jointDef));
+    joints_.push_back((b2RevoluteJoint*)world.CreateJoint(&jointDef));
   }
 }
-
-// DESTRUCTOR
-Wurm::~Wurm() {  }
 
 // Returns the angle of a joint in radians
 float Wurm::GetJointAngle(int joint_index) {
@@ -66,21 +63,22 @@ float Wurm::GetJointAngle(int joint_index) {
 
 // Returns the wurm position in the world
 // Returns it as an average of all the bodypart positions
-b2Vec2* Wurm::GetWurmPosition() {
+const b2Vec2 Wurm::GetWurmPosition() const {
   // Empty position vector
-  b2Vec2 *ret = new b2Vec2(0.0f, 0.0f);
+  float x = 0;
+  float y = 0;
   
   // Sum positions of all the body parts
   for( auto b : bodies_) {
     auto temp = b->GetWorldCenter();
-    ret->x += temp.x;
-    ret->y += temp.y;
+    x += temp.x;
+    y += temp.y;
   }
   
   // Takes the average of all the positions and returns it as a vector
-  ret->x = ret->x / 4;
-  ret->y = ret->y / 4;
-  return ret;
+  x = x / bodies_.size();
+  y = y / bodies_.size();
+  return b2Vec2(x, y);
 }
 
 // Returns the number of joints of the wurm
