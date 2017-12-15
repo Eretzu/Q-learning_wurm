@@ -17,7 +17,7 @@ public:
   
   // Returns the wurm position in the world
   // Returns it as an average of all the bodypart positions
-  b2Vec2* GetWurmPosition();
+  const b2Vec2 GetWurmPosition() const;
 
   float32 AlterSpeed(float32 amount);
   int AlterTorque(int amount);

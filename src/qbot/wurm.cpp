@@ -63,21 +63,22 @@ float Wurm::GetJointAngle(int joint_index) {
 
 // Returns the wurm position in the world
 // Returns it as an average of all the bodypart positions
-b2Vec2* Wurm::GetWurmPosition() {
+const b2Vec2 Wurm::GetWurmPosition() const {
   // Empty position vector
-  b2Vec2 *ret = new b2Vec2(0.0f, 0.0f);
+  float x = 0;
+  float y = 0;
   
   // Sum positions of all the body parts
   for( auto b : bodies_) {
     auto temp = b->GetWorldCenter();
-    ret->x += temp.x;
-    ret->y += temp.y;
+    x += temp.x;
+    y += temp.y;
   }
   
   // Takes the average of all the positions and returns it as a vector
-  ret->x = ret->x / 4;
-  ret->y = ret->y / 4;
-  return ret;
+  x = x / bodies_.size();
+  y = y / bodies_.size();
+  return b2Vec2(x, y);
 }
 
 // Returns the number of joints of the wurm

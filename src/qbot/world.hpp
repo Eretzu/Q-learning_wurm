@@ -11,6 +11,9 @@ class World {
     // Constructor
     World();
     
+    //
+    ~World();
+    
     // Changes the friction of ground.
     float32 ChangeFriction(float32 amount);
     

@@ -77,11 +77,11 @@ return goodToGo;
 void Brains::Think() {
   ++step;
   if(AngleCheck()) { // If angles < maxError
-    newPosition = me.GetWurmPosition()->x;   // Get reward
+    newPosition = me.GetWurmPosition().x;   // Get reward
     float reward = newPosition - oldPosition;
     qBrains.UpdateQ(reward);
     
-    oldPosition = me.GetWurmPosition()->x;
+    oldPosition = me.GetWurmPosition().x;
     qBrains.Act(0,0.1f); // Act (mode, curiosity), get action for joints
 
     int joint = qBrains.GetNextJoint(); // Joint that is being affected

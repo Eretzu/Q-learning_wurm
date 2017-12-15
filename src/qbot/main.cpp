@@ -18,7 +18,7 @@ int main() {
   World worldy;
   b2World &world = worldy.GetWorld();
 
-  const int swarm_count = 5;
+  const int swarm_count = 0;
   const int long_count = 0;
 
   // ADJUST FEATURES
@@ -29,11 +29,11 @@ int main() {
 
   float sim_speed = 60.f;
 
-  std::vector<Brains*> wurms;
+  std::vector<Brains> wurms;
   
   if(long_count) {
     for(int i = 0; i < long_count; ++i) {
-      wurms.push_back(new Brains(7, 4, world,
+      wurms.push_back(Brains(7, 4, world,
         "goofy_wurmy" + std::to_string(i), true, alpha, gamma, info, cpu_info));
     }
   }
@@ -41,19 +41,19 @@ int main() {
   // Wurms that share the same Q-Matrix
   if(swarm_count) {
     for(int i = 0; i < swarm_count; ++i) {
-      wurms.push_back(new Brains(3, 24, world,
+      wurms.push_back(Brains(3, 24, world,
         "swarm-intelligence", true, alpha, gamma, info, cpu_info));
     }
   }
   
   // Parameters:
   // joints, precision, world, name, collective, alpha, gamma, info, cpu info
-  wurms.push_back(new Brains(2, 24, world, "shorty", false, alpha, gamma, info, cpu_info));
-  wurms.push_back(new Brains(3, 24, world, "new_guy", false, alpha, gamma, info, cpu_info));
-  wurms.push_back(new Brains(3, 24, world, "Maister_wurm", false, alpha, gamma, info, cpu_info));
+  //wurms.push_back(new Brains(2, 24, world, "shorty", false, alpha, gamma, info, cpu_info));
+  //wurms.push_back(new Brains(3, 24, world, "new_guy", false, alpha, gamma, info, cpu_info));
+  wurms.push_back(Brains(3, 24, world, "Maister_wurm", false, alpha, gamma, info, cpu_info));
   
-  Brains &maisterWurm = *(wurms.back());
-  int startPos = maisterWurm.GetWurm().GetWurmPosition()->x;
+  Brains &maisterWurm = wurms.back();
+  int startPos = maisterWurm.GetWurm().GetWurmPosition().x;
 
   Draw draw;
   float cameraXOffset = 0.f;
@@ -88,7 +88,7 @@ int main() {
     // Main loop
   while (window.isOpen()) {
     auto xyy = maisterWurm.GetWurm().GetWurmPosition();
-    view.setCenter((xyy->x+cameraXOffset)*SCALE, -10*SCALE);
+    view.setCenter((xyy.x+cameraXOffset)*SCALE, -10*SCALE);
     window.setView(view);
 
         /* Handle all event listening here.
@@ -114,7 +114,7 @@ int main() {
         std::cout << "Fastforwarding..." << std::endl;
         while (iterations < temp+1000) {
           world.Step(1/60.f, 8, 3);
-          for (auto i : wurms) i->Think();
+          for (auto i : wurms) i.Think();
             ++iterations;
         }
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
@@ -124,23 +124,23 @@ int main() {
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
         std::cout << "Saving..." << std::endl;
         for(auto i : wurms) {
-          if(i->GetName().find("swarm-intelligence") != 0) {
-            i->GetQLearning().Save();
+          if(i.GetName().find("swarm-intelligence") != 0) {
+            i.GetQLearning().Save();
           }
         }
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
         std::cout << "Loading..." << std::endl;
         for(auto i : wurms) {
-          i->GetQLearning().Load();
+          i.GetQLearning().Load();
         }
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
         window.close();
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
         int change = 1000;
-        int result = wurms[0]->GetWurm().AlterTorque(change);
+        int result = wurms[0].GetWurm().AlterTorque(change);
         int size = wurms.size();
         for(int i = 1; i < size; ++i) {
-          wurms[i]->GetWurm().AlterTorque(change);
+          wurms[i].GetWurm().AlterTorque(change);
         }
         std::cout << "Wurm motor torgue: " << result << std::endl;
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
@@ -148,7 +148,7 @@ int main() {
         int result = maisterWurm.GetWurm().AlterTorque(change);
         int size = wurms.size();
         for(int i = 1; i < size; ++i) {
-          wurms[i]->GetWurm().AlterTorque(change);
+          wurms[i].GetWurm().AlterTorque(change);
         }
         std::cout << "Wurm motor torgue: " << result << std::endl;
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
@@ -156,7 +156,7 @@ int main() {
         float32 result = maisterWurm.GetWurm().AlterSpeed(change);
         int size = wurms.size();
         for(int i = 1; i < size; ++i) {
-          wurms[i]->GetWurm().AlterSpeed(change);
+          wurms[i].GetWurm().AlterSpeed(change);
         }
         std::cout << "Wurm motor speed: " << result << std::endl;
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
@@ -164,7 +164,7 @@ int main() {
         float32 result = maisterWurm.GetWurm().AlterSpeed(change);
         int size = wurms.size();
         for(int i = 1; i < size; ++i) {
-          wurms[i]->GetWurm().AlterSpeed(change);
+          wurms[i].GetWurm().AlterSpeed(change);
         }
         std::cout << "Wurm motor speed: " << result << std::endl;
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::T)) {
@@ -196,15 +196,15 @@ int main() {
         float result = maisterWurm.GetQLearning().SetReward(change);
         int size = wurms.size();
         for(int i = 1; i < size; ++i) {
-          wurms[i]->GetQLearning().SetReward(change);
+          wurms[i].GetQLearning().SetReward(change);
         }
         std::cout << "Q move minus: " << -result << std::endl;
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         float change = -0.05f;
-        float result = wurms[0]->GetQLearning().SetReward(change);
+        float result = wurms[0].GetQLearning().SetReward(change);
         int size = wurms.size();
         for(int i = 1; i < size; ++i) {
-          wurms[i]->GetQLearning().SetReward(change);
+          wurms[i].GetQLearning().SetReward(change);
         }
         std::cout << "Q move minus: " << -result << std::endl;
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::H)) {
@@ -235,19 +235,21 @@ int main() {
     }
     // Simulate the world
     world.Step(1/sim_speed, 8, 3);
-    for(auto i : wurms) i->Think();
+    for(auto i : wurms) i.Think();
       ++iterations;
 
     // Draw here
     window.clear(sf::Color::White);
     draw.DrawBackground(window, view, cameraZoomOffset);
     draw.DrawShapes(window, world);
-    draw.DrawWurms(window, wurms);
+    //draw.DrawWurms(window, wurms);
     draw.DrawInfo(window, view, iterations, cameraZoomOffset);
     draw.DrawWaypoints(window);
     window.display();
   }
   std::cout << "Total distance travelled: " <<
-  maisterWurm.GetWurm().GetWurmPosition()->x - startPos << std::endl;
+  maisterWurm.GetWurm().GetWurmPosition().x - startPos << std::endl;
+  
+  //if(&worldy != NULL) delete &worldy;
   return 0;
 }

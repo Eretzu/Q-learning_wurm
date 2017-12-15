@@ -20,6 +20,8 @@ World::World() {
   groundBody_->CreateFixture(&groundBodyFixture);
 }
 
+World::~World() { delete world_; };
+
 b2World &World::GetWorld() {
   return *world_;
 }
