@@ -126,8 +126,8 @@ private:
 
 
   // Benchmark
-  CPU_Time* sub_timer = new CPU_Time();
-  CPU_Time* main_timer = new CPU_Time();
+  CPU_Time sub_timer;
+  CPU_Time main_timer;
 };
 
 #endif // QLEARNING_HPP

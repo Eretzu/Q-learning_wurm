@@ -188,7 +188,7 @@ std::vector<int> QLearning::GetOrientation(int current_state) {
 
 // Get the action that has best Q value
 int QLearning::GetBestAction(void) {
-  if(cpuInfo && PrintOK()) sub_timer->Start();
+  if(cpuInfo && PrintOK()) sub_timer.Start();
 
   int best_action = rand()%actions;
   double temp_max_q = Q[state][best_action];
@@ -199,7 +199,7 @@ int QLearning::GetBestAction(void) {
     }
   }
 
-  if(cpuInfo && PrintOK()) GetBestActionInfo += sub_timer->End() + "\t";
+  if(cpuInfo && PrintOK()) GetBestActionInfo += sub_timer.End() + "\t";
   if(write_info && PrintOK()) {
     std::stringstream text;
     text << "best_action: " << best_action;
@@ -211,7 +211,7 @@ int QLearning::GetBestAction(void) {
 
 // Randomizes an action based on the size of the Q-values.
 int QLearning::GetAction(float curiosity) {
-  if(cpuInfo && PrintOK()) sub_timer->Start();
+  if(cpuInfo && PrintOK()) sub_timer.Start();
 
   int accuracy = 100000;
   // Sums the Q-values in each action; curiosity if Q is <= 0
@@ -240,7 +240,7 @@ int QLearning::GetAction(float curiosity) {
     }
   }
 
-  if(cpuInfo && PrintOK()) getActionInfo += sub_timer->End() + "\t";
+  if(cpuInfo && PrintOK()) getActionInfo += sub_timer.End() + "\t";
   if(write_info && PrintOK()) {
     double summary = 0.0;
     std::stringstream text;
@@ -260,7 +260,7 @@ int QLearning::GetAction(float curiosity) {
 
 // Gives the maximum Q-value recieved out of all action in a state.
 double QLearning::GetMaxQ(int state) {
-  if(cpuInfo && PrintOK()) sub_timer->Start();
+  if(cpuInfo && PrintOK()) sub_timer.Start();
 
   double temp_max = 0;
   for (int i = 0; i < actions; ++i) {
@@ -269,14 +269,14 @@ double QLearning::GetMaxQ(int state) {
     }
   }
 
-  if(cpuInfo && PrintOK()) getMaxQInfo += sub_timer->End() + "\t";
+  if(cpuInfo && PrintOK()) getMaxQInfo += sub_timer.End() + "\t";
   if(write_info && PrintOK()) getMaxQInfo += "temp_max: " + std::to_string(temp_max);
 
   return temp_max;
 }
 
 void QLearning::Act(int mode, float curiosity) {
-  if(cpuInfo && PrintOK()) main_timer->Start();
+  if(cpuInfo && PrintOK()) main_timer.Start();
 
   number_of_actions++;
 
@@ -287,7 +287,7 @@ void QLearning::Act(int mode, float curiosity) {
   // Gets next state based on next_action.
   next_state = GetState(state, next_action);
 
-  if(cpuInfo && PrintOK()) actInfo += main_timer->End() + "\t\t\t";
+  if(cpuInfo && PrintOK()) actInfo += main_timer.End() + "\t\t\t";
   if(write_info && PrintOK()) {
     std::stringstream text;
     std::vector<int> old_ori = GetOrientation(state);
@@ -306,7 +306,7 @@ void QLearning::Act(int mode, float curiosity) {
 }
 
 void QLearning::UpdateQ(float reward) {
-  if(cpuInfo && PrintOK()) main_timer->Start();
+  if(cpuInfo && PrintOK()) main_timer.Start();
 
   // Get max Q in next state.
   double max_q = GetMaxQ(next_state);
@@ -341,7 +341,7 @@ void QLearning::UpdateQ(float reward) {
     Save(name);
   }
 
-  if(cpuInfo && PrintOK()) updateQInfo += main_timer->End() + "\t\t";
+  if(cpuInfo && PrintOK()) updateQInfo += main_timer.End() + "\t\t";
   if(write_info && PrintOK()){
     std::stringstream text;
     text << "STEP: " << step << " Q-algorithm: Q += " << updatedQ <<
@@ -356,11 +356,11 @@ void QLearning::UpdateQ(float reward) {
 
 // Changes the state in the Q-matrix.
 int QLearning::GetState(int state, int action){
-  if(cpuInfo && PrintOK()) sub_timer->Start();
+  if(cpuInfo && PrintOK()) sub_timer.Start();
   // No movement, 0
   if(action == 0) {
     next_rotation = 0;
-    if(cpuInfo && PrintOK()) getStateInfo += sub_timer->End() + "\t";
+    if(cpuInfo && PrintOK()) getStateInfo += sub_timer.End() + "\t";
     if(write_info && PrintOK()) getStateInfo += "GetState: NO ACTION";
     return state;
   }
@@ -379,7 +379,7 @@ int QLearning::GetState(int state, int action){
 
   int rtrn = state+(new_angle - old_angle)*pow(precision,joint);
 
-  if(cpuInfo && PrintOK()) getStateInfo += sub_timer->End() + "\t";
+  if(cpuInfo && PrintOK()) getStateInfo += sub_timer.End() + "\t";
   if(write_info && PrintOK()){
     std::stringstream text;
     text << "state: " << state << " action: " << action <<
