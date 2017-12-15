@@ -13,6 +13,8 @@ class World {
 
     ~World();
 
+    float32 ChangeFriction(float32 amount);
+
     void Start();
 
     //b2Vec2* GetWurmPosition();

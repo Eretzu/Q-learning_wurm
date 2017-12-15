@@ -88,6 +88,43 @@ int Wurm::NumberOfJoints() {
   return joints_.size();
 }
 
+float32 Wurm::AlterSpeed(float32 amount) {
+  float32 current = speed;
+  if(current + amount < 0.f) {
+    speed = 0.f;
+    return 0.f;
+  } else if(current + amount > 100.f) {
+    speed = 100.f;
+    return 100.f;
+  } else {
+    float32 change = current + amount;
+    speed = change;
+    return change;
+  }
+}
+
+int Wurm::AlterTorque(int amount) {
+  int count = NumberOfJoints();
+  for(int i = 0; i < count; ++i) {
+    b2RevoluteJoint *revJoint = (b2RevoluteJoint*)joints_[i];
+    float32 current = revJoint->GetMaxMotorTorque();
+    if(current + amount < 0) {
+      revJoint->SetMaxMotorTorque(0);
+      return 0;
+    }
+    else if(current + amount > 100000) {
+      revJoint->SetMaxMotorTorque(100000);
+      return 100000;
+    }
+    else {
+      float32 change = current + amount;
+      revJoint->SetMaxMotorTorque(change);
+      return change;
+    }
+  }
+  return 0;
+}
+
 // Starts rotating // Sets a target angle for given joint index.
 // It utilizes joint limits and motors to get to this given angle.
 bool Wurm::SetJointTargetAngle(int joint_index, float angle) {
@@ -103,12 +140,12 @@ bool Wurm::SetJointTargetAngle(int joint_index, float angle) {
   // Depends if current angle is smaller or larger that targetAngle.
   if(currentAngle < targetAngle) {
     joint->SetLimits(currentAngle, targetAngle);
-    joint->SetMotorSpeed(kJointMotorSpeed*1);
+    joint->SetMotorSpeed(kJointMotorSpeed*speed);
     joint->EnableMotor(true);
     return true;
   } else if(currentAngle > targetAngle) {
     joint->SetLimits(targetAngle, currentAngle);
-    joint->SetMotorSpeed(kJointMotorSpeed*-1);
+    joint->SetMotorSpeed(kJointMotorSpeed*-speed);
     joint->EnableMotor(true);
     return true;
   } else {

@@ -103,7 +103,9 @@ void QLearning::Save(std::string n) {
   // File name: [states][actions]:_name.txt
   std::string finalName = "[" + std::to_string(states) + "][" +
   std::to_string(actions) + "]:_" +
-  n == "" ? name : n + ".txt";
+  (n == "" ? name : n) + ".txt";
+
+  if(write_info) std::cout << "Attempting to save... ";
 
   std::ofstream myfile (finalName);
   int pointSize = sizeof(double);
@@ -119,6 +121,7 @@ void QLearning::Save(std::string n) {
       myfile << "\n";
     }
     myfile.close();
+    if(write_info) std::cout << "saved Q-matrix: " << finalName << std::endl;
   }
   else std::cout << "Unable to open file";
 }
@@ -127,9 +130,10 @@ void QLearning::Load(std::string n) {
   // File name: [states][actions]:_name.txt
   std::string finalName = "[" + std::to_string(states) + "][" +
   std::to_string(actions) + "]:_" +
-  n == "" ? name : n + ".txt";
+  (n == "" ? name : n) + ".txt";
 
   if(write_info) std::cout << "Attempting to load... ";
+
   std::fstream myfile(name, std::ios_base::in);
 
   int columns = GetActions();
@@ -300,15 +304,13 @@ void QLearning::UpdateQ(float reward) {
   state = next_state;
   if(PrintOK()) {
     if(write_info && PrintOK()) PrintInfo();
-    Save(name);
+    Save();
   }
 
   // Loads the latest swarm matrix and updates it with own values, then saves.
   // Every 100 updates
   if(collective && number_of_actions%100 == 0) {
-    std::string finalName = "[" + std::to_string(states) + "][" +
-    std::to_string(actions) + "]:_" + name + ".txt";
-    Load(finalName);
+    Load();
     number_of_actions += 100;
     int rows = GetStates();
     int columns = GetActions();

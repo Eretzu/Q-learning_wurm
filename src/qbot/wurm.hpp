@@ -19,6 +19,9 @@ public:
   // Returns the wurm position in the world
   // Returns it as an average of all the bodypart positions
   b2Vec2* GetWurmPosition();
+
+  float32 AlterSpeed(float32 amount);
+  int AlterTorque(int amount);
   
   // Returns the number of joints of the wurm
   int NumberOfJoints();
@@ -30,6 +33,7 @@ public:
 private:
   std::vector<b2Joint*> joints_;
   std::vector<b2Body*> bodies_;
+  float32 speed = 1.f;
 };
 
 #endif

@@ -27,9 +27,11 @@ void Draw::DrawWurms(sf::RenderWindow &window, std::vector<Brains*> wurms) {
   for(auto i : wurms) {
     Wurm* me = i->GetWurm();
     if(i->GetName().find("swarm-intelligence") == 0)
-      wurmyColor = sf::Color(255, 179, 79); // Swarm-wurm
+      wurmyColor = sf::Color(88, 222, 255); // Swarm-wurm
     else if(i->GetName().find("Maister_wurm") == 0)
-      wurmyColor = sf::Color(79, 237, 255); // Maister-wurm
+      wurmyColor = sf::Color(255, 131, 0); // Maister-wurm
+    else if(i->GetName().find("goofy_wurmy") == 0)
+      wurmyColor = sf::Color(168, 255, 99); // Maister-wurm
     else
       wurmyColor = sf::Color(50, 50, 50); // Normal wurm
     std::vector<b2Body*> bodies = me->GetBodies();

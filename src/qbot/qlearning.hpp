@@ -27,7 +27,7 @@ public:
             bool info,
             bool cpuInfo,
             long int& step,
-            int frequency = 1000,
+            int frequency = 500,
             bool collective = false);
   // Destructor
   ~QLearning();
