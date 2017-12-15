@@ -3,8 +3,6 @@
 #include "world.hpp"
 #include <Box2D/Box2D.h>
 #include <SFML/Graphics.hpp>
-#include <iostream>
-#include <string>
 
 const float SCALE = 10.f;
 const int windowWidth = 1400;
@@ -54,8 +52,8 @@ int main() {
   wurms.push_back(new Brains(3, 24, &world, "new_guy", false, alpha, gamma, info, cpu_info));
   wurms.push_back(new Brains(3, 24, &world, "Maister_wurm", false, alpha, gamma, info, cpu_info));
   
-  Brains* init_wurm = wurms.back();
-  int startPos = init_wurm->GetWurm()->GetWurmPosition()->x;
+  Brains &maisterWurm = *(wurms.back());
+  int startPos = maisterWurm.GetWurm()->GetWurmPosition()->x;
 
   Draw draw;
   float cameraXOffset = 0.f;
@@ -89,7 +87,7 @@ int main() {
 
     // Main loop
   while (window.isOpen()) {
-    auto xyy = wurms[0]->GetWurm()->GetWurmPosition();
+    auto xyy = maisterWurm.GetWurm()->GetWurmPosition();
     view.setCenter((xyy->x+cameraXOffset)*SCALE, -10*SCALE);
     window.setView(view);
 
@@ -147,7 +145,7 @@ int main() {
         std::cout << "Wurm motor torgue: " << result << std::endl;
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
         int change = -1000;
-        int result = wurms[0]->GetWurm()->AlterTorque(change);
+        int result = maisterWurm.GetWurm()->AlterTorque(change);
         int size = wurms.size();
         for(int i = 1; i < size; ++i) {
           wurms[i]->GetWurm()->AlterTorque(change);
@@ -155,7 +153,7 @@ int main() {
         std::cout << "Wurm motor torgue: " << result << std::endl;
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
         float32 change = 0.1f;
-        float32 result = wurms[0]->GetWurm()->AlterSpeed(change);
+        float32 result = maisterWurm.GetWurm()->AlterSpeed(change);
         int size = wurms.size();
         for(int i = 1; i < size; ++i) {
           wurms[i]->GetWurm()->AlterSpeed(change);
@@ -163,7 +161,7 @@ int main() {
         std::cout << "Wurm motor speed: " << result << std::endl;
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
         float32 change = -0.1f;
-        float32 result = wurms[0]->GetWurm()->AlterSpeed(change);
+        float32 result = maisterWurm.GetWurm()->AlterSpeed(change);
         int size = wurms.size();
         for(int i = 1; i < size; ++i) {
           wurms[i]->GetWurm()->AlterSpeed(change);
@@ -195,7 +193,7 @@ int main() {
         std::cout << "Simulation speed: " << 1/sim_speed << std::endl;
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
         float change = 0.05f;
-        float result = wurms[0]->GetQLearning()->SetReward(change);
+        float result = maisterWurm.GetQLearning()->SetReward(change);
         int size = wurms.size();
         for(int i = 1; i < size; ++i) {
           wurms[i]->GetQLearning()->SetReward(change);
@@ -250,6 +248,6 @@ int main() {
     window.display();
   }
   std::cout << "Total distance travelled: " <<
-  init_wurm->GetWurm()->GetWurmPosition()->x - startPos << std::endl;
+  maisterWurm.GetWurm()->GetWurmPosition()->x - startPos << std::endl;
   return 0;
 }
