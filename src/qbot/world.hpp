@@ -11,7 +11,8 @@ class World {
     // Constructor
     World();
     
-    //
+    // Destructor
+    // World is not meant to be copied so 
     ~World();
     
     // Changes the friction of ground.
@@ -23,6 +24,12 @@ class World {
   private:
     b2World* world_;
     b2Body* groundBody_;
+    
+    // Copying and moving is disallowed
+    World (const World&);
+    World (const World&&);
+    World& operator= (const World&);
+    World& operator= (const World&&);
 };
 
 #endif
