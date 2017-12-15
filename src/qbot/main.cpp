@@ -49,7 +49,7 @@ int main() {
       "normie" + std::to_string(i), true, alpha, gamma, info, cpu_info));
   }
   user_num = 0;
-  std::cout << "How many swarm-wurms CYAN, default 20 (shared Q-matrix [3][24]) do you want?" << std::endl;
+  std::cout << "How many swarm-wurms CYAN, default 0 (shared Q-matrix [3][24]) do you want?" << std::endl;
   std::cin >> user_num;
   for(int i = 0; i < user_num; ++i) {
     wurms.push_back(new Brains(3, 24, world,
