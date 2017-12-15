@@ -76,7 +76,7 @@ void Draw::DrawShapes(sf::RenderWindow &window, b2World &world) {
   }
 }
 
-void Draw::DrawBackground(sf::RenderWindow &window) {
+void Draw::DrawBackground(sf::RenderWindow &window, sf::View &view, float zoom) {
   sf::Texture texture;
   texture.loadFromFile("../assets/hex-tile.png");
   texture.setRepeated(true);
@@ -84,8 +84,8 @@ void Draw::DrawBackground(sf::RenderWindow &window) {
   sf::Sprite sprite;
   sprite.setTexture(texture);
   sprite.setTextureRect({ 0, 0, 8000, 1000 });
-  sprite.setOrigin(1400/2, 600/2);
-  sprite.setScale(2.f, 2.f);
+  sprite.setPosition(view.getCenter()-sf::Vector2f(view.getSize().x/2, view.getSize().y));
+  sprite.setScale(zoom, zoom);
   window.draw(sprite);
 }
 
@@ -110,18 +110,17 @@ void Draw::DrawWaypoints(sf::RenderWindow &window) {
   }
 }
 
-void Draw::DrawInfo(sf::RenderWindow &window, sf::View &view, Brains* b, long int iterations) {
+void Draw::DrawInfo(sf::RenderWindow &window, sf::View &view, long int iterations, float zoom) {
   sf::Text text;
   text.setFont(font);
   text.setCharacterSize(24);
   text.setColor(sf::Color::Black);
+  text.setScale(zoom,zoom);
   // Gather info
   auto infotext = "Iterations: " + std::to_string(iterations);
-  infotext += "\nPosition X: " + std::to_string(b->GetWurm()->GetWurmPosition()->x);
-  infotext += "\nPosition Y: " + std::to_string(b->GetWurm()->GetWurmPosition()->y);
-  infotext += "\nVelocity: N/A";
+  infotext += "\nPosition X: " + std::to_string(view.getCenter().x);
 
   text.setString(infotext);
-  text.setPosition(view.getCenter()-sf::Vector2f(675.f,275.f));
+  text.setPosition(view.getCenter()-sf::Vector2f(view.getSize().x/2-50*zoom,view.getSize().y/2-50*zoom));
   window.draw(text);
 }

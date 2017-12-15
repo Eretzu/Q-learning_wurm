@@ -16,12 +16,12 @@ public:
 
   /* Draws shapes all shapes from the world to the window */
   void DrawShapes(sf::RenderWindow &window, b2World &world);
-  void DrawInfo(sf::RenderWindow &window, sf::View &view, Brains* b, long int iterations);
+  void DrawInfo(sf::RenderWindow &window, sf::View &view, long int iterations, float zoom);
   /* Draws the background pattern */
+  void DrawBackground(sf::RenderWindow &window, sf::View &view, float zoom);
   void DrawWurms(sf::RenderWindow &window, std::vector<Brains*> wurms);
-  void DrawBackground(sf::RenderWindow &window);
   void DrawWaypoints(sf::RenderWindow &window);
-  
+
 private:
   sf::Font font;
 };
