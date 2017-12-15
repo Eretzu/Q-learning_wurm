@@ -14,8 +14,8 @@ int main() {
   World worldy;
   b2World &world = worldy.GetWorld();
 
-  const int swarm_count = 5;
-  const int long_count = 0;
+  //const int swarm_count = 5;
+  //const int long_count = 0;
 
   // ADJUST FEATURES
   bool info = true;
@@ -36,15 +36,13 @@ int main() {
     cpu_info = false;
   }
 
-  user_num = 0;
-
   // Parameters:
   // joints, precision, world, name, collective, alpha, gamma, info, cpu info
-  wurms.push_back(new Brains(2, 24, world, "shorty", false, alpha, gamma, info, cpu_info));
-  wurms.push_back(new Brains(3, 24, world, "new_guy", false, alpha, gamma, info, cpu_info));
-  wurms.push_back(new Brains(3, 24, world, "Maister_wurm", false, alpha, gamma, info, cpu_info));
-
-  std::cout << "How many normal BLACK, default 0 (own Q-matrix [3][24]) do you want?" << std::endl;
+  //wurms.push_back(new Brains(2, 24, world, "shorty", false, alpha, gamma, info, cpu_info));
+  //wurms.push_back(new Brains(3, 24, world, "new_guy", false, alpha, gamma, info, cpu_info));
+  
+  user_num = 0;
+  std::cout << "How many normal BLACK, default 0 (own Q-matrix [3][24]) do you want? Note: One is automatically created." << std::endl;
   std::cin >> user_num;
   for(int i = 0; i < user_num; ++i) {
     wurms.push_back(new Brains(3, 24, world,
@@ -65,6 +63,8 @@ int main() {
       "goofy_wurmy", true, alpha, gamma, info, cpu_info));
   }
   
+  wurms.push_back(new Brains(3, 24, world, "Maister_wurm", false, alpha, gamma, info, cpu_info));
+    
   Brains &maisterWurm = *(wurms.back());
   int startPos = maisterWurm.GetWurm().GetWurmPosition().x;
 

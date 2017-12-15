@@ -96,7 +96,7 @@ private:
   int states;             // pow(precision,joints)
   double alpha;                 // 0 to 1
   double gamma;                 // 0 to 1
-  double move_reward = 0.6f;    // Negative to force the wurms to move
+  double move_reward = 0.1f;    // Negative to force the wurms to move
 
   // CPU times and info
   std::string actInfo = "";

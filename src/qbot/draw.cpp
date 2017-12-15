@@ -116,7 +116,7 @@ void Draw::DrawInfo(sf::RenderWindow &window, sf::View &view, long int iteration
   text.setScale(zoom,zoom);
   // Gather info
   auto infotext = "Iterations: " + std::to_string(iterations);
-  infotext += "\nPosition X: " + std::to_string(view.getCenter().x);
+  infotext += "\nPosition X: " + std::to_string(view.getCenter().x/SCALE);
 
   text.setString(infotext);
   text.setPosition(view.getCenter()-sf::Vector2f(view.getSize().x/2-50*zoom,view.getSize().y/2-50*zoom));
