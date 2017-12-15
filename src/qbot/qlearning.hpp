@@ -19,14 +19,14 @@ class QLearning
 {
 public:
   // Constructor
-  QLearning(short int joints,
-            short int precision,
+  QLearning(int joints,
+            int precision,
             std::string name,
             double alpha,
             double gamma,
             bool info,
             bool cpuInfo,
-            long int& step,
+            int step,
             int frequency = 500,
             bool collective = false);
   // Destructor
@@ -87,15 +87,15 @@ private:
   int state = 0;
 
   // Number of times Act has been called: how many times a joint has been moved.
-  long int number_of_actions = 0;
+  int number_of_actions = 0;
 
   // Essential stores.
   std::string name;             // ID
   int frequency;                // Frequency to print info.
-  short int joints;             // Amount of joints
-  short int precision;          // Leeway in moving joints
-  short int actions;            // 1+joints*2 (0 = do nothing)
-  short int states;             // pow(precision,joints)
+  int joints;             // Amount of joints
+  int precision;          // Leeway in moving joints
+  int actions;            // 1+joints*2 (0 = do nothing)
+  int states;             // pow(precision,joints)
   double alpha;                 // 0 to 1
   double gamma;                 // 0 to 1
   double move_reward = 0.6f;    // Negative to force the wurms to move
@@ -115,7 +115,7 @@ private:
   int next_rotation = 0;
 
   // Which step the program is moving at in the world.
-  long int& step;
+  int step;
 
   // Toggles most of the info printing functions.
   bool write_info;

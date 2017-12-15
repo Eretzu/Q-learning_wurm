@@ -1,6 +1,6 @@
 #include "draw.hpp"
 #include <iostream>
-#include <string>
+//#include <string>
 
 float SCALE = 10.f;
 
@@ -25,7 +25,7 @@ Draw::Draw() {
 void Draw::DrawWurms(sf::RenderWindow &window, std::vector<Brains*> wurms) {
   sf::Color wurmyColor; //= sf::Color(255, 179, 79);
   for(auto i : wurms) {
-    Wurm* me = i->GetWurm();
+    Wurm &me = i->GetWurm();
     if(i->GetName().find("swarm-intelligence") == 0)
       wurmyColor = sf::Color(88, 222, 255); // Swarm-wurm
     else if(i->GetName().find("Maister_wurm") == 0)
@@ -34,7 +34,7 @@ void Draw::DrawWurms(sf::RenderWindow &window, std::vector<Brains*> wurms) {
       wurmyColor = sf::Color(168, 255, 99); // Maister-wurm
     else
       wurmyColor = sf::Color(50, 50, 50); // Normal wurm
-    std::vector<b2Body*> bodies = me->GetBodies();
+    std::vector<b2Body*> bodies = me.GetBodies();
     for(auto body : bodies) {
       for (b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
         // Draw differently based on what shape the fixture has.

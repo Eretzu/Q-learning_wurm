@@ -13,14 +13,14 @@
     in x-coordinates. Joint can rotate to both directions or stay
     still, so the Q-matrix has 3 actions per joint. States are
     determined by the precision and amount of joints. */
-QLearning::QLearning(short int joints,
-                     short int precision,
+QLearning::QLearning(int joints,
+                     int precision,
                      std::string name,
                      double alpha,
                      double gamma,
                      bool info,
                      bool cpuInfo,
-                     long int& step,
+                     int step,
                      int frequency,
                      bool collective) : //======================================
                      name(name),
