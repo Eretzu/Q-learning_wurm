@@ -1,7 +1,6 @@
 #ifndef BRAINS_HPP
 #define BRAINS_HPP
 
-#include <Box2D/Box2D.h>
 #include "wurm.hpp"
 #include "qlearning.hpp"
 #include "cpu_time.hpp"
@@ -9,52 +8,44 @@
 class Brains {
 
 public:
-  // Parameters: joints, precision, *world, (alpha, gamma, info, cpuInfo, load)
   Brains(short int joints,
     short int precision,
     b2World* world,
-    std::string name = "",
+    std::string name = "Default_Name",
     bool collective = false,
     float alpha = 0.8,
     float gamma = 0.8,
-    bool info = 1,
-    bool cpuInfo = 1);
+    bool info = true,
+    bool cpuInfo = true);
     
   ~Brains();
 
-  Wurm* GetWurm();
+  Wurm* GetWurm();              // Returns a pointer to the Box2D form.
+  QLearning* GetQLearning();    // Returns a pointer to QLearning.
+  int GetPrecision();           // Useless to store in many places, so get it.
+  std::string GetName();        // Storing name in Brains.
+  bool AngleCheck();            // Fix joint angle if more than maxError.
 
-  // Returns precision from QLearning.
-  int GetPrecision();
-
-  std::string GetName();
-
-  // See if the current angles match the desired angles by leeway of maxError
-  // If not for i, send angle
-  bool AngleCheck();
-
-  // Is done for each being inside the world EACH STEP.
-  void Think();
+  void Think();                 // Acts and updates Q.
 
 private:
   Wurm* me;
   QLearning* Q_brains;
 
-  float rotationStepSize;
-  float maxError;
+  float rotationStepSize;       // 2pi / precision
+  float maxError;               // Currently 33.3% of rotationStepSize.
 
-  // Desired angles of each joint (index)(angle in rads)
+  // Desired angles of each joint (index)(angle in rads), Think() updates them.
   std::vector<float> correctAngles;
 
-  std::string name;
+  std::string name;             // ID
 
-  bool isUpdated = 1;
+  float oldPosition = 0.0f;     // Storing of angles to calculate reward
+  float newPosition = 0.0f;     // = newPos.x - oldPos.x == Q-reward
 
-  float oldPosition = 0.0f;
-  float newPosition = 0.0f;
+  CPU_Time* CPU_B = new CPU_Time(); // For measuring runtime
+  long int step = 0;                // Loop count
 
-  CPU_Time* CPU_B = new CPU_Time();
-  long int step = 0;
 };
 
 #endif // BRAINS_HPP

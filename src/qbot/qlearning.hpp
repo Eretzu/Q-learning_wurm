@@ -27,7 +27,7 @@ public:
             bool info,
             bool cpuInfo,
             long int& step,
-            int frequency = 1000,
+            int frequency = 500,
             bool collective = false);
   // Destructor
   ~QLearning();
@@ -42,17 +42,16 @@ public:
   int GetJoints() const;
   int GetNextRotation();
   int GetNextJoint();
-
   bool PrintOK();
-
-  // Saving and loading from a text file.
-  void Save(std::string n = "Default_Name");
-  void Load(std::string name);
 
   // Prints the Q-matrix
   void PrintMatrix();
   // Print some stats
-  void PrintInfo(short int tabs = 2);
+  void PrintInfo(short int tabs = 0);
+
+  // Saving and loading from a text file.
+  void Save(std::string n = "");
+  void Load(std::string n = "");
 
   // Get the orientation of all joints.
   // State 409, 3 joints, 10 precision = ( 9 0 4 )
@@ -84,20 +83,21 @@ private:
 
   // State (row) inside the Q-matrix.
   int state = 0;
+
+  // Number of times Act has been called: how many times a joint has been moved.
   long int number_of_actions = 0;
-  std::string name;
 
-  int frequency;
+  // Essential stores.
+  std::string name;     // ID
+  int frequency;        // Frequency to print info.
+  short int joints;     // Amount of joints
+  short int precision;  // Leeway in moving joints
+  short int actions;    // 1+joints*2 (0 = do nothing)
+  short int states;     // pow(precision,joints)
+  double alpha;         // 0 to 1
+  double gamma;         // 0 to 1
 
-  // Amount of: (accuracy is the accuracy in randomization, more in getAction)
-  short int joints; // Amount of joints
-  short int precision; // Leeway in moving joints
-  short int actions; // 1+joints*2 (0 = do nothing)
-  short int states; // pow(precision,joints)
-  double alpha; // 0 to 1
-  double gamma; // 0 to 1
-
-  // Testing CPU times
+  // CPU times and info
   std::string actInfo = "";
   std::string getActionInfo = "";
   std::string GetBestActionInfo = "";
@@ -105,13 +105,11 @@ private:
   std::string updateQInfo = "";
   std::string getMaxQInfo = "";
 
-
-
+  // For updating Q values after joints have moved
   int next_action = 0;
   int next_state = 0;
   int next_joint = 0;
   int next_rotation = 0;
-  // Contains the latest step. Index of joint and action.
 
   // Which step the program is moving at in the world.
   long int& step;
@@ -119,6 +117,8 @@ private:
   // Toggles most of the info printing functions.
   bool write_info;
   bool cpuInfo;
+
+  // Whether to use shared Q-matrix.
   bool collective;
 
 

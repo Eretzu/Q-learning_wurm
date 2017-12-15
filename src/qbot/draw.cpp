@@ -19,7 +19,6 @@ Draw::Draw() {
   if(!font.loadFromFile("../assets/Montserrat-Regular.ttf")) {
     std::cout << "Failed to load font!\nThrow error here!" << std::endl;
   }
-
 }
 
 // Draw certain wurms with distinct colors.
@@ -28,9 +27,11 @@ void Draw::DrawWurms(sf::RenderWindow &window, std::vector<Brains*> wurms) {
   for(auto i : wurms) {
     Wurm* me = i->GetWurm();
     if(i->GetName().find("swarm-intelligence") == 0)
-      wurmyColor = sf::Color(255, 179, 79); // Swarm-wurm
+      wurmyColor = sf::Color(88, 222, 255); // Swarm-wurm
     else if(i->GetName().find("Maister_wurm") == 0)
-      wurmyColor = sf::Color(79, 237, 255); // Maister-wurm
+      wurmyColor = sf::Color(255, 131, 0); // Maister-wurm
+    else if(i->GetName().find("goofy_wurmy") == 0)
+      wurmyColor = sf::Color(168, 255, 99); // Maister-wurm
     else
       wurmyColor = sf::Color(50, 50, 50); // Normal wurm
     std::vector<b2Body*> bodies = me->GetBodies();
@@ -61,30 +62,8 @@ void Draw::DrawWurms(sf::RenderWindow &window, std::vector<Brains*> wurms) {
 void Draw::DrawShapes(sf::RenderWindow &window, b2World &world) {
   // Iterate trough all bodies in the world
   for (b2Body* body = world.GetBodyList(); body; body = body->GetNext()) {
-    // The only dynamicbodies in our world are the wurms
-    if (body->GetType() == b2_dynamicBody) {
-      // Iterate over the fixtures of the wurm
-      for (b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
-        // Draw differently based on what shape the fixture has.
-        // Currently the wurm only consists of rectangular polygonshapes
-        b2Shape::Type shapeType = fixture->GetType();
-        if (shapeType == b2Shape::e_polygon) {
-          // Create an SFML shape that matches the wurm fixture's Box2D shape
-          sf::RectangleShape w(sf::Vector2f(sectionWidth*SCALE, sectionHeight*SCALE));
-          w.setFillColor(wurmColor);
-          w.setOrigin(sectionWidth*SCALE/2, sectionHeight*SCALE/2);
-          w.setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
-          w.setRotation(body->GetAngle() * 180 / b2_pi);
-          // Add outline to better make out the different parts of the wurm
-          w.setOutlineThickness(1.f);
-          w.setOutlineColor(wurmOutlineColor);
-          // Draw wurm fixture
-          window.draw(w);
-          }
-      }
-    }
-    // Only non-dynamic body in our world is the ground
-    else {
+    // Draws the floor
+    if (body->GetType() != b2_dynamicBody) {
       for (b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
           sf::RectangleShape ground(sf::Vector2f(groundWidth * SCALE, groundHeight * SCALE));
           ground.setFillColor(groundColor);
