@@ -60,7 +60,10 @@ int QLearning::GetPrecision() const           { return precision; }
 int QLearning::GetJoints() const              { return joints; }
 int QLearning::GetNextRotation()              { return next_rotation; }
 int QLearning::GetNextJoint()                 { return next_joint; }
-bool QLearning::PrintOK() { return 0 == number_of_actions%frequency; }
+
+bool QLearning::PrintOK() {
+  return (frequency-1) == number_of_actions%frequency;
+}
 
 //======================= PRINTING =============================================
 

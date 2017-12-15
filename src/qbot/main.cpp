@@ -21,7 +21,7 @@ int main() {
   b2World world = *(worldy->GetWorld());
 
   const int swarm_count = 20;
-  const int long_count = 2;
+  const int long_count = 0;
 
   // ADJUST FEATURES
   const bool info = true;
@@ -40,7 +40,7 @@ int main() {
   };
 
   if(long_count) {
-    for(int i = 0; i < swarm_count; ++i) {
+    for(int i = 0; i < long_count; ++i) {
       wurms.push_back(new Brains(7, 4, &world,
         "goofy_wurmy" + std::to_string(i), true, alpha, gamma, info, cpu_info));
     }

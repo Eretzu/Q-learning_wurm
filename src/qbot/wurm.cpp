@@ -49,7 +49,7 @@ Wurm::Wurm(int jointCount, b2World *world, float bodyLen, float bodyWid) {
     jointDef.lowerAngle = 0;
     jointDef.enableMotor = false;
     jointDef.motorSpeed = kJointMotorSpeed;
-    jointDef.maxMotorTorque = 10000;
+    jointDef.maxMotorTorque = 100000;
     jointDef.Initialize(bodies_[i], bodies_[i+1], b2Vec2(10.0*(i-1),0));
     joints_.push_back((b2RevoluteJoint*)world->CreateJoint(&jointDef));
   }
