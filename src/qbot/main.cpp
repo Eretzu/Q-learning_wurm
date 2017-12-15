@@ -17,10 +17,10 @@ int main() {
   window.setFramerateLimit(60);
 
   // Stage the world, brains and drawing function
-  World* worldy = new World();
-  b2World world = *(worldy->GetWorld());
+  World worldy();
+  b2World world = *(worldy.GetWorld());
 
-  const int swarm_count = 20;
+  const int swarm_count = 5;
   const int long_count = 0;
 
   // ADJUST FEATURES
@@ -31,14 +31,8 @@ int main() {
 
   float sim_speed = 60.f;
 
-  // Parameters:
-  // joints, precision, world, name, collective, alpha, gamma, info, cpu info
-  std::vector<Brains*> wurms = {
-    new Brains(3, 24, &world, "Maister_wurm", false, alpha, gamma, info, cpu_info),
-    new Brains(2, 24, &world, "shorty", false, alpha, gamma, info, cpu_info),
-    new Brains(3, 24, &world, "new_guy", false, alpha, gamma, info, cpu_info)
-  };
-
+  std::vector<Brains*> wurms;
+  
   if(long_count) {
     for(int i = 0; i < long_count; ++i) {
       wurms.push_back(new Brains(7, 4, &world,
@@ -53,8 +47,15 @@ int main() {
         "swarm-intelligence", true, alpha, gamma, info, cpu_info));
     }
   }
-  Brains* init_wurm = wurms[0];
-  int startPos = wurms[0]->GetWurm()->GetWurmPosition()->x;
+  
+  // Parameters:
+  // joints, precision, world, name, collective, alpha, gamma, info, cpu info
+  wurms.push_back(new Brains(2, 24, &world, "shorty", false, alpha, gamma, info, cpu_info));
+  wurms.push_back(new Brains(3, 24, &world, "new_guy", false, alpha, gamma, info, cpu_info));
+  wurms.push_back(new Brains(3, 24, &world, "Maister_wurm", false, alpha, gamma, info, cpu_info));
+  
+  Brains* init_wurm = wurms.back();
+  int startPos = init_wurm->GetWurm()->GetWurmPosition()->x;
 
   Draw draw;
   float cameraXOffset = 0.f;
