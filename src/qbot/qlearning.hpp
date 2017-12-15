@@ -44,6 +44,8 @@ public:
   int GetNextJoint();
   bool PrintOK();
 
+  float SetReward(float amount);
+
   // Prints the Q-matrix
   void PrintMatrix();
   // Print some stats
@@ -88,14 +90,15 @@ private:
   long int number_of_actions = 0;
 
   // Essential stores.
-  std::string name;     // ID
-  int frequency;        // Frequency to print info.
-  short int joints;     // Amount of joints
-  short int precision;  // Leeway in moving joints
-  short int actions;    // 1+joints*2 (0 = do nothing)
-  short int states;     // pow(precision,joints)
-  double alpha;         // 0 to 1
-  double gamma;         // 0 to 1
+  std::string name;             // ID
+  int frequency;                // Frequency to print info.
+  short int joints;             // Amount of joints
+  short int precision;          // Leeway in moving joints
+  short int actions;            // 1+joints*2 (0 = do nothing)
+  short int states;             // pow(precision,joints)
+  double alpha;                 // 0 to 1
+  double gamma;                 // 0 to 1
+  double move_reward = 0.6f;    // Negative to force the wurms to move
 
   // CPU times and info
   std::string actInfo = "";

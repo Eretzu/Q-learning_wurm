@@ -60,19 +60,31 @@ int main() {
   float cameraXOffset = 0.f;
   float cameraZoomOffset = 1.f;
   long int iterations = 0;
+
+
   std::cout <<std::endl;
   std::cout <<std::endl;
   std::cout << "Controls:" << std::endl;
-  std::cout << "S          - Save:" << std::endl;
-  std::cout << "L          - Load:" << std::endl;
-  std::cout << "Arrow keys - Move camera" << std::endl;
-  std::cout << "Spacebar   - Reset camere" << std::endl;
-  std::cout << "F          - More torque" << std::endl;
-  std::cout << "D          - Less torque" << std::endl;
-  std::cout << "J          - More speed" << std::endl;
-  std::cout << "K          - Less speed" << std::endl;
-  std::cout << "U          - Fast forward" << std::endl;
-  std::cout << "Escape     - Quit" << std::endl;
+  std::cout <<std::endl;
+  std::cout << "\tUseful commands:" << std::endl;
+  std::cout << "\tH          - Save:" << std::endl;
+  std::cout << "\tS          - Save:" << std::endl;
+  std::cout << "\tL          - Load:" << std::endl;
+  std::cout <<std::endl;
+  std::cout << "\tMovement:" << std::endl;
+  std::cout << "\tArrow keys - move camera" << std::endl;
+  std::cout << "\tSpacebar   - reset camere" << std::endl;
+  std::cout <<std::endl;
+  std::cout << "\tSimulation:" << std::endl;
+  std::cout << "\tR          - more torque" << std::endl;
+  std::cout << "\tF          - less torque" << std::endl;
+  std::cout << "\tI          - more speed" << std::endl;
+  std::cout << "\tK          - less speed" << std::endl;
+  std::cout << "\tE          - more minus for movement" << std::endl;
+  std::cout << "\tD          - less minus for movement" << std::endl;
+  std::cout << "\tT          - more sim speed" << std::endl;
+  std::cout << "\tG          - less sim speed" << std::endl;
+  std::cout <<std::endl;
 
     // Main loop
   while (window.isOpen()) {
@@ -104,7 +116,7 @@ int main() {
         while (iterations < temp+1000) {
           world.Step(1/60.f, 8, 3);
           for (auto i : wurms) i->Think();
-          ++iterations;
+            ++iterations;
         }
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         cameraXOffset = 0;
@@ -124,7 +136,7 @@ int main() {
         }
       } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
         window.close();
-      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
         int change = 1000;
         int result = wurms[0]->GetWurm()->AlterTorque(change);
         int size = wurms.size();
@@ -132,7 +144,7 @@ int main() {
           wurms[i]->GetWurm()->AlterTorque(change);
         }
         std::cout << "Wurm motor torgue: " << result << std::endl;
-      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
         int change = -1000;
         int result = wurms[0]->GetWurm()->AlterTorque(change);
         int size = wurms.size();
@@ -140,7 +152,7 @@ int main() {
           wurms[i]->GetWurm()->AlterTorque(change);
         }
         std::cout << "Wurm motor torgue: " << result << std::endl;
-      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
         float32 change = 0.1f;
         float32 result = wurms[0]->GetWurm()->AlterSpeed(change);
         int size = wurms.size();
@@ -156,7 +168,7 @@ int main() {
           wurms[i]->GetWurm()->AlterSpeed(change);
         }
         std::cout << "Wurm motor speed: " << result << std::endl;
-      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::H)) {
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::T)) {
         float32 change = 1.f;
         if(sim_speed + change < 1.f) {
           sim_speed = 1.f;
@@ -180,12 +192,52 @@ int main() {
           sim_speed = sim_speed + change;
         }
         std::cout << "Simulation speed: " << 1/sim_speed << std::endl;
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+        float change = 0.05f;
+        float result = wurms[0]->GetQLearning()->SetReward(change);
+        int size = wurms.size();
+        for(int i = 1; i < size; ++i) {
+          wurms[i]->GetQLearning()->SetReward(change);
+        }
+        std::cout << "Q move minus: " << -result << std::endl;
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        float change = -0.05f;
+        float result = wurms[0]->GetQLearning()->SetReward(change);
+        int size = wurms.size();
+        for(int i = 1; i < size; ++i) {
+          wurms[i]->GetQLearning()->SetReward(change);
+        }
+        std::cout << "Q move minus: " << -result << std::endl;
+      } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::H)) {
+        std::cout <<std::endl;
+        std::cout <<std::endl;
+        std::cout << "Controls:" << std::endl;
+        std::cout <<std::endl;
+        std::cout << "\tUseful commands:" << std::endl;
+        std::cout << "\tH          - Save:" << std::endl;
+        std::cout << "\tS          - Save:" << std::endl;
+        std::cout << "\tL          - Load:" << std::endl;
+        std::cout <<std::endl;
+        std::cout << "\tMovement:" << std::endl;
+        std::cout << "\tArrow keys - move camera" << std::endl;
+        std::cout << "\tSpacebar   - reset camere" << std::endl;
+        std::cout <<std::endl;
+        std::cout << "\tSimulation:" << std::endl;
+        std::cout << "\tR          - more torque" << std::endl;
+        std::cout << "\tF          - less torque" << std::endl;
+        std::cout << "\tI          - more speed" << std::endl;
+        std::cout << "\tK          - less speed" << std::endl;
+        std::cout << "\tE          - more minus for movement" << std::endl;
+        std::cout << "\tD          - less minus for movement" << std::endl;
+        std::cout << "\tT          - more sim speed" << std::endl;
+        std::cout << "\tG          - less sim speed" << std::endl;
+        std::cout <<std::endl;
       }
     }
     // Simulate the world
     world.Step(1/sim_speed, 8, 3);
     for(auto i : wurms) i->Think();
-    ++iterations;
+      ++iterations;
 
     // Draw here
     window.clear(sf::Color::White);

@@ -52,7 +52,7 @@ QLearning::QLearning(short int joints,
 // Destructor
 QLearning::~QLearning() {  }
 
-//======================= GET FUNCTIONS ========================================
+//======================= GET AND SET FUNCTIONS ================================
 
 int QLearning::GetActions()                   { return actions; }
 int QLearning::GetStates()                    { return states; }
@@ -63,6 +63,21 @@ int QLearning::GetNextJoint()                 { return next_joint; }
 
 bool QLearning::PrintOK() {
   return (frequency-1) == number_of_actions%frequency;
+}
+
+float QLearning::SetReward(float amount) {
+  float current = move_reward;
+  if(current + amount < 0.f) {
+    move_reward = 0.f;
+    return 0.f;
+  } else if(current + amount > 10.f) {
+    move_reward = 10.f;
+    return 10.f;
+  } else {
+    float change = current + amount;
+    move_reward = change;
+    return change;
+  }
 }
 
 //======================= PRINTING =============================================
@@ -296,7 +311,7 @@ void QLearning::UpdateQ(float reward) {
   // Get max Q in next state.
   double max_q = GetMaxQ(next_state);
   // Q alghorithm
-  double updatedQ = alpha * (reward - 0.8 + gamma * max_q - Q[state][next_action]);
+  double updatedQ = alpha * (reward - move_reward + gamma * max_q - Q[state][next_action]);
 
   if(collective) {
     Q[state][next_action] += updatedQ;
@@ -330,7 +345,7 @@ void QLearning::UpdateQ(float reward) {
   if(write_info && PrintOK()){
     std::stringstream text;
     text << "STEP: " << step << " Q-algorithm: Q += " << updatedQ <<
-    " == " << alpha << " * (" << reward << " - " << 0.8 << " + " << gamma << " * " << max_q <<
+    " == " << alpha << " * (" << reward << " - " << move_reward << " + " << gamma << " * " << max_q <<
     " - Q[" << state << "][" << next_action << "](" << Q[state][next_action] <<
     "))";
     updateQInfo += text.str();
