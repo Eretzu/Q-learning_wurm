@@ -1,0 +1,13 @@
+Thanks for your active participation.
+
+Design looks very good and documentation is very clear.
+Good experimentation with different parameters.
+ 
+
+ 1) There is a easy way to install sfml and cmake similar to Box2D. It need not be pre-installed in Aalto machines
+ 2) Try to create error during "cmake" if required software is not installed. I believe now the code crashes as compilation is successful. (even when required softwares are not installed)
+ 3) It is hard to remember magic numbers that are present throughout the code. Using namespace and moving all variables with constant values inside namespace will solve these problems and increases code modularity.
+ 4) Use unique or smart pointers in code rather than normal pointers.
+ 5) In some places, documentation differs from implementation. For example, How many swarm-wurms CYAN default - 5
+ 6) Try to measure performace with different containers (other than vector of vector)
+
