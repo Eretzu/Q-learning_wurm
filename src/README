@@ -14,3 +14,7 @@
 
 =
 cd ~/path_to_build && cmake .. && make && ./qbot/bot
+
+
+
+When running H shows some commands and U fast-forwards 1000 iterations.
