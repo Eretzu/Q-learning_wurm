@@ -27,7 +27,7 @@ Brains::Brains(int joints,      // Amount of joints
                   500,
                   collective),
                rotationStepSize(2.0*M_PI/precision),    // Rotation step
-               maxError(rotationStepSize/2),            // error in rotation
+               maxError(rotationStepSize/5),            // error in rotation
                name(name) {                             // Initialize name
 
   for(int i = 0; i < joints; ++i) { // Adding correct angles
